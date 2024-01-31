@@ -11,7 +11,7 @@ El pago mensual de estos préstamos se calcula con la fórmula:
 $$
 A = P \times \frac{r(1+r)^n}{(1+r)^n - 1}
 $$
-Donde $P$ es el préstamo, $r$ la tasa de interés y $n$ el número de pagos.
+Donde $P$ es el préstamo, $r$ la tasa de interés por periodo y $n$ el número de periodos.
 ## Certificados de Depósito a Plazo (CDP): ##
 Es un depósito que se pacta a un periodo de tiempo, el cual es acordado entre el
 cliente y el banco. La tasa de interés se establece en base al monto del depósito y
