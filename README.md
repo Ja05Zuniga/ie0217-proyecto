@@ -13,7 +13,9 @@ $$ A = P \times \frac{r(1+r)^n}{(1+r)^n - 1} $$
 
 Donde $P$ es el préstamo, $r$ la tasa de interés por periodo y $n$ el número de periodos. En este pago se contempla el pago del principal y el pago de intereses. Los intereses se pueden calcular con la fórmula:
 
-$$ I = P - S $$
+$$
+I = r\times(P - S)
+$$
 
 Donde $S$ es lo que se ha pagado hasta el momento.
 ## Certificados de Depósito a Plazo (CDP): ##
