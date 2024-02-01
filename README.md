@@ -24,3 +24,12 @@ cliente y el banco. La tasa de interés se establece en base al monto del depós
 el plazo. Este tipo de depósitos no permite retiros, ni incrementos de saldos y para
 poder disponer del dinero el cliente debe esperar hasta la fecha de vencimiento del
 depósito.
+Para calcular el monto total al finalizar un periodo de años para un Certificado de Depósito a Plazo (CDP), se emplea la siguiente ecuación:
+
+A = P(1 + R)^r
+
+Donde:
+
+P es el monto mensual.
+R = tasa de interés anual/12 
+r = 12*plazo en meses
