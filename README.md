@@ -26,7 +26,7 @@ poder disponer del dinero el cliente debe esperar hasta la fecha de vencimiento 
 depósito.
 Para calcular el monto total al finalizar un periodo de años para un Certificado de Depósito a Plazo (CDP), se emplea la siguiente ecuación:
 
-A = P(1 + R)^r
+$$ A = P(1 + R)^r $$
 
 Donde:
 
