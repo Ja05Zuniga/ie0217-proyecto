@@ -31,5 +31,7 @@ $$ A = P(1 + R)^r $$
 Donde:
 
 P es el monto mensual.
-R = tasa de interés anual/12 
-r = 12*plazo en meses
+
+R = tasa de interés anual / 12 
+
+r = 12 * plazo en meses
