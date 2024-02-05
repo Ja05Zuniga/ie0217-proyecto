@@ -35,3 +35,10 @@ P es el monto mensual.
 R = tasa de interés anual / 12 
 
 r = 12 * plazo en meses
+
+
+# Cronograma del proyecto #
+
+Para establecer el cronograma del proyecto se utiliza la herramienta del Diagrama de Gantt, la cual es una herramienta que permite organizar, controlar y planificar proyectos muy usado en la industria, además de que al ser una herramienta visual es de fácil uso y comprensión.
+
+![Cronograma del proyecto](https://drive.google.com/file/d/1kgYOMWm2qzSH1ysV9kHyW4ioYbNHVdQ_/view?usp=sharing)
