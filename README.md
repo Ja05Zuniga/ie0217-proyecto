@@ -41,7 +41,7 @@ R = tasa de interés anual / 12
 r = 12 * plazo en meses
 
 # Diseño
-![UML class](./images/UML%20class.pdf)
+    ![UML class](https://github.com/Ja05Zuniga/ie0217-proyecto/blob/0e332f9de3815902a8fa0d74e1aa69a44b6a72f9/images/UML%20class.pdf)
 ## Funcionamiento ##
 El sistema inicia pidiendo el número de identidad. En el caso de que no se encuentre en el sistema, se procede a crear: se le mostrará una ventana indicándole que su ID no se encuentra en la base de datos y se preguntará si desea ingresar su ID. En este caso, ID sería la cédula del cliente. Este ID es único.
 
