@@ -43,7 +43,9 @@ r = 12 * plazo en meses
 # Diseño
 ![UML class](./images/UMLclass.png)
 
- 
+Los elementos principales del programa son la clase transacción y la clase producto. Esta última es una clase virtual que nos permitirá realizar transacciones entre cualquiera de sus derivados. En cada clase definiremos que significa transferir dinero desde o hacia esa entidad. Por ejemplo, si un préstamo recibe dinero significa que se le está abonando. Esto nos permitirá realizar cualquier movimiento de dinero.
+
+Por otro lado para alamacenar la información relativa a préstamos, certificados y usuarios, se utiliza la estructura mostrada. El banco guarda en un contenedor los usuarios y los usuarios guardan préstamos. Esto facilita encontrar certificados y préstamos, pero obliga al usuario a ingresar tanto el ID del dueño del préstamo como del préstamo. Una posible solución es almacenar de alguna forma el ID del usuario en el ID del préstamo pero esto no se implementará en este caso.
 ## Funcionamiento ##
 ![Diagrama de flujo](./images/flowchart.png)
 
