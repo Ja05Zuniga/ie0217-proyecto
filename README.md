@@ -26,19 +26,12 @@ poder disponer del dinero el cliente debe esperar hasta la fecha de vencimiento 
 depósito.
 Para calcular el monto total al finalizar un periodo de años para un Certificado de Depósito a Plazo (CDP), se emplea la siguiente ecuación:
 
-<<<<<<< HEAD
-$$
-A = P(1 + R)^r
-$$
-=======
 $$ A = P(1 + R)^r $$
->>>>>>> 49b67f11ac36071ea9d2d2d13bf188f91ba60304
 
 Donde:
 
 P es el monto mensual.
 
-<<<<<<< HEAD
 R = tasa de interés anual/12 
 
 r = 12*plazo en meses
