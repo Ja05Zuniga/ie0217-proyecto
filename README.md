@@ -42,7 +42,11 @@ r = 12 * plazo en meses
 
 # Diseño
 ![UML class](./images/UMLclass.png)
+
+ 
 ## Funcionamiento ##
+![Diagrama de flujo](./images/flowchart.png)
+
 El sistema inicia pidiendo el número de identidad. En el caso de que no se encuentre en el sistema, se procede a crear: se le mostrará una ventana indicándole que su ID no se encuentra en la base de datos y se preguntará si desea ingresar su ID. En este caso, ID sería la cédula del cliente. Este ID es único.
 
 Después de ingresar al sistema, se le mostrará el tipo de acción que desee realizar: Atención al cliente o Información.
@@ -63,7 +67,7 @@ Para finalizar el sistema contará con una opción de salida que permitirá aban
 
 Para establecer el cronograma del proyecto se utiliza la herramienta del Diagrama de Gantt, la cual es una herramienta que permite organizar, controlar y planificar proyectos muy usado en la industria, además de que al ser una herramienta visual es de fácil uso y comprensión.
 
-![Cronograma del Proyecto](https://github.com/Ja05Zuniga/ie0217-proyecto/assets/58184593/4710e80f-0d66-4ec2-9a6b-ab864ea9413b)
+![Cronograma del Proyecto](images/Cronograma_v1.jpg)
 
 
 
