@@ -41,4 +41,8 @@ r = 12 * plazo en meses
 
 Para establecer el cronograma del proyecto se utiliza la herramienta del Diagrama de Gantt, la cual es una herramienta que permite organizar, controlar y planificar proyectos muy usado en la industria, además de que al ser una herramienta visual es de fácil uso y comprensión.
 
+![Cronograma del Proyecto](https://github.com/Ja05Zuniga/ie0217-proyecto/assets/58184593/4710e80f-0d66-4ec2-9a6b-ab864ea9413b)
+
 ![Cronograma del proyecto](images/Cronograma_v1.PNG)
+
+
