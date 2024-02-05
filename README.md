@@ -43,24 +43,10 @@ R = tasa de interés anual/12
 
 r = 12*plazo en meses
 
-=======
 R = tasa de interés anual / 12 
 
 r = 12 * plazo en meses
 
-
-
-
-# Cronograma del proyecto #
-
-Para establecer el cronograma del proyecto se utiliza la herramienta del Diagrama de Gantt, la cual es una herramienta que permite organizar, controlar y planificar proyectos muy usado en la industria, además de que al ser una herramienta visual es de fácil uso y comprensión.
-
-![Cronograma del Proyecto](https://github.com/Ja05Zuniga/ie0217-proyecto/assets/58184593/4710e80f-0d66-4ec2-9a6b-ab864ea9413b)
-
-
-
-
->>>>>>> 49b67f11ac36071ea9d2d2d13bf188f91ba60304
 
 ## Funcionamiento ##
 El sistema inicia pidiendo el número de identidad. En el caso de que no se encuentre en el sistema, se procede a crear: se le mostrará una ventana indicándole que su ID no se encuentra en la base de datos y se preguntará si desea ingresar su ID. En este caso, ID sería la cedula del cliente. Este ID es único.
@@ -78,3 +64,15 @@ En la sección de operaciones, el cliente podrá realizar diversas operaciones. 
 Ya cubierta la sección de Atención al cliente, el sistema lo devolverá al menú principal. Una vez ahí y suponiendo de que el cliente haya hecho sus operaciones, prestamos, etc; correctamente, podrá acceder a la opción de información. Esta sección se encarga de mostrarle sus estados de cuenta: ahorros, prestamos con tablas para un análisis más cómodo. De esta forma el cliente puede hacer un seguimiento de sus préstamos y ahorros.
 
 Para finalizar el sistema contará con una opción de salida que permitirá abandonar el sistema en caso de que ya no se use.
+
+# Cronograma del proyecto #
+
+Para establecer el cronograma del proyecto se utiliza la herramienta del Diagrama de Gantt, la cual es una herramienta que permite organizar, controlar y planificar proyectos muy usado en la industria, además de que al ser una herramienta visual es de fácil uso y comprensión.
+
+![Cronograma del Proyecto](https://github.com/Ja05Zuniga/ie0217-proyecto/assets/58184593/4710e80f-0d66-4ec2-9a6b-ab864ea9413b)
+
+
+
+
+>>>>>>> 49b67f11ac36071ea9d2d2d13bf188f91ba60304
+
