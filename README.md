@@ -26,17 +26,41 @@ poder disponer del dinero el cliente debe esperar hasta la fecha de vencimiento 
 depósito.
 Para calcular el monto total al finalizar un periodo de años para un Certificado de Depósito a Plazo (CDP), se emplea la siguiente ecuación:
 
+<<<<<<< HEAD
 $$
 A = P(1 + R)^r
 $$
+=======
+$$ A = P(1 + R)^r $$
+>>>>>>> 49b67f11ac36071ea9d2d2d13bf188f91ba60304
 
 Donde:
 
 P es el monto mensual.
 
+<<<<<<< HEAD
 R = tasa de interés anual/12 
 
 r = 12*plazo en meses
+
+=======
+R = tasa de interés anual / 12 
+
+r = 12 * plazo en meses
+
+
+
+
+# Cronograma del proyecto #
+
+Para establecer el cronograma del proyecto se utiliza la herramienta del Diagrama de Gantt, la cual es una herramienta que permite organizar, controlar y planificar proyectos muy usado en la industria, además de que al ser una herramienta visual es de fácil uso y comprensión.
+
+![Cronograma del Proyecto](https://github.com/Ja05Zuniga/ie0217-proyecto/assets/58184593/4710e80f-0d66-4ec2-9a6b-ab864ea9413b)
+
+
+
+
+>>>>>>> 49b67f11ac36071ea9d2d2d13bf188f91ba60304
 
 ## Funcionamiento ##
 El sistema inicia pidiendo el número de identidad. En el caso de que no se encuentre en el sistema, se procede a crear: se le mostrará una ventana indicándole que su ID no se encuentra en la base de datos y se preguntará si desea ingresar su ID. En este caso, ID sería la cedula del cliente. Este ID es único.
