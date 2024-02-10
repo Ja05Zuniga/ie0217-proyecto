@@ -3,20 +3,23 @@
 #include "Cliente.hpp"
 #include "Prestamo.hpp"
 #include "Certificado.hpp"
-#include <map>
+#include <unordered_map>
+#include <array>
 class Banco
 {
 private:
-    std::map<unsigned int, Cliente> clientes;
-    std::map<unsigned int, Prestamo> prestamos;
-    std::map<unsigned int, Certificado> certificados;
+    std::unordered_map<unsigned int, Cliente> clientes;
+    std::array<Prestamo, 3> prestamos;
+    std::unordered_map<unsigned int, Certificado> certificados;
 
 public:
-    Banco(/* args */);
+    Banco();
     ~Banco();
-    Cliente buscarCliente(unsigned int id);
-    void obtenerInfoPrestamos(unsigned int id);
-    void obtenerInfoCertificados(unsigned int id);
+    Cliente buscarCliente(const unsigned int &id);
+    Prestamo buscarPrestamo(const unsigned int &id);
+    void obtenerInfoPrestamos(const unsigned int &id);
+    void obtenerInfoCertificados(const unsigned int &id);
+    Cliente agregarCliente(const unsigned int &id, const std::string &nombre);
 };
 
 #endif
