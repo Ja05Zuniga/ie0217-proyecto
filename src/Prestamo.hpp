@@ -1,13 +1,28 @@
 #ifndef PRESTAMOS_HPP
 #define PRESTAMOS_HPP
-class Prestamo
+#include "Producto.hpp"
+
+enum TipoPrestamo
+{
+    PERSONAL,
+    PRENDARIO,
+    HIPOTECARIO
+};
+class Prestamo : public Producto
 {
 private:
-    /* data */
+    TipoPrestamo tipo;
+    unsigned int cuotas;
+    float tasaInteresAnual;
+    float montoIncial;
+    float montoPagado;
+
 public:
-    Prestamo(/* args */);
+    Prestamo();
+    Prestamo(const TipoPrestamo &tipo, const unsigned int &cuotas, const float &tasaInteresAnual, const unsigned int &id);
     ~Prestamo();
-    void obtenerInfo();
+    void obtenerInfo() override;
+    void acreditar() override;
 };
 
 #endif
