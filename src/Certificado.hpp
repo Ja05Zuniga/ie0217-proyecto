@@ -1,13 +1,17 @@
 #ifndef CERTIFICADO_HPP
 #define CERTIFICADO_HPP
-class Certificado
+#include "Producto.hpp"
+
+class Certificado : public Producto
 {
 private:
     /* data */
 public:
-    Certificado(/* args */);
+    Certificado(const unsigned int id);
     ~Certificado();
-    void obtenerInfo();
+    void obtenerInfo() override;
+    void acreditar(const Dinero &monto) override;
+    void debitar(const Dinero &monto) override;
 };
 
 #endif
