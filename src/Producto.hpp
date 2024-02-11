@@ -3,6 +3,8 @@
 #include <string>
 #include <iostream>
 #include <random>
+#include "Dinero.hpp"
+
 const int NUM_PRESTAMOS = 9;
 
 class Producto
@@ -18,7 +20,8 @@ public:
     unsigned int generarId();
     unsigned int obtenerId();
     virtual void obtenerInfo();
-    virtual void acreditar();
+    virtual void acreditar(const Dinero &monto);
+    virtual void debitar(const Dinero &monto);
 };
 
 #endif

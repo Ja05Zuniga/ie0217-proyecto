@@ -3,7 +3,10 @@ Producto::Producto(const std::string &nombre, const unsigned int &id) : nombre(n
 Producto::Producto(const std::string &nombre) : nombre(nombre) {}
 
 void Producto::obtenerInfo() {}
-void Producto::acreditar() {}
+void Producto::acreditar(const Dinero &monto) {}
+void Producto::debitar(const Dinero &monto)
+{
+}
 Producto::~Producto()
 {
 }
