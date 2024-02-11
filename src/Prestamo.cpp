@@ -29,4 +29,17 @@ void Prestamo::obtenerInfo()
               << "Número de cuotas: " << cuotas << "\n"
               << "Tasa de interés anual: " << tasaInteresAnual << std::endl;
 }
-void Prestamo::acreditar() {}
+void Prestamo::acreditar(const Dinero &monto) {}
+void Prestamo::debitar(const Dinero &monto)
+{
+    montoIncial = monto;
+    montoPagado = Dinero(0, monto.obtenerMoneda());
+}
+
+unsigned int Prestamo::abrir(const Dinero &dinero)
+{
+    unsigned int id = this->generarId();
+    montoIncial = dinero;
+    montoPagado = Dinero(0, dinero.obtenerMoneda());
+    return id;
+}
