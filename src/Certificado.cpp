@@ -1,5 +1,5 @@
 #include "Certificado.hpp"
-Certificado::Certificado(/* args */)
+Certificado::Certificado(const unsigned int id) : Producto("Certificado", id)
 {
 }
 
@@ -7,4 +7,7 @@ Certificado::~Certificado()
 {
 }
 
-void obtenerInfo() {}
+void Certificado::obtenerInfo() {}
+
+void Certificado::acreditar(const Dinero &monto) {}
+void Certificado::debitar(const Dinero &monto) {}
