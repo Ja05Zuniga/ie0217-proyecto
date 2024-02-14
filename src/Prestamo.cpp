@@ -25,9 +25,9 @@ void Prestamo::obtenerInfo()
     default:
         break;
     }
-    std::cout << "Tipo de préstamo: " << tipo_str << "\n"
-              << "Número de cuotas: " << cuotas << "\n"
-              << "Tasa de interés anual: " << tasaInteresAnual << std::endl;
+    std::cout << "Tipo de prestamo: " << tipo_str << "\n"
+              << "Numero de cuotas: " << cuotas << "\n"
+              << "Tasa de interes anual: " << tasaInteresAnual << std::endl;
 }
 void Prestamo::acreditar(const Dinero &monto) {}
 void Prestamo::debitar(const Dinero &monto)
