@@ -1,4 +1,4 @@
-# Makefile para compilar los archivos especificados y generar el ejecutable prueba.exe
+# Makefile para compilar los archivos especificados usando mingw32-make y generar el ejecutable prueba.exe
 
 # Definir el compilador
 CXX = g++
@@ -10,7 +10,7 @@ CXXFLAGS = -std=c++11 -Wall
 SRCDIR = src
 
 # Lista de archivos fuente a compilar. 
-#Aquí van todos los archivos necesarios para que funcione el programa
+#Aquí van todos los archivos necesarios para que funcione el sistema
 SOURCES = main.cpp Banco.cpp Dinero.cpp Cliente.cpp Prestamo.cpp Certificado.cpp Transaccion.cpp Cuenta.cpp identidad.cpp Producto.cpp
 
 # Obtener la lista de archivos objeto
