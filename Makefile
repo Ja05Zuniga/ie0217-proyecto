@@ -17,7 +17,7 @@ SOURCES = main.cpp Banco.cpp Dinero.cpp Cliente.cpp Prestamo.cpp Certificado.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 
 # Nombre del ejecutable
-EXECUTABLE = programa.exe
+EXECUTABLE = prueba.exe
 
 # Regla por defecto: compilar los archivos fuente y generar el ejecutable
 all: $(EXECUTABLE)
