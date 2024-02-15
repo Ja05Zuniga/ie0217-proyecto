@@ -1,3 +1,13 @@
+/**
+ * @file Prestamo.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2024-02-15
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #include "Prestamo.hpp"
 
 Prestamo::~Prestamo() {}
@@ -57,6 +67,7 @@ void Prestamo::obtenerInfoPersonal()
               << "Cuota actual: " << numCuota << "\n"
               << "Tasa de interés anual: " << tasaInteresAnual << std::endl;
 }
+
 void Prestamo::acreditar(const Dinero &monto)
 {
     numCuota += 1;
