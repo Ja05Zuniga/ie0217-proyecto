@@ -9,8 +9,8 @@
 class Producto
 {
 protected:
-    unsigned int id;
     std::string nombre;
+    unsigned int id;
 
 public:
     Producto(const std::string &nombre);
