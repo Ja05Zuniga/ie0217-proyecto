@@ -11,7 +11,7 @@ SRCDIR = src
 
 # Lista de archivos fuente a compilar. 
 #Aquí van todos los archivos necesarios para que funcione el sistema
-SOURCES = main.cpp Banco.cpp Dinero.cpp Cliente.cpp Prestamo.cpp Certificado.cpp Transaccion.cpp Cuenta.cpp identidad.cpp Producto.cpp agregar_cliente.cpp Menu.cpp
+SOURCES = Banco.cpp Certificado.cpp Cliente.cpp Cuenta.cpp Dinero.cpp identidad.cpp main.cpp Menu.cpp Prestamo.cpp Producto.cpp Transaccion.cpp
 
 # Obtener la lista de archivos objeto
 OBJECTS = $(SOURCES:.cpp=.o)
