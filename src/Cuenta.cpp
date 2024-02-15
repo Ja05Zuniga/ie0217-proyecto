@@ -15,15 +15,15 @@ Estado Cuenta::obtenerEstado() { return estado; }
 
 void Cuenta::obtenerInfo()
 {
-    std::cout << "Ahorros: " << ahorros.obtenerMonto() << "\n"
-              << "Moneda: " << ahorros.obtenerMoneda() << std::endl;
+    std::cout << std::setw(Constantes::COL_WIDTH) << std::left << id
+              << std::setw(Constantes::COL_WIDTH) << std::left << estado
+              << std::setw(Constantes::COL_WIDTH) << std::left << ahorros << std::endl;
 }
 void Cuenta::acreditar(const Dinero &monto)
 {
     Moneda moneda_monto = monto.obtenerMoneda();
     if (moneda == moneda_monto)
     {
-        std::cout << "holis";
         ahorros = ahorros + monto;
     }
 }
