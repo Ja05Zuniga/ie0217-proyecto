@@ -19,6 +19,12 @@ void Cuenta::obtenerInfo()
               << std::setw(Constantes::COL_WIDTH) << std::left << estado
               << std::setw(Constantes::COL_WIDTH) << std::left << ahorros << std::endl;
 }
+
+/**
+ * @details actualiza los ahorros del usuario
+ * 
+ * @param monto 
+ */
 void Cuenta::acreditar(const Dinero &monto)
 {
     Moneda moneda_monto = monto.obtenerMoneda();
@@ -27,6 +33,12 @@ void Cuenta::acreditar(const Dinero &monto)
         ahorros = ahorros + monto;
     }
 }
+
+/**
+ * @details actualiza los ahorros del usuario
+ * 
+ * @param monto 
+ */
 void Cuenta::debitar(const Dinero &monto)
 {
     if (moneda == monto.obtenerMoneda())
