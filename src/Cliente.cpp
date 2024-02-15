@@ -46,30 +46,19 @@ Prestamo Cliente::buscarPrestamo(const unsigned int &id)
 
 void Cliente::obtenerInfoPrestamo(const unsigned int &id)
 {
-    //    Prestamo prestamo = this->buscarPrestamo(id);
-    //    std::string tipo_str;
-    //    switch (prestamo.tipo)
-    //    {
-    //    case 0:
-    //        tipo_str = "Personal";
-    //        break;
-    //    case 1:
-    //        tipo_str = "Prendario";
-    //        break;
-    //    case 2:
-    //        tipo_str = "Hipotecario";
-    //
-    //    default:
-    //        break;
-    //    }
-    //    std::cout << "Tipo de préstamo: " << tipo_str << "\n"
-    //              << "Número de cuotas: " << prestamo.cuotas << "\n"
-    //              << "Tasa de interés anual: " << prestamo.tasaInteresAnual << std::endl
-    //              << "\n"
-    //              << "Monto: " << prestamo.montoIncial << "\n"
-    //              << "Monto pagado: " << prestamo.montoPagado << "\n";
+    Prestamo prestamo = this->buscarPrestamo(id);
+    prestamo.obtenerInfoPersonal();
 }
 void Cliente::debitar() {}
+
+void Cliente::obtenerInfoPrestamos()
+{
+    std::unordered_map<unsigned int, Prestamo>::iterator iter;
+    for (iter = prestamos.begin(); iter != prestamos.end(); ++iter)
+    {
+        iter->second.obtenerInfo();
+    }
+}
 
 void Cliente::obtenerEstadoCuenta(Moneda moneda)
 {
