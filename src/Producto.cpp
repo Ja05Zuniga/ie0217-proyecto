@@ -15,7 +15,7 @@ unsigned int Producto::generarId()
 {
     std::random_device rd;
     std::mt19937 eng(rd());
-    std::uniform_int_distribution<> distr(NUM_PRESTAMOS, 999999999);
+    std::uniform_int_distribution<> distr(Constantes::NUM_PRESTAMOS, 999999999);
     id = distr(eng);
     return id;
 }

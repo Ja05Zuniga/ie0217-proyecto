@@ -1,12 +1,19 @@
 #ifndef MENU_HPP
 #define MENU_HPP
 #include <string>
+#include <iostream>
+#include <string>
+#include "Cliente.hpp"
+#include "identidad.hpp"
+#include "agregar_cliente.hpp"
+#include "Banco.hpp"
+
 
 class Menu{
 
     public:
         // Constructor de la clase
-        Menu();
+        Menu(Banco banco);
         // Metodo iniciar el Menu
         void iniciarMenu();
 
@@ -23,6 +30,8 @@ class Menu{
         void gestionarCliente();
         // Metodo para mostrar informacion general
         void displayInformacion();
+        void displayInformacionGeneral();
+        void displayInformacionPrestamo();
         
         // Metodos que deben ir dentro de gestionarCliente() y displayInformacion()
         // Metodo para gestionar los Ahorros
@@ -36,6 +45,10 @@ class Menu{
         // void escogerMoneda();
         // // Metodo para mostrar el monto y desglose de los prestamos
         // void displayMontoDesglosado();
+    
+    private:
+        Banco banco;
+        Cliente cliente;
 
 
 };

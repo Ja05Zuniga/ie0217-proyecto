@@ -2,6 +2,7 @@
 #define TRANSACCION_HPP
 #include "Producto.hpp"
 #include "Dinero.hpp"
+#include "constants.hpp"
 class Transaccion
 {
 private:

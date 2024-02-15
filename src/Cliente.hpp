@@ -25,6 +25,7 @@ public:
     unsigned int agregarPrestamo(Prestamo prestamos, const float &monto, Moneda moneda);
     Prestamo buscarPrestamo(const unsigned int &id);
     void obtenerInfoPrestamo(const unsigned int &id);
+    void obtenerInfoPrestamos();
     void obtenerEstadoCuenta(Moneda moneda);
     void debitar();
 };

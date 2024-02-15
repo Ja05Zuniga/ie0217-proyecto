@@ -1,7 +1,9 @@
 #ifndef PRESTAMOS_HPP
 #define PRESTAMOS_HPP
+#include <iomanip>
 #include "Producto.hpp"
 #include "Dinero.hpp"
+#include "constants.hpp"
 enum TipoPrestamo
 {
     PERSONAL,
@@ -13,6 +15,7 @@ class Prestamo : public Producto
 private:
     TipoPrestamo tipo;
     unsigned int cuotas;
+    unsigned int numCuota;
     float tasaInteresAnual;
     Dinero montoIncial;
     Dinero montoPagado;
@@ -25,6 +28,7 @@ public:
     void acreditar(const Dinero &monto) override;
     void debitar(const Dinero &monto) override;
     unsigned int abrir(const Dinero &dinero);
+    void obtenerInfoPersonal();
 };
 
 #endif

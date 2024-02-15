@@ -25,15 +25,46 @@ void Prestamo::obtenerInfo()
     default:
         break;
     }
-    std::cout << "Tipo de prestamo: " << tipo_str << "\n"
-              << "Numero de cuotas: " << cuotas << "\n"
-              << "Tasa de interes anual: " << tasaInteresAnual << std::endl;
+    std::cout << std::setw(Constantes::COL_WIDTH) << std::left << id
+              << std::setw(Constantes::COL_WIDTH) << std::left << tipo_str
+              << std::setw(Constantes::COL_WIDTH) << std::left << cuotas
+              << std::setw(Constantes::COL_WIDTH) << std::left << tasaInteresAnual << std::endl;
 }
-void Prestamo::acreditar(const Dinero &monto) {}
+
+void Prestamo::obtenerInfoPersonal()
+{
+    std::string tipo_str;
+    switch (tipo)
+    {
+    case 0:
+        tipo_str = "Personal";
+        break;
+    case 1:
+        tipo_str = "Prendario";
+        break;
+    case 2:
+        tipo_str = "Hipotecario";
+
+    default:
+        break;
+    }
+    std::cout << "ID: " << id << "\n"
+              << "Tipo de préstamo: " << tipo_str << "\n"
+              << "Cuotas: " << cuotas << "\n"
+              << "Monto de préstamo: " << montoIncial << "\n"
+              << "Monto cancelado: " << montoPagado << "\n"
+              << "Cuota actual: " << numCuota << "\n"
+              << "Tasa de interés anual: " << tasaInteresAnual << std::endl;
+}
+void Prestamo::acreditar(const Dinero &monto)
+{
+    numCuota += 1;
+}
 void Prestamo::debitar(const Dinero &monto)
 {
     montoIncial = monto;
     montoPagado = Dinero(0, monto.obtenerMoneda());
+    numCuota = 0;
 }
 
 unsigned int Prestamo::abrir(const Dinero &dinero)

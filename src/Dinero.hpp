@@ -2,18 +2,13 @@
 #define DINERO_HPP
 #include <string>
 #include <iostream>
-const int TASA_COMPRA = 500;
-const int TASA_VENTA = 500;
-enum Moneda
-{
-    COLONES,
-    DOLARES
-};
+#include "constants.hpp"
+#include "Moneda.hpp"
 class Dinero
 {
 protected:
-    float tasaCompra = TASA_COMPRA;
-    float tasaVenta = TASA_VENTA;
+    float tasaCompra = Constantes::TASA_COMPRA;
+    float tasaVenta = Constantes::TASA_VENTA;
     float monto;
     Moneda moneda;
 
@@ -32,6 +27,7 @@ public:
     float obtenerMonto() const;
     Dinero operator+(const Dinero &otro);
     Dinero operator-(const Dinero &otro);
+    friend std::ostream& operator<<(std::ostream &os, const Dinero &obj);
 };
 
 #endif
