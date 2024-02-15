@@ -1,5 +1,18 @@
 # Makefile para compilar los archivos especificados usando mingw32-make y generar el ejecutable prueba.exe
 # Para correr el programa se usa el comando 'mingw32-make run'
+
+ifeq ($(OS), Windows_NT)
+	# Si es Windows la extensión de los ejecutable es .exe
+	EXTENSION = .exe
+	# Comando para limpiar en Windows
+	RM = del 
+else 
+	# Si es Linux la extensión de los ejecutable es .out
+	EXTENSION = .out
+	# Comando para limpiar en Linux
+	RM = rm -f
+endif
+
 # Definir el compilador
 CXX = g++
 
@@ -11,28 +24,32 @@ SRCDIR = src
 
 # Lista de archivos fuente a compilar. 
 #Aquí van todos los archivos necesarios para que funcione el sistema
-SOURCES = Banco.cpp Certificado.cpp Cliente.cpp Cuenta.cpp Dinero.cpp identidad.cpp main.cpp Menu.cpp Prestamo.cpp Producto.cpp Transaccion.cpp
+
+SOURCES = Banco.cpp Certificado.cpp Cliente.cpp Cuenta.cpp Dinero.cpp identidad.cpp main.cpp Menu.cpp Prestamo.cpp Producto.cpp Transaccion.cpp identidad.cpp
+
+SOURCES = $(wildcard $(SRCDIR)/*.cpp)
+
 
 # Obtener la lista de archivos objeto
 OBJECTS = $(SOURCES:.cpp=.o)
 
 # Nombre del ejecutable
-EXECUTABLE = prueba.exe
+EXECUTABLE = prueba$(EXTENSION)
 
 # Regla por defecto: compilar los archivos fuente y generar el ejecutable
 all: $(EXECUTABLE)
 
 # Regla para generar el ejecutable
 $(EXECUTABLE): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $(EXECUTABLE)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
 # Regla para compilar los archivos fuente a objetos
-%.o: $(SRCDIR)/%.cpp
+$(SRCDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Regla para limpiar los archivos generados
 clean:
-	del $(EXECUTABLE) $(OBJECTS)
+	$(RM) $(EXECUTABLE) $(OBJECTS)
 
 # Regla para compilar y ejecutar el programa
 run: $(EXECUTABLE)
