@@ -11,13 +11,12 @@ Producto::~Producto()
 {
 }
 
-unsigned int Producto::generarId()
+void Producto::generarId()
 {
     std::random_device rd;
     std::mt19937 eng(rd());
     std::uniform_int_distribution<> distr(Constantes::NUM_PRESTAMOS, 999999999);
     id = distr(eng);
-    return id;
 }
 
 unsigned int Producto::obtenerId() { return id; }

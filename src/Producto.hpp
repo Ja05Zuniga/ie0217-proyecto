@@ -16,7 +16,7 @@ public:
     Producto(const std::string &nombre);
     Producto(const std::string &nombre, const unsigned int &id);
     virtual ~Producto();
-    unsigned int generarId();
+    void generarId();
     unsigned int obtenerId();
     virtual void obtenerInfo();
     virtual void acreditar(const Dinero &monto);
