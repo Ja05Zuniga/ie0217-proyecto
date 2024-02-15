@@ -28,7 +28,8 @@ void Prestamo::obtenerInfo()
     std::cout << std::setw(Constantes::COL_WIDTH) << std::left << id
               << std::setw(Constantes::COL_WIDTH) << std::left << tipo_str
               << std::setw(Constantes::COL_WIDTH) << std::left << cuotas
-              << std::setw(Constantes::COL_WIDTH) << std::left << tasaInteresAnual << std::endl;
+              << std::setw(Constantes::COL_WIDTH) << std::left << tasaInteresAnual
+              << std::setw(Constantes::COL_WIDTH) << std::left << montoIncial << std::endl;
 }
 
 void Prestamo::obtenerInfoPersonal()
