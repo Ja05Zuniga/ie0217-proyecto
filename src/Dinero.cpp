@@ -15,14 +15,14 @@ void Dinero::mostrarInformacion()
 
 Dinero Dinero::comprarDolares()
 {
-    float cantidad_dolares = monto / TASA_COMPRA;
+    float cantidad_dolares = monto / Constantes::TASA_COMPRA;
     Dinero dinero(cantidad_dolares, DOLARES);
     monto = 0;
     return dinero;
 }
 Dinero Dinero::comprarDolares(const float &cantidad_colones)
 {
-    float cantidad_dolares = cantidad_colones / TASA_COMPRA;
+    float cantidad_dolares = cantidad_colones / Constantes::TASA_COMPRA;
     Dinero dinero(cantidad_dolares, DOLARES);
     monto -= cantidad_colones;
     return dinero;
@@ -30,7 +30,7 @@ Dinero Dinero::comprarDolares(const float &cantidad_colones)
 
 Dinero Dinero::venderColones(const float &cantidad_dolares)
 {
-    float cantidad_colones = TASA_VENTA * cantidad_dolares;
+    float cantidad_colones = Constantes::TASA_VENTA * cantidad_dolares;
     Dinero dinero(cantidad_colones, COLONES);
     monto -= cantidad_colones;
     return dinero;
@@ -38,21 +38,21 @@ Dinero Dinero::venderColones(const float &cantidad_dolares)
 
 Dinero Dinero::comprarColones(const float &cantidad_colones)
 {
-    float cantidad_dolares = TASA_COMPRA * cantidad_colones;
+    float cantidad_dolares = Constantes::TASA_COMPRA * cantidad_colones;
     Dinero dinero(cantidad_dolares, DOLARES);
     monto -= cantidad_dolares;
     return dinero;
 }
 Dinero Dinero::venderDolares(const float &cantidad_dolares)
 {
-    float cantidad_colones = cantidad_dolares / TASA_VENTA;
+    float cantidad_colones = cantidad_dolares / Constantes::TASA_VENTA;
     Dinero dinero(cantidad_colones, COLONES);
     monto -= cantidad_colones;
     return dinero;
 }
 Dinero Dinero::venderDolares()
 {
-    float cantidad_colones = monto / TASA_VENTA;
+    float cantidad_colones = monto / Constantes::TASA_VENTA;
     Dinero dinero(cantidad_colones, COLONES);
     monto = 0;
     return dinero;
@@ -92,4 +92,22 @@ Dinero Dinero::operator-(const Dinero &otro)
     {
         throw std::runtime_error("No se puede combinar dinero de monedas distintas");
     }
+}
+
+std::ostream &operator<<(std::ostream &os, const Dinero &obj)
+{
+    std::string prefix;
+    switch (obj.moneda)
+    {
+    case 0:
+        prefix = "CRC";
+        break;
+    case 1:
+        prefix = "USD";
+        break;
+    default:
+        break;
+    }
+    os << prefix << obj.monto;
+    return os;
 }

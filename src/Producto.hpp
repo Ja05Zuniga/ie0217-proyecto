@@ -5,7 +5,6 @@
 #include <random>
 #include "Dinero.hpp"
 
-const int NUM_PRESTAMOS = 9;
 
 class Producto
 {
