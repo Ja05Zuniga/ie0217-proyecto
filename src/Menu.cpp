@@ -10,6 +10,7 @@ void Menu::iniciarMenu()
 {
 
     int cedula = obtenerIdentidad(); // Falta implentar el uso de la clase Cliente
+    
     try
     {
         cliente = banco.buscarCliente(cedula);
@@ -22,6 +23,7 @@ void Menu::iniciarMenu()
         std::cin >> nombre;
 
         cliente = banco.agregarCliente(cedula, nombre);
+        
     }
 
     // El menu de opciones
@@ -200,6 +202,7 @@ void Menu::displayTipoPrestamos()
     this->banco.obtenerInfoPrestamos(PERSONAL);
     this->banco.obtenerInfoPrestamos(PERSONAL + 1);
     this->banco.obtenerInfoPrestamos(PERSONAL + 2);
+    displayOpcionesPrincipales();
 }
 /**
  * @note Estos Metodos quiza no son necesarios implementarlos como metodos individuales
