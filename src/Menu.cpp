@@ -52,7 +52,8 @@ void Menu::displayOpcionesPrincipales()
     std::cout << "\n--- Menu de opciones ---\n";
     std::cout << "1. Atencion al cliente\n";
     std::cout << "2. Informacion\n";
-    std::cout << "3. Salir\n";
+    std::cout << "3. Solicitar préstamo\n";
+    std::cout << "4. Salir\n";
 
     std::cout << "Ingrese una opcion: ";
     std::cin >> opcion;
@@ -68,7 +69,9 @@ void Menu::displayOpcionesPrincipales()
         displayInformacion();
         // Falta implementar codigo basado
         break;
-    case 3: // Salir
+    case 3: // Solicitud de préstamo
+        agregarPrestamo();
+    case 4: // Salir
         std::cout << "Saliendo del programa...\n";
         exit(0);
     default:
@@ -76,6 +79,37 @@ void Menu::displayOpcionesPrincipales()
     }
 }
 
+void Menu::agregarPrestamo()
+{
+    int id;
+    std::cout << "Ingrese el ID de préstamo solicitado: ";
+    std::cin >> id;
+
+    float monto;
+    std::cout << "Ingrese el monto del préstamo: ";
+    std::cin >> monto;
+
+    int monedaInt;
+    std::cout << "Ingrese la moneda del préstamo: 1) Colones, 2) Dolares: ";
+    std::cin >> monedaInt;
+
+    Moneda moneda;
+    switch (monedaInt)
+    {
+    case 1:
+        moneda = COLONES;
+        break;
+    case 2:
+        moneda = DOLARES;
+        break;
+
+    default:
+        break;
+    }
+
+    cliente.agregarPrestamo(banco.buscarPrestamo(id), monto, moneda);
+    displayOpcionesPrincipales();
+}
 void Menu::gestionarCliente()
 {
     // Falta implementar logica de codigo basado para manejar las operaciones de cliente
@@ -85,6 +119,7 @@ void Menu::gestionarCliente()
     std::cout << "1. Tipos de Prestamos\n";
     std::cout << "2. Gestion de Ahorros\n";
     std::cout << "3. Operaciones\n";
+    std::cout << "4. Regresar\n";
 
     std::cout << "Ingrese una opcion: ";
     std::cin >> opcion;
@@ -102,6 +137,8 @@ void Menu::gestionarCliente()
         break;
     case 3: // Operaciones
         realizarOperaciones();
+    case 4: // Regresar
+        displayOpcionesPrincipales();
     default:
         std::cout << "Opcion no es valida. Intente de nuevo...\n";
     }
@@ -175,7 +212,7 @@ void Menu::displayInformacionGeneral()
               << std::setw(Constantes::COL_WIDTH) << std::left << "Moneda"
               << std::setw(Constantes::COL_WIDTH) << std::left << "Monto" << std::endl;
     cliente.obtenerInfoPrestamos();
-    
+
     displayOpcionesPrincipales();
     // Falta implementar logica de codigo basado para mostrar informacion general
 }
@@ -187,9 +224,28 @@ void Menu::gestionarAhorros()
 
 void Menu::realizarOperaciones()
 {
-    // Falta implementar logica de codigo basado ...
+    int opcion;
+    std::cout << "\n--- Menu de Operaciones ---\n";
+    std::cout << "1. Pagar préstamo\n";
+
+    std::cout << "Ingrese una opcion: ";
+    std::cin >> opcion;
+
+    // Casos
+    switch (opcion)
+    {
+    case 1:
+        pagarPrestamo();
+        break;
+    default:
+        std::cout << "Opcion no es valida. Intente de nuevo...\n";
+    }
 }
 
+void Menu::pagarPrestamo()
+{
+    
+}
 void Menu::displayTipoPrestamos()
 {
     std::cout << std::setw(Constantes::COL_WIDTH) << std::left << "ID"
