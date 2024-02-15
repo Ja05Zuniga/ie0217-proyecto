@@ -61,17 +61,17 @@ void Prestamo::acreditar(const Dinero &monto)
 {
     numCuota += 1;
 }
+
+/**
+ * @ Por debitar a un préstamo se entiende que este se está abriendo por un usuario y se le hará el
+ * depósito respectivo. Por esta razón, aquí se incializa la información relacionada a un préstamo específico.
+ *
+ * @param monto
+ */
 void Prestamo::debitar(const Dinero &monto)
 {
+    generarId();
     montoIncial = monto;
     montoPagado = Dinero(0, monto.obtenerMoneda());
     numCuota = 0;
-}
-
-unsigned int Prestamo::abrir(const Dinero &dinero)
-{
-    unsigned int id = this->generarId();
-    montoIncial = dinero;
-    montoPagado = Dinero(0, dinero.obtenerMoneda());
-    return id;
 }

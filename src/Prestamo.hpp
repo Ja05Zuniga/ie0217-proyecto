@@ -27,7 +27,6 @@ public:
     void obtenerInfo() override;
     void acreditar(const Dinero &monto) override;
     void debitar(const Dinero &monto) override;
-    unsigned int abrir(const Dinero &dinero);
     void obtenerInfoPersonal();
 };
 
