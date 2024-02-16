@@ -8,9 +8,10 @@ Menu::Menu(Banco banco) : banco(banco) {}
 
 void Menu::iniciarMenu()
 {
-
     int cedula = obtenerIdentidad(); // Falta implentar el uso de la clase Cliente
-    
+    /*Si la cedula se ecuentra en la base de datos. Entonces crea el objeto cliente
+    En el caso de que no. Pide el nombre del usuario, agrega la cedula y el nombre a la base de datos y
+    crea el objeto cliente*/
     if (Identidad(std::to_string(cedula)).verificarCedulaEnCSV("cedulas.csv")){
         std::string nombreEncontrado = Identidad(std::to_string(cedula)).extraerNombre("cedulas.csv");
         cliente = banco.agregarCliente(cedula, nombreEncontrado);
@@ -18,37 +19,46 @@ void Menu::iniciarMenu()
         }
 
     else {
-        std::cout << "No se encontró el usuario." << '\n';
-        
-        std::string nombre = obtenerNombre();
-        cliente = banco.agregarCliente(cedula, nombre);
-        std::cout<<"Bienvenido "<< nombre <<". Numero de cédula: " << cedula << std::endl;
+        std::cout << "No se encontró el usuario." << '\n'; //Etiqueta que la cedula ingresada no se encuentra en el .csv
+        //Solicita el nombre del usuario
+        std::string nombreValidacion;
+        std::cout << "Ingrese su nombre de usuario: ";
+        std::cin>> nombreValidacion;
 
-        std::string cedula_string = std::to_string(cedula); 
-        AgregarCliente(cedula_string, nombre).agregarA_CSV("cedulas.csv");
+        //nombre ya está validado y listo para ser añadido al .csv y crear el objeto
+        std::string nombre = obtenerNombre(nombreValidacion);
+
+        cliente = banco.agregarCliente(cedula, nombre); //Crea el objeto cliente
+
+        std::cout<<"Bienvenido "<< nombre <<". Numero de cédula: " << cedula << std::endl; //Da la bienvenida
+
+        std::string cedula_string = std::to_string(cedula); //Transforma cedula a string para poder ser agregado al .csv
+        AgregarCliente(cedula_string, nombre).agregarA_CSV("cedulas.csv"); //Agrega cedula y nombre al .csv
         }
 
     // El menu de opciones
     displayOpcionesPrincipales();
 }
 
-std::string Menu::obtenerNombre(){
-    std::string nombre;
-    bool nombreValido = false;
-
-    while (!nombreValido) {
-        try {
+std::string Menu::obtenerNombre(std::string nombre){
+    while (true) {
             std::cout << "Ingrese su nombre de usuario: ";
             std::getline(std::cin, nombre);
 
             // Expresión regular para validar el nombre de usuario
+            /*El nombre del usuario tiene que iniciar con mayuscula, el resto del nombre tiene que ir en minuscula.
+            Tiene que ingresar como mínimo dos nombres: unNombre + unApellido
+            Tiene que ingresar como máximo cuatro nombres: dosNombres + dosApellidos
+            El nombre no puede poseer signos especiales
+            Los nombres no pueden superar los 15 caracteres
+            Los nombres no pueden tener menos de dos caracteres
+            */
             std::regex regexNombre("^[A-Z][a-z]{1,14}(\\s[A-Z][a-z]{1,14}){1,3}(\\s[A-Z][a-z]{1,14})?$");
-
+        try {
             if (!std::regex_match(nombre, regexNombre)) {
                 throw std::invalid_argument("El formato del nombre de usuario no es válido.");
             }
 
-            nombreValido = true;
             return nombre;
 
         } catch (const std::invalid_argument& e) {
@@ -59,10 +69,14 @@ std::string Menu::obtenerNombre(){
 }
 
 int Menu::obtenerIdentidad(){
+    /*Metodo que supervisa la entrada del numere de cedula.
+    El número de cédula no puede contener letras.
+    El número de cédula no puede empezar con cero.
+    Debe ingresar un número de cédula de nueve dígitos.
+    */
     std::string num_cedula;
-    bool entrada_valida = false;
 
-    while (!entrada_valida) {
+    while (true) {
         try {
             std::cout << "Ingrese su número de cédula (deben ser nueve dígitos): ";
             std::string numCedulaStr;
@@ -74,9 +88,6 @@ int Menu::obtenerIdentidad(){
                     throw std::invalid_argument("Entrada no válida. El número de cédula no puede contener letras.");
                 }}
 
-            // Convertir la cadena a un entero
-            int num_cedula = std::stoi(numCedulaStr);
-
             if (numCedulaStr[0] == '0') {
                 throw std::invalid_argument("Entrada no válida. El número de cédula no puede empezar con cero.");
                 }
@@ -85,8 +96,8 @@ int Menu::obtenerIdentidad(){
                 throw std::invalid_argument("Entrada no válida. Debe ingresar un número de cédula de nueve dígitos.");
                 }
 
-            entrada_valida = true;
-
+            // Convertir la cadena a un entero
+            int num_cedula = std::stoi(numCedulaStr);
             // Retornar el número de cédula convertido a int
             return num_cedula;
             
