@@ -1,4 +1,10 @@
 #include "Banco.hpp"
+
+/**
+ * @brief Construct a new Banco:: Banco object
+ * @details Aquí se definen los préstamos ofrecidos por el usuario
+ *
+ */
 Banco::Banco()
 {
     prestamos[0] = Prestamo(PERSONAL, 12, 5.5, 1);
@@ -20,12 +26,22 @@ Prestamo Banco::buscarPrestamo(const unsigned int &id)
     return prestamos.at(id);
 }
 
+/**
+ * @details Llama el método obtenerInfo de la clase préstamo
+ *
+ * @param id
+ */
 void Banco::obtenerInfoPrestamos(const unsigned int &id)
 {
     Prestamo prestamo = prestamos.at(id);
     prestamo.obtenerInfo();
 }
 
+/**
+ * @details Llama el método obtenerInfo de la clase certificado
+ *
+ * @param id
+ */
 void Banco::obtenerInfoCertificados(const unsigned int &id)
 {
     Certificado certificado = certificados.at(id);

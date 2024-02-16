@@ -2,6 +2,13 @@
 
 Cliente::Cliente() {}
 
+/**
+ * @details El constructor automaticante asigna cuentas es dolares y en colones para
+ * el usuario
+ *
+ * @param userId
+ * @param nombre
+ */
 Cliente::Cliente(unsigned int userId, std::string nombre) : userId(userId), nombre(nombre)
 {
     cuentaColones = Cuenta(0, COLONES);
@@ -11,15 +18,26 @@ Cliente::Cliente(unsigned int userId, std::string nombre) : userId(userId), nomb
 Cliente::~Cliente()
 {
 }
+
 void Cliente::obtenerInfo()
 {
     std::cout << "Nombre: " << nombre << "\n"
               << "ID: " << userId << std::endl;
 }
+
+/**
+ * @details Aquí se inicializan los atributos necesarios cuando se abre el préstamo,
+ * se llama la clase transacción para mover el dinero y finalmente se devuelve el ID del préstamo 
+ * creado
+ *
+ * @param prestamo
+ * @param monto
+ * @param moneda
+ * @return unsigned int
+ */
 unsigned int Cliente::agregarPrestamo(Prestamo prestamo, const float &monto, Moneda moneda)
 {
     Dinero dinero(monto, moneda);
-    unsigned int id = prestamo.abrir(dinero);
     Cuenta *cuenta;
     switch (moneda)
     {
@@ -35,9 +53,11 @@ unsigned int Cliente::agregarPrestamo(Prestamo prestamo, const float &monto, Mon
     Transaccion transaccion(&prestamo, cuenta, dinero);
 
     transaccion();
+    unsigned int id = prestamo.obtenerId();
     prestamos[id] = prestamo;
     return id;
 }
+
 
 Prestamo Cliente::buscarPrestamo(const unsigned int &id)
 {
@@ -49,8 +69,11 @@ void Cliente::obtenerInfoPrestamo(const unsigned int &id)
     Prestamo prestamo = this->buscarPrestamo(id);
     prestamo.obtenerInfoPersonal();
 }
-void Cliente::debitar() {}
 
+/**
+ * @details Itera sobre el contenedor préstamos para imprimir su información 
+ * 
+ */
 void Cliente::obtenerInfoPrestamos()
 {
     std::unordered_map<unsigned int, Prestamo>::iterator iter;
