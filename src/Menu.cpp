@@ -11,55 +11,89 @@ void Menu::iniciarMenu()
 
     int cedula = obtenerIdentidad(); // Falta implentar el uso de la clase Cliente
     
-    try
-    {   
-        if (Identidad(std::to_string(cedula)).verificarCedulaEnCSV("cedulas.csv")){
-            std::string nombreEncontrado = Identidad(std::to_string(cedula)).extraerNombre("cedulas.csv");
-            cliente = banco.agregarCliente(cedula, nombreEncontrado);
-            std::cout<<"Bienvenido"<< nombreEncontrado <<" Numero de cédula: " << cedula << std::endl;
+    if (Identidad(std::to_string(cedula)).verificarCedulaEnCSV("cedulas.csv")){
+        std::string nombreEncontrado = Identidad(std::to_string(cedula)).extraerNombre("cedulas.csv");
+        cliente = banco.agregarCliente(cedula, nombreEncontrado);
+        std::cout<<"Bienvenido"<< nombreEncontrado <<". Numero de cédula: " << cedula << std::endl;
         }
-    }
-    catch (const std::out_of_range &e)
-    {
-        std::string nombre;
-        std::cout << "No se encontró el usuario." << '\n';
-        std::cout << "Ingrese su nombre para ser registrado en el sistema: " << std::endl;
-        std::cin >> nombre;
 
-        cliente = banco.agregarCliente(cedula, nombre);
+    else {
+        std::cout << "No se encontró el usuario." << '\n';
         
-    }
+        std::string nombre = obtenerNombre();
+        cliente = banco.agregarCliente(cedula, nombre);
+        std::cout<<"Bienvenido "<< nombre <<". Numero de cédula: " << cedula << std::endl;
+
+        std::string cedula_string = std::to_string(cedula); 
+        AgregarCliente(cedula_string, nombre).agregarA_CSV("cedulas.csv");
+        }
 
     // El menu de opciones
     displayOpcionesPrincipales();
 }
 
+std::string Menu::obtenerNombre(){
+    std::string nombre;
+    bool nombreValido = false;
+
+    while (!nombreValido) {
+        try {
+            std::cout << "Ingrese su nombre de usuario: ";
+            std::getline(std::cin, nombre);
+
+            // Expresión regular para validar el nombre de usuario
+            std::regex regexNombre("^[A-Z][a-z]{1,14}(\\s[A-Z][a-z]{1,14}){1,3}(\\s[A-Z][a-z]{1,14})?$");
+
+            if (!std::regex_match(nombre, regexNombre)) {
+                throw std::invalid_argument("El formato del nombre de usuario no es válido.");
+            }
+
+            nombreValido = true;
+            return nombre;
+
+        } catch (const std::invalid_argument& e) {
+            std::cerr << "Error: " << e.what() << std::endl;
+        }
+    }
+
+}
+
 int Menu::obtenerIdentidad(){
-    int num_cedula;
+    std::string num_cedula;
     bool entrada_valida = false;
 
     while (!entrada_valida) {
         try {
             std::cout << "Ingrese su número de cédula (deben ser nueve dígitos): ";
-            std::cin >> num_cedula;
+            std::string numCedulaStr;
+            std::cin >> numCedulaStr;
 
-            if (std::cin.fail()) {
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            throw std::invalid_argument("Entrada no válida. El número de cedula no puede contener letras.");
-        }
-            if (std::to_string(num_cedula).length() != 9) {
+            // Verificar si la entrada contiene letras en lugar de números
+            for (char c : numCedulaStr) {
+                if (!isdigit(c)) {
+                    throw std::invalid_argument("Entrada no válida. El número de cédula no puede contener letras.");
+                }}
+
+            // Convertir la cadena a un entero
+            int num_cedula = std::stoi(numCedulaStr);
+
+            if (numCedulaStr[0] == '0') {
+                throw std::invalid_argument("Entrada no válida. El número de cédula no puede empezar con cero.");
+                }
+
+            if (numCedulaStr.length() != 9) {
                 throw std::invalid_argument("Entrada no válida. Debe ingresar un número de cédula de nueve dígitos.");
-        }
-        
+                }
+
             entrada_valida = true;
-        
+
+            // Retornar el número de cédula convertido a int
+            return num_cedula;
+            
         } catch (const std::invalid_argument& e) {
-            std::cerr << "Error: " << e.what() << std::endl;
+                std::cerr << "Error: " << e.what() << std::endl;
+            }
         }
-    }
-    
-    return num_cedula;
 }
 
 bool Menu::verificarCliente(int cedula)

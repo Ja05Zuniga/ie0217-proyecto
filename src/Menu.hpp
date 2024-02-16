@@ -2,7 +2,8 @@
 #define MENU_HPP
 #include <string>
 #include <iostream>
-#include <string>
+#include <regex>
+#include <stdexcept>
 #include "Cliente.hpp"
 #include "identidad.hpp"
 #include "agregar_cliente.hpp"
@@ -20,6 +21,8 @@ public:
 protected:
     // Metodo para obtener la identidad del usario
     int obtenerIdentidad();
+    //Metodo que valida el nombre de usuario.
+    std::string obtenerNombre();
     // Metodo para verificar si el cliente ya existe en el sistema
     bool verificarCliente(int cedula);
     // Metodo para crear un cliente
