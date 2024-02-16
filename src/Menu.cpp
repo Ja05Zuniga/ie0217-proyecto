@@ -12,8 +12,12 @@ void Menu::iniciarMenu()
     int cedula = obtenerIdentidad(); // Falta implentar el uso de la clase Cliente
     
     try
-    {
-        cliente = banco.buscarCliente(cedula);
+    {   
+        if (Identidad(std::to_string(cedula)).verificarCedulaEnCSV("cedulas.csv")){
+            std::string nombreEncontrado = Identidad(std::to_string(cedula)).extraerNombre("cedulas.csv");
+            cliente = banco.agregarCliente(cedula, nombreEncontrado);
+            std::cout<<"Bienvenido"<< nombreEncontrado <<" Numero de cédula: " << cedula << std::endl;
+        }
     }
     catch (const std::out_of_range &e)
     {
@@ -30,12 +34,31 @@ void Menu::iniciarMenu()
     displayOpcionesPrincipales();
 }
 
-int Menu::obtenerIdentidad()
-{
+int Menu::obtenerIdentidad(){
     int num_cedula;
-    std::cout << "Ingrese su numero de cedula: ";
-    std::cin >> num_cedula;
+    bool entrada_valida = false;
 
+    while (!entrada_valida) {
+        try {
+            std::cout << "Ingrese su número de cédula (deben ser nueve dígitos): ";
+            std::cin >> num_cedula;
+
+            if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            throw std::invalid_argument("Entrada no válida. El número de cedula no puede contener letras.");
+        }
+            if (std::to_string(num_cedula).length() != 9) {
+                throw std::invalid_argument("Entrada no válida. Debe ingresar un número de cédula de nueve dígitos.");
+        }
+        
+            entrada_valida = true;
+        
+        } catch (const std::invalid_argument& e) {
+            std::cerr << "Error: " << e.what() << std::endl;
+        }
+    }
+    
     return num_cedula;
 }
 
