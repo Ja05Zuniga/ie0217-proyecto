@@ -20,6 +20,7 @@ public:
 
     // Método para verificar si la cédula está en un archivo CSV
     bool verificarCedulaEnCSV(const std::string& nombreArchivo) const;
+    std::string extraerNombre(const std::string& nombreArchivo) const;
 
 private:
     std::string cedula;
