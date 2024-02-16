@@ -1,3 +1,13 @@
+/**
+ * @file Transaccion.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2024-02-15
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #include "Transaccion.hpp"
 Transaccion::Transaccion() {}
 Transaccion::Transaccion(Producto *pagador, Producto *receptor, Dinero monto) : pagador(pagador), receptor(receptor), monto(monto)
