@@ -68,6 +68,13 @@ float Dinero::obtenerMonto() const
     return this->monto;
 }
 
+/**
+ * @details Suma los montos si el tipo de moneda es el mismo, si no es 
+ * así retorna una excepción
+ * 
+ * @param otro 
+ * @return Dinero 
+ */
 Dinero Dinero::operator+(const Dinero &otro)
 {
     if (moneda == otro.obtenerMoneda())
@@ -81,6 +88,13 @@ Dinero Dinero::operator+(const Dinero &otro)
     }
 }
 
+/**
+ * @details Suma los montos si el tipo de moneda es el mismo, si no es 
+ * así retorna una excepción
+ * 
+ * @param otro 
+ * @return Dinero 
+ */
 Dinero Dinero::operator-(const Dinero &otro)
 {
     if (moneda == otro.obtenerMoneda())
@@ -94,6 +108,13 @@ Dinero Dinero::operator-(const Dinero &otro)
     }
 }
 
+/**
+ * @brief Define como castear la clase a tipo string para su impresión en pantalla
+ * 
+ * @param os 
+ * @param obj 
+ * @return std::ostream& 
+ */
 std::ostream &operator<<(std::ostream &os, const Dinero &obj)
 {
     std::string prefix;
