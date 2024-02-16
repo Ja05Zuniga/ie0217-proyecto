@@ -20,13 +20,9 @@ void Menu::iniciarMenu()
 
     else {
         std::cout << "No se encontró el usuario." << '\n'; //Etiqueta que la cedula ingresada no se encuentra en el .csv
-        //Solicita el nombre del usuario
-        std::string nombreValidacion;
-        std::cout << "Ingrese su nombre de usuario: ";
-        std::cin>> nombreValidacion;
-
+        
         //nombre ya está validado y listo para ser añadido al .csv y crear el objeto
-        std::string nombre = obtenerNombre(nombreValidacion);
+        std::string nombre = obtenerNombre();
 
         cliente = banco.agregarCliente(cedula, nombre); //Crea el objeto cliente
 
@@ -40,7 +36,8 @@ void Menu::iniciarMenu()
     displayOpcionesPrincipales();
 }
 
-std::string Menu::obtenerNombre(std::string nombre){
+std::string Menu::obtenerNombre(){
+    std::string nombre;
     while (true) {
             std::cout << "Ingrese su nombre de usuario: ";
             std::getline(std::cin, nombre);
@@ -53,8 +50,11 @@ std::string Menu::obtenerNombre(std::string nombre){
             Los nombres no pueden superar los 15 caracteres
             Los nombres no pueden tener menos de dos caracteres
             */
-            std::regex regexNombre("^[A-Z][a-z]{1,14}(\\s[A-Z][a-z]{1,14}){1,3}(\\s[A-Z][a-z]{1,14})?$");
-        try {
+            std::regex regexNombre("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+){1,4}$");
+        try{
+            if (nombre.empty()) {
+                    throw std::invalid_argument("Error: No se ha ingresado ninguna opción");
+            }
             if (!std::regex_match(nombre, regexNombre)) {
                 throw std::invalid_argument("El formato del nombre de usuario no es válido.");
             }
@@ -63,6 +63,7 @@ std::string Menu::obtenerNombre(std::string nombre){
 
         } catch (const std::invalid_argument& e) {
             std::cerr << "Error: " << e.what() << std::endl;
+
         }
     }
 
@@ -74,13 +75,16 @@ int Menu::obtenerIdentidad(){
     El número de cédula no puede empezar con cero.
     Debe ingresar un número de cédula de nueve dígitos.
     */
-    std::string num_cedula;
+    std::string numCedulaStr;
 
     while (true) {
         try {
             std::cout << "Ingrese su número de cédula (deben ser nueve dígitos): ";
-            std::string numCedulaStr;
-            std::cin >> numCedulaStr;
+            std::getline(std::cin, numCedulaStr);
+            //Para el caso de que el usuario ingrese solo enter.
+            if (numCedulaStr.empty()) {
+                throw std::invalid_argument("Error: No se ha ingresado ninguna opción");
+            }
 
             // Verificar si la entrada contiene letras en lugar de números
             for (char c : numCedulaStr) {
@@ -118,35 +122,71 @@ void Menu::crearCliente(int cedula) {} // Falta implementar codigo basado de la 
 
 void Menu::displayOpcionesPrincipales()
 {
-    int opcion;
-    std::cout << "\n--- Menu de opciones ---\n";
-    std::cout << "1. Atencion al cliente\n";
-    std::cout << "2. Informacion\n";
-    std::cout << "3. Solicitar préstamo\n";
-    std::cout << "4. Salir\n";
+    std::string menuOpciones = 
+        "\n--- Menu de opciones ---\n"
+        "1. Atencion al cliente\n"
+        "2. Informacion\n"
+        "3. Solicitar préstamo\n"
+        "4. Salir\n";
 
-    std::cout << "Ingrese una opcion: ";
-    std::cin >> opcion;
+    while(true){
+        std::cout<<menuOpciones;
+        std ::string opcion = obtenerOpcion();
+            try{
+                // Casos
+                switch (std::stoi(opcion)) //Pasamos opcion a tipo int
+                {
+                case 1: //  Atencion al cliente
+                    gestionarCliente();
+                    // Falta implementar codigo basado
+                    break;
+                case 2: // Informacion
+                    displayInformacion();
+                    // Falta implementar codigo basado
+                    break;
+                case 3: // Solicitud de préstamo
+                    agregarPrestamo();
+                case 4: // Salir
+                    std::cout << "Saliendo del programa...\n";
+                    exit(0);
+                default:
+                    std::cout << "Opcion fuera de rango. Intente de nuevo...\n";
+                }       
+            }catch(const std::invalid_argument& e) {
+                std::cerr << e.what() << std::endl;
+                } 
+        }
+}
 
-    // Casos
-    switch (opcion)
-    {
-    case 1: //  Atencion al cliente
-        gestionarCliente();
-        // Falta implementar codigo basado
-        break;
-    case 2: // Informacion
-        displayInformacion();
-        // Falta implementar codigo basado
-        break;
-    case 3: // Solicitud de préstamo
-        agregarPrestamo();
-    case 4: // Salir
-        std::cout << "Saliendo del programa...\n";
-        exit(0);
-    default:
-        std::cout << "Opcion no es valida. Intente de nuevo...\n";
-    }
+std::string Menu::obtenerOpcion(){
+    /*Este metodo se encarga de manejar las excepciones donde se tiene que ingresar un solo valor tipo int
+    Return: un valor tipo string -> Cuidado
+    */
+    std ::string opcion;
+
+    while(true) {
+        try {
+            // Solicitar la opción al usuario
+            std::cout << "Ingrese una opción: ";
+            std::getline(std::cin, opcion);
+
+            if (opcion.empty()) {
+                throw std::invalid_argument("Error: No se ha ingresado ninguna opción");
+            }
+            // Verificar si la opción es un entero
+            for (char c : opcion) {
+                if (!std::isdigit(c)) {
+                    throw std::invalid_argument("Error: No se permiten letras");
+                }
+            }
+
+            std::cout << "La opción ingresada fue: " << opcion << std::endl;
+            return opcion;
+
+        } catch(const std::invalid_argument& e) {
+            std::cerr << e.what() << std::endl;
+            }
+        }
 }
 
 void Menu::agregarPrestamo()

@@ -22,7 +22,9 @@ protected:
     // Metodo para obtener la identidad del usario
     int obtenerIdentidad();
     //Metodo que valida el nombre de usuario.
-    std::string obtenerNombre(std::string nombre);
+    std::string obtenerNombre();
+    //Metodo que maneja las excepciones de los valores ingresados de un solo número
+    std::string obtenerOpcion();
     // Metodo para verificar si el cliente ya existe en el sistema
     bool verificarCliente(int cedula);
     // Metodo para crear un cliente
