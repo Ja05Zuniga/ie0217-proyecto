@@ -6,6 +6,7 @@ Menu::Menu(Banco banco) : banco(banco) {}
 // Destructor de la clase
 // Menu::~Menu() {}
 
+//Manejo de excepciones completa
 void Menu::iniciarMenu()
 {
     int cedula = obtenerIdentidad(); // Falta implentar el uso de la clase Cliente
@@ -36,6 +37,7 @@ void Menu::iniciarMenu()
     displayOpcionesPrincipales();
 }
 
+//Manejo de excepciones incompleta. No acepta las tildes y ñ.
 std::string Menu::obtenerNombre(){
     std::string nombre;
     while (true) {
@@ -69,6 +71,7 @@ std::string Menu::obtenerNombre(){
 
 }
 
+//Manejo de excepciones completa
 int Menu::obtenerIdentidad(){
     /*Metodo que supervisa la entrada del numere de cedula.
     El número de cédula no puede contener letras.
@@ -120,6 +123,7 @@ bool Menu::verificarCliente(int cedula)
 
 void Menu::crearCliente(int cedula) {} // Falta implementar codigo basado de la clase AgregarCliente con cedula y nombre
 
+//Manejo de excepciones completa
 void Menu::displayOpcionesPrincipales()
 {
     std::string menuOpciones = 
@@ -170,14 +174,16 @@ std::string Menu::obtenerOpcion(){
             std::cout << "opción: ";
             std::getline(std::cin, opcion);
 
-            if (opcion.empty()) {
-                throw std::invalid_argument("Error: No se ha ingresado ninguna opción");
-            }
             // Verificar si la opción es un entero
             for (char c : opcion) {
                 if (!std::isdigit(c)) {
                     throw std::invalid_argument("Error: No se permiten letras");
                 }
+            }
+
+            //Verifica que se haya ingresada una opción
+            if (opcion.empty()) {
+                throw std::invalid_argument("Error: No se ha ingresado ninguna opción");
             }
 
             std::cout << "La opción ingresada fue: " << opcion << std::endl;
@@ -189,6 +195,7 @@ std::string Menu::obtenerOpcion(){
         }
 }
 
+//Manejo de excepciones completa
 void Menu::agregarPrestamo()
 {
     std::string id/*int*/; 
@@ -286,30 +293,39 @@ void Menu::gestionarCliente()
  * Metodos que faltan implentar
  *************************************/
 
+//Manejo de excepciones completa
 void Menu::displayInformacion()
-{
-    int opcion;
-    std::cout << "\n--- Menu de Información ---\n";
-    std::cout << "1. Información general del usuario\n";
-    std::cout << "2. Información de préstamo\n";
-    std::cout << "3. Regresar\n";
+{   
+    std::string opciones = 
+                "\n--- Menu de Información ---\n"
+                "1. Información general del usuario\n"
+                "2. Información de préstamo\n"
+                "3. Regresar\n";
 
-    std::cout << "Ingrese una opcion: ";
-    std::cin >> opcion;
+    while (true) {
+        std::cout<<opciones;
 
-    // Casos
-    switch (opcion)
-    {
-    case 1:
-        displayInformacionGeneral();
-        break;
-    case 2:
-        displayInformacionPrestamo();
-        break;
-    case 3:
-        displayOpcionesPrincipales();
-    default:
-        std::cout << "Opcion no es valida. Intente de nuevo...\n";
+        try {
+            std::string opcion = obtenerOpcion();
+            int opcionInt = std::stoi(opcion);
+
+            switch (opcionInt) {
+                case 1:
+                    displayInformacionGeneral();
+                    break;
+                case 2:
+                    displayInformacionPrestamo();
+                    break;
+                case 3:
+                    displayOpcionesPrincipales();
+                    break;
+                default:
+                    std::cout << "Opción fuera de rango. Intente de nuevo...\n";
+                    break;
+            }
+        } catch (const std::invalid_argument& e) {
+            std::cerr << "Error: " << e.what() << std::endl;
+        }
     }
 }
 
