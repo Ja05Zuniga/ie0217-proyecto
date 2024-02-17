@@ -1,19 +1,21 @@
 /**
  * @file Prestamo.hpp
  * @author your name (you@domain.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2024-02-15
- * 
+ *
  * @copyright Copyright (c) 2024
- * 
+ *
  */
 #ifndef PRESTAMOS_HPP
 #define PRESTAMOS_HPP
 #include <iomanip>
+#include <cmath>
 #include "Producto.hpp"
 #include "Dinero.hpp"
 #include "constants.hpp"
+#include "Amortizacion.hpp"
 /**
  * @brief Enumeración para representar tipos de préstamo
  *
@@ -25,18 +27,21 @@ enum TipoPrestamo
     HIPOTECARIO
 };
 /**
- * @brief Clase para manipular préstamo y obtener información 
- * 
+ * @brief Clase para manipular préstamo y obtener información
+ *
  */
 class Prestamo : public Producto
 {
 private:
     TipoPrestamo tipo;
-    unsigned int cuotas;
+    int cuotas;
     unsigned int numCuota;
     float tasaInteresAnual;
-    Dinero montoIncial;
-    Dinero montoPagado;
+    float tasaInteresMensual;
+    Dinero montoInicial;
+    Dinero saldoRestante;
+    Dinero cuotaMensual;
+    std::vector<Amortizacion> amortizacion;
 
 public:
     /**
@@ -81,6 +86,12 @@ public:
      *
      */
     void obtenerInfoPersonal();
+    /**
+     * @brief Método para inicializar el atributo amortización
+     * el cual contiene el desglose de los pagos mensuales.
+     *
+     */
+    void calcularAmortizacion();
 };
 
 #endif

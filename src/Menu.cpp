@@ -431,7 +431,6 @@ void Menu::displayInformacionGeneral()
     cliente.obtenerInfoPrestamos();
 
     displayOpcionesPrincipales();
-    // Falta implementar logica de codigo basado para mostrar informacion general
 }
 
 void Menu::gestionarAhorros()
@@ -462,11 +461,10 @@ void Menu::realizarOperaciones()
 
 void Menu::pagarPrestamo()
 {
-    
 }
 void Menu::displayTipoPrestamos()
 {
-    std::cout << std::setw(Constantes::COL_WIDTH) << std::left << "ID"
+    std::cout << std::setw(Constantes::COL_WIDTH) << std::left << "\nID"
               << std::setw(Constantes::COL_WIDTH) << std::left << "Tipo"
               << std::setw(Constantes::COL_WIDTH) << std::left << "Cuotas"
               << std::setw(Constantes::COL_WIDTH) << std::left << "Tasa de interés anual" << std::endl;

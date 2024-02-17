@@ -7,9 +7,9 @@
  */
 Banco::Banco()
 {
-    prestamos[0] = Prestamo(PERSONAL, 12, 5.5, 1);
-    prestamos[1] = Prestamo(PRENDARIO, 12, 5.5, 2);
-    prestamos[2] = Prestamo(HIPOTECARIO, 12, 5.5, 3);
+    prestamos[PERSONAL] = Prestamo(PERSONAL, 12, 5.5, PERSONAL);
+    prestamos[PRENDARIO] = Prestamo(PRENDARIO, 12, 5.5, PRENDARIO);
+    prestamos[HIPOTECARIO] = Prestamo(HIPOTECARIO, 12, 5.5, HIPOTECARIO);
 }
 
 Banco::~Banco()

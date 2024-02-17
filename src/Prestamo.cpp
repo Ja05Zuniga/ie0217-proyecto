@@ -1,12 +1,12 @@
 /**
  * @file Prestamo.cpp
  * @author your name (you@domain.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2024-02-15
- * 
+ *
  * @copyright Copyright (c) 2024
- * 
+ *
  */
 #include "Prestamo.hpp"
 
@@ -38,8 +38,7 @@ void Prestamo::obtenerInfo()
     std::cout << std::setw(Constantes::COL_WIDTH) << std::left << id
               << std::setw(Constantes::COL_WIDTH) << std::left << tipo_str
               << std::setw(Constantes::COL_WIDTH) << std::left << cuotas
-              << std::setw(Constantes::COL_WIDTH) << std::left << tasaInteresAnual
-              << std::setw(Constantes::COL_WIDTH) << std::left << montoIncial << std::endl;
+              << std::setw(Constantes::COL_WIDTH) << std::left << tasaInteresAnual << std::endl;
 }
 
 void Prestamo::obtenerInfoPersonal()
@@ -62,9 +61,10 @@ void Prestamo::obtenerInfoPersonal()
     std::cout << "ID: " << id << "\n"
               << "Tipo de préstamo: " << tipo_str << "\n"
               << "Cuotas: " << cuotas << "\n"
-              << "Monto de préstamo: " << montoIncial << "\n"
-              << "Monto cancelado: " << montoPagado << "\n"
-              << "Cuota actual: " << numCuota << "\n"
+              << "Monto de préstamo: " << montoInicial << "\n"
+              << "Saldo restante: " << saldoRestante << "\n"
+              << "Cuota mensual: " << cuotaMensual << "\n"
+              << "Mes: " << numCuota << "\n"
               << "Tasa de interés anual: " << tasaInteresAnual << std::endl;
 }
 
@@ -82,7 +82,29 @@ void Prestamo::acreditar(const Dinero &monto)
 void Prestamo::debitar(const Dinero &monto)
 {
     generarId();
-    montoIncial = monto;
-    montoPagado = Dinero(0, monto.obtenerMoneda());
+    montoInicial = monto;
+    saldoRestante = monto;
     numCuota = 0;
+    tasaInteresMensual = tasaInteresAnual / 12 / 100;
+    float montoCuotaMensual = (tasaInteresMensual * monto.obtenerMonto()) / (1 - std::pow(1 + tasaInteresMensual, -cuotas));
+    cuotaMensual = Dinero(montoCuotaMensual, monto.obtenerMoneda());
+}
+
+void Prestamo::calcularAmortizacion()
+{
+    float montoSaldoRestante = montoInicial.obtenerMonto();
+    amortizacion.clear();
+    float montoCuotaMensual = cuotaMensual.obtenerMonto();
+
+    for (int cuota = 1; cuota <= cuotas + 1; ++cuota)
+    {
+        float interesPendiente = montoSaldoRestante * tasaInteresMensual;
+        float amortizacionPrincipal = montoCuotaMensual - interesPendiente;
+
+        montoSaldoRestante -= amortizacionPrincipal;
+
+        // Use a Payment structure to store payment information
+        Amortizacion pago = {cuota, interesPendiente, amortizacionPrincipal, montoSaldoRestante};
+        amortizacion.push_back(pago);
+    }
 }
