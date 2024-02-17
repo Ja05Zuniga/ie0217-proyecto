@@ -253,6 +253,14 @@ void Menu::agregarPrestamo()
     }
 }
     cliente.agregarPrestamo(banco.buscarPrestamo(idInt), montoFloat, moneda);
+    std::cout << "\nInformación del préstamo efectuado:\n";
+    std::cout << std::setw(Constantes::COL_WIDTH) << std::left << "ID"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Tipo"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Cuotas"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Tasa de interés"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Moneda"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Monto" << std::endl;
+    cliente.obtenerInfoPrestamos();
     displayOpcionesPrincipales();
 
 }
