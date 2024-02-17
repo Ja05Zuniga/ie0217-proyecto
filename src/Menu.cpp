@@ -167,7 +167,7 @@ std::string Menu::obtenerOpcion(){
     while(true) {
         try {
             // Solicitar la opción al usuario
-            std::cout << "Ingrese una opción: ";
+            std::cout << "opción: ";
             std::getline(std::cin, opcion);
 
             if (opcion.empty()) {
@@ -191,34 +191,62 @@ std::string Menu::obtenerOpcion(){
 
 void Menu::agregarPrestamo()
 {
-    int id;
-    std::cout << "Ingrese el ID de préstamo solicitado: ";
-    std::cin >> id;
-
-    float monto;
-    std::cout << "Ingrese el monto del préstamo: ";
-    std::cin >> monto;
-
-    int monedaInt;
-    std::cout << "Ingrese la moneda del préstamo: 1) Colones, 2) Dolares: ";
-    std::cin >> monedaInt;
+    std::string id/*int*/; 
+    std::string monedaInt/*int*/; 
+    std::string monto/*float*/; 
+    
+    int idInt;
+    float montoFloat;
 
     Moneda moneda;
-    switch (monedaInt)
-    {
-    case 1:
-        moneda = COLONES;
-        break;
-    case 2:
-        moneda = DOLARES;
-        break;
 
-    default:
-        break;
+    bool terminar = false;
+    while (!terminar) {
+    try {
+        std::cout << "Ingrese el ID del préstamo solicitado\n";
+        id = obtenerOpcion();
+        idInt = std::stoi(id);
+
+        while (idInt > 3 || idInt < 1) {
+            std::cerr << "Error. El ID debe ser un valor entre 1 y 3. Intente de nuevo.\n";
+            std::cout << "Ingrese el ID del préstamo solicitado\n";
+            id = obtenerOpcion();
+            idInt = std::stoi(id);
+        }
+
+        std::cout << "Ingrese el monto del préstamo\n";
+        monto = obtenerOpcion(); //monto es string
+        montoFloat = std::stof(monto);
+
+        std::cout << "Ingrese la moneda del préstamo: 1) Colones, 2) Dolares\n";
+        monedaInt = obtenerOpcion();
+        int monedaTransformada = std::stoi(monedaInt);
+
+        while (monedaTransformada > 2 || monedaTransformada < 1) {
+            std::cerr << "Error. La moneda debe ser 1 (Colones) o 2 (Dolares). Intente de nuevo.\n";
+            std::cout << "Ingrese la moneda del préstamo: 1) Colones, 2) Dolares\n";
+            monedaInt = obtenerOpcion();
+            monedaTransformada = std::stoi(monedaInt);
+        }
+
+        // Asignación de moneda después de verificar que es válida
+        switch (monedaTransformada) {
+            case 1:
+                moneda = COLONES;
+                break;
+            case 2:
+                moneda = DOLARES;
+                break;
+        }
+
+        terminar = true; // Establece terminar a verdadero si todos los valores son válidos
+    } catch (const std::invalid_argument& e) {
+        std::cerr << e.what() << std::endl;
     }
-
-    cliente.agregarPrestamo(banco.buscarPrestamo(id), monto, moneda);
+}
+    cliente.agregarPrestamo(banco.buscarPrestamo(idInt), montoFloat, moneda);
     displayOpcionesPrincipales();
+
 }
 void Menu::gestionarCliente()
 {
