@@ -10,7 +10,7 @@ void Menu::iniciarMenu()
 {
 
     int cedula = obtenerIdentidad(); // Falta implentar el uso de la clase Cliente
-    
+
     try
     {
         cliente = banco.buscarCliente(cedula);
@@ -23,7 +23,6 @@ void Menu::iniciarMenu()
         std::cin >> nombre;
 
         cliente = banco.agregarCliente(cedula, nombre);
-        
     }
 
     // El menu de opciones
@@ -84,7 +83,7 @@ void Menu::displayOpcionesPrincipales()
 void Menu::agregarPrestamo()
 {
     int id;
-    std::cout << "Ingrese el ID de préstamo solicitado: ";
+    std::cout << "\nIngrese el ID de préstamo solicitado: ";
     std::cin >> id;
 
     float monto;
@@ -110,6 +109,7 @@ void Menu::agregarPrestamo()
     }
 
     cliente.agregarPrestamo(banco.buscarPrestamo(id), monto, moneda);
+    std::cout << "El préstamo se logró abrir con éxito\n";
     displayOpcionesPrincipales();
 }
 void Menu::gestionarCliente()
@@ -216,7 +216,6 @@ void Menu::displayInformacionGeneral()
     cliente.obtenerInfoPrestamos();
 
     displayOpcionesPrincipales();
-    // Falta implementar logica de codigo basado para mostrar informacion general
 }
 
 void Menu::gestionarAhorros()
@@ -246,11 +245,10 @@ void Menu::realizarOperaciones()
 
 void Menu::pagarPrestamo()
 {
-    
 }
 void Menu::displayTipoPrestamos()
 {
-    std::cout << std::setw(Constantes::COL_WIDTH) << std::left << "ID"
+    std::cout << std::setw(Constantes::COL_WIDTH) << std::left << "\nID"
               << std::setw(Constantes::COL_WIDTH) << std::left << "Tipo"
               << std::setw(Constantes::COL_WIDTH) << std::left << "Cuotas"
               << std::setw(Constantes::COL_WIDTH) << std::left << "Tasa de interés anual" << std::endl;
