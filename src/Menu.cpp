@@ -73,7 +73,7 @@ std::string Menu::obtenerNombre(){
 
 //Manejo de excepciones completa
 int Menu::obtenerIdentidad(){
-    /*Metodo que supervisa la entrada del numere de cedula.
+    /*Metodo que supervisa la entrada del número de cedula.
     El número de cédula no puede contener letras.
     El número de cédula no puede empezar con cero.
     Debe ingresar un número de cédula de nueve dígitos.
@@ -87,6 +87,14 @@ int Menu::obtenerIdentidad(){
             //Para el caso de que el usuario ingrese solo enter.
             if (numCedulaStr.empty()) {
                 throw std::invalid_argument("Error: No se ha ingresado ninguna opción");
+            }
+
+            if (numCedulaStr.find('-') != std::string::npos) {
+                throw std::invalid_argument("Error. Ingrese el número de cedula sin '-'.");
+            }
+
+            if (numCedulaStr.find('.') != std::string::npos) {
+                throw std::invalid_argument("Error. Ingrese el número de cedula sin puntos '.'.");
             }
 
             // Verificar si la entrada contiene letras en lugar de números
@@ -126,6 +134,8 @@ void Menu::crearCliente(int cedula) {} // Falta implementar codigo basado de la 
 //Manejo de excepciones completa
 void Menu::displayOpcionesPrincipales()
 {
+    /*Metodo que maneja el menu principal
+    Verifica si los datos ingresados son validos (int) y se encuentra dentro de las opciones*/
     std::string menuOpciones = 
         "\n--- Menu de opciones ---\n"
         "1. Atencion al cliente\n"
@@ -198,6 +208,12 @@ std::string Menu::obtenerOpcion(){
 
 //Manejo de excepciones completa
 void Menu::agregarPrestamo()
+/*Metodo encargado de gestionar los prestamos.
+El metodo solicita los datos y se encarga de crear el objeto dedicado para generar el prestamo solicitado.
+Los datos solicitados tienen que seguir ciertos lineamientos para poder gestionar el prestamo.
+En el caso de que se ingrese un dato que no sigue estos lineamientos, el sistema posee excepciones que ayudarán 
+al operador a ingresar un dato valido.
+El metodo por último muestra los detalles del prestamo tramitado*/
 {
     std::string id/*int*/; 
     std::string monedaInt/*int*/; 
@@ -253,6 +269,8 @@ void Menu::agregarPrestamo()
     }
 }
     cliente.agregarPrestamo(banco.buscarPrestamo(idInt), montoFloat, moneda);
+
+    //Se puede puede reducir
     std::cout << "\nInformación del préstamo efectuado:\n";
     std::cout << std::setw(Constantes::COL_WIDTH) << std::left << "ID"
               << std::setw(Constantes::COL_WIDTH) << std::left << "Tipo"
@@ -261,12 +279,15 @@ void Menu::agregarPrestamo()
               << std::setw(Constantes::COL_WIDTH) << std::left << "Moneda"
               << std::setw(Constantes::COL_WIDTH) << std::left << "Monto" << std::endl;
     cliente.obtenerInfoPrestamos();
+
     displayOpcionesPrincipales();
 
 }
 
 //Manejo de excepciones completas
 void Menu::gestionarCliente()
+/*Metodo que maneja el sub menu dedicado a gestionar los clientes
+Verifica si el dato ingresado es valido y se encuentra dentro de las opciones*/
 {
     // Falta implementar logica de codigo basado para manejar las operaciones de cliente
     // de ejecutarOperaciones() con el uso de Prestamo, Producto, etc
@@ -276,6 +297,7 @@ void Menu::gestionarCliente()
         "2. Gestion de Ahorros\n"
         "3. Operaciones\n"
         "4. Regresar\n";
+
     while (true){
         try{
             std::string opcion = obtenerOpcion();
@@ -315,6 +337,9 @@ void Menu::gestionarCliente()
 //Manejo de excepciones completa
 void Menu::displayInformacion()
 {   
+/*Metodo encargado de gestionar un sub menu donde se puede obtener informarción de las cuentas de ahorros y prestamos 
+que el usuario tiene.
+El metodo es capaz de manejar los datos no validos. Pide la opción hasta que se ingrese un valor valido*/
     std::string opciones = 
                 "\n--- Menu de Información ---\n"
                 "1. Información general del usuario\n"
@@ -351,6 +376,8 @@ void Menu::displayInformacion()
 //Manejo de excepciones completa
 void Menu::displayInformacionPrestamo()
 {
+/*Metodo donde se puede obtener información especifica de un prestamo ingresando el ID del prestamo.
+El metodo es capaz de manejar los datos no validos. Pide la opción hasta que se ingrese un valor valido*/
     int id;
     bool terminar = false;
 
