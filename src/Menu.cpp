@@ -136,9 +136,10 @@ void Menu::displayOpcionesPrincipales()
     while(true){
         std::cout<<menuOpciones;
         std ::string opcion = obtenerOpcion();
+        int opcionInt = std::stoi(opcion);
             try{
                 // Casos
-                switch (std::stoi(opcion)) //Pasamos opcion a tipo int
+                switch (opcionInt) //Pasamos opcion a tipo int
                 {
                 case 1: //  Atencion al cliente
                     gestionarCliente();
@@ -255,38 +256,48 @@ void Menu::agregarPrestamo()
     displayOpcionesPrincipales();
 
 }
+
+//Manejo de excepciones completas
 void Menu::gestionarCliente()
 {
     // Falta implementar logica de codigo basado para manejar las operaciones de cliente
     // de ejecutarOperaciones() con el uso de Prestamo, Producto, etc
-    int opcion;
-    std::cout << "\n--- Menu de Atencion al Cliente ---\n";
-    std::cout << "1. Tipos de Prestamos\n";
-    std::cout << "2. Gestion de Ahorros\n";
-    std::cout << "3. Operaciones\n";
-    std::cout << "4. Regresar\n";
+    std::string opciones =
+        "\n--- Menu de Atencion al Cliente ---\n"
+        "1. Tipos de Prestamos\n"
+        "2. Gestion de Ahorros\n"
+        "3. Operaciones\n"
+        "4. Regresar\n";
+    while (true){
+        try{
+            std::string opcion = obtenerOpcion();
+            int opcionInt = std::stoi(opcion);
 
-    std::cout << "Ingrese una opcion: ";
-    std::cin >> opcion;
+            // Casos
+            switch (opcionInt)
+            {
+            case 1: //  Tipos de Prestamos
+                displayTipoPrestamos();
+                // Falta implementar codigo basado ...
+                break;
+            case 2: // Gestion de Ahorros
+                gestionarAhorros();
+                // Falta implementar codigo basado
+                break;
+            case 3: // Operaciones
+                realizarOperaciones();
+            case 4: // Regresar
+                displayOpcionesPrincipales();
+            default:
+                std::cout << "Opcion no es valida. Intente de nuevo...\n";
+            }
 
-    // Casos
-    switch (opcion)
-    {
-    case 1: //  Tipos de Prestamos
-        displayTipoPrestamos();
-        // Falta implementar codigo basado ...
-        break;
-    case 2: // Gestion de Ahorros
-        gestionarAhorros();
-        // Falta implementar codigo basado
-        break;
-    case 3: // Operaciones
-        realizarOperaciones();
-    case 4: // Regresar
-        displayOpcionesPrincipales();
-    default:
-        std::cout << "Opcion no es valida. Intente de nuevo...\n";
+        }catch (const std::invalid_argument& e) {
+            std::cerr << "Error: " << e.what() << std::endl;
+        }
     }
+
+   
 }
 
 /************************************
@@ -329,20 +340,37 @@ void Menu::displayInformacion()
     }
 }
 
+//Manejo de excepciones completa
 void Menu::displayInformacionPrestamo()
 {
     int id;
-    std::cout << "Ingrese el ID del préstamo que desea consultar:\n";
-    std::cin >> id;
-    try
-    {
-        cliente.obtenerInfoPrestamo(id);
+    bool terminar = false;
+
+    while (!terminar) {
+        try
+        {
+            std::cout << "Ingrese el ID del préstamo que desea consultar:\n";
+            std::cin >> id;
+
+            if (std::cin.fail()) {
+                std::cin.clear(); // Restaura el estado del flujo de entrada
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Descarta la entrada no válida
+                throw std::invalid_argument("Entrada inválida: Debe ingresar un valor entero."); // Lanza una excepción si la entrada no es un entero
+            }
+
+            cliente.obtenerInfoPrestamo(id);
+            terminar = true; // Si se llega hasta aquí, el ID fue válido, podemos salir del bucle
+
+        }catch (const std::out_of_range &e){
+            std::cout << "No se encontró el préstamo con el ID ingresado.\n"
+                    << '\n';
+            terminar = true; // No encontró el préstamo, podemos salir del bucle
+
+        }catch (const std::invalid_argument &e){
+            std::cerr << "Error: " << e.what() << '\n';
+        }
     }
-    catch (const std::out_of_range &e)
-    {
-        std::cout << "No se encontró el préstamo con el ID ingresado.\n"
-                  << '\n';
-    }
+
     displayOpcionesPrincipales();
 }
 
@@ -376,6 +404,7 @@ void Menu::gestionarAhorros()
     // Falta implementar logica de codigo basado ...
 }
 
+//Manejo de excepciones incompleta
 void Menu::realizarOperaciones()
 {
     int opcion;
