@@ -13,10 +13,16 @@ void Menu::iniciarMenu()
     /*Si la cedula se ecuentra en la base de datos. Entonces crea el objeto cliente
     En el caso de que no. Pide el nombre del usuario, agrega la cedula y el nombre a la base de datos y
     crea el objeto cliente*/
-    if (Identidad(std::to_string(cedula)).verificarCedulaEnCSV("cedulas.csv")){
-        std::string nombreEncontrado = Identidad(std::to_string(cedula)).extraerNombre("cedulas.csv");
+    std::string cedulaString = std::to_string(cedula);
+
+    if (Identidad(cedulaString).verificarCedulaEnCSV("cedulas.csv")){
+
+        std::string nombreEncontrado = Identidad(cedulaString).extraerNombre("cedulas.csv");
+
         cliente = banco.agregarCliente(cedula, nombreEncontrado);
+
         std::cout<<"Bienvenido"<< nombreEncontrado <<". Numero de cédula: " << cedula << std::endl;
+        
         }
 
     else {
