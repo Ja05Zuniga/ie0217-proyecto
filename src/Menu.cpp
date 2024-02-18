@@ -13,7 +13,7 @@ void Menu::iniciarMenu()
     /*Si la cedula se ecuentra en la base de datos. Entonces crea el objeto cliente
     En el caso de que no. Pide el nombre del usuario, agrega la cedula y el nombre a la base de datos y
     crea el objeto cliente*/
-    std::string cedulaString = std::to_string(cedula);
+    std::string cedulaString = std::to_string(cedula); //Pasar cedula a string
 
     if (Identidad(cedulaString).verificarCedulaEnCSV("cedulas.csv")){
 
@@ -22,7 +22,7 @@ void Menu::iniciarMenu()
         cliente = banco.agregarCliente(cedula, nombreEncontrado);
 
         std::cout<<"Bienvenido"<< nombreEncontrado <<". Numero de cédula: " << cedula << std::endl;
-        
+
         }
 
     else {
@@ -35,8 +35,8 @@ void Menu::iniciarMenu()
 
         std::cout<<"Bienvenido "<< nombre <<". Numero de cédula: " << cedula << std::endl; //Da la bienvenida
 
-        std::string cedula_string = std::to_string(cedula); //Transforma cedula a string para poder ser agregado al .csv
-        AgregarCliente(cedula_string, nombre).agregarA_CSV("cedulas.csv"); //Agrega cedula y nombre al .csv
+        //std::string cedula_string = std::to_string(cedula); //Transforma cedula a string para poder ser agregado al .csv
+        AgregarCliente(cedulaString, nombre).agregarA_CSV("cedulas.csv"); //Agrega cedula y nombre al .csv
         }
 
     // El menu de opciones
@@ -306,6 +306,7 @@ Verifica si el dato ingresado es valido y se encuentra dentro de las opciones*/
 
     while (true){
         try{
+            std::cout<<opciones;
             std::string opcion = obtenerOpcion();
             int opcionInt = std::stoi(opcion);
 
