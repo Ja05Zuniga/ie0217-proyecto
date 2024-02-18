@@ -92,6 +92,11 @@ public:
      *
      */
     void calcularAmortizacion();
+    /**
+     * @brief Imprime en pantalla la tabla de pago del préstamo
+     * 
+     */
+    void obtenerAmortizacion();
 };
 
 #endif

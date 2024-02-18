@@ -90,6 +90,11 @@ void Prestamo::debitar(const Dinero &monto)
     cuotaMensual = Dinero(montoCuotaMensual, monto.obtenerMoneda());
 }
 
+/**
+ * @brief Los datos de la amortización se almacenan en una vector que alamcena
+ * estructuras
+ *
+ */
 void Prestamo::calcularAmortizacion()
 {
     float montoSaldoRestante = montoInicial.obtenerMonto();
@@ -106,5 +111,20 @@ void Prestamo::calcularAmortizacion()
         // Use a Payment structure to store payment information
         Amortizacion pago = {cuota, interesPendiente, amortizacionPrincipal, montoSaldoRestante};
         amortizacion.push_back(pago);
+    }
+}
+
+void Prestamo::obtenerAmortizacion()
+{
+    std::cout << std::setw(Constantes::COL_WIDTH) << std::left << "Cuota"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Intereses"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Amortización"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Saldo restante" << std::endl;
+    for (const auto &pago : amortizacion)
+    {
+        std::cout << std::setw(Constantes::COL_WIDTH) << std::left << pago.cuota
+                  << std::setw(Constantes::COL_WIDTH) << std::left << pago.intereses
+                  << std::setw(Constantes::COL_WIDTH) << std::left << pago.amortizacion
+                  << std::setw(Constantes::COL_WIDTH) << std::left << pago.saldoRestante << std::endl;
     }
 }
