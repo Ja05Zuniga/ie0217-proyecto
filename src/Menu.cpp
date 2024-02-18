@@ -22,6 +22,7 @@ void Menu::iniciarMenu()
         cliente = banco.agregarCliente(cedula, nombreEncontrado);
 
         std::cout<<"Bienvenido"<< nombreEncontrado <<". Numero de cédula: " << cedula << std::endl;
+        
 
         }
 
@@ -30,11 +31,11 @@ void Menu::iniciarMenu()
         
         //nombre ya está validado y listo para ser añadido al .csv y crear el objeto
         std::string nombre = obtenerNombre();
+        banco.buscarCliente(cedula);
 
         cliente = banco.agregarCliente(cedula, nombre); //Crea el objeto cliente
 
         std::cout<<"Bienvenido "<< nombre <<". Numero de cédula: " << cedula << std::endl; //Da la bienvenida
-
         //std::string cedula_string = std::to_string(cedula); //Transforma cedula a string para poder ser agregado al .csv
         AgregarCliente(cedulaString, nombre).agregarA_CSV("cedulas.csv"); //Agrega cedula y nombre al .csv
         }
@@ -47,7 +48,7 @@ void Menu::iniciarMenu()
 std::string Menu::obtenerNombre(){
     std::string nombre;
     while (true) {
-            std::cout << "Ingrese su nombre de usuario: ";
+            std::cout << "La primera letra de cada 'nombre' debe iniciar con mayúscula.\nIngrese su nombre de usuario: ";
             std::getline(std::cin, nombre);
 
             // Expresión regular para validar el nombre de usuario
@@ -58,10 +59,13 @@ std::string Menu::obtenerNombre(){
             Los nombres no pueden superar los 15 caracteres
             Los nombres no pueden tener menos de dos caracteres
             */
-            std::regex regexNombre("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+){1,4}$");
+            std::regex regexNombre("^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{1,14}(\\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{0,13}){0,2}(\\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{1,14})?$");
         try{
             if (nombre.empty()) {
                     throw std::invalid_argument("Error: No se ha ingresado ninguna opción");
+            }
+            if (nombre.find('.') != std::string::npos) {
+                throw std::invalid_argument("Error. Por favor digite su nombre sin puntos '.'.");
             }
             if (!std::regex_match(nombre, regexNombre)) {
                 throw std::invalid_argument("El formato del nombre de usuario no es válido.");
@@ -147,7 +151,8 @@ void Menu::displayOpcionesPrincipales()
         "1. Atencion al cliente\n"
         "2. Informacion\n"
         "3. Solicitar préstamo\n"
-        "4. Salir\n";
+        "4. Volver al inicio de sesión\n"
+        "5. Salir\n";
 
     while(true){
         std::cout<<menuOpciones;
@@ -167,7 +172,9 @@ void Menu::displayOpcionesPrincipales()
                     break;
                 case 3: // Solicitud de préstamo
                     agregarPrestamo();
-                case 4: // Salir
+                case 4: //Volver al inicio de sesión
+                    iniciarMenu();
+                case 5: // Salir por completo del programa
                     std::cout << "Saliendo del programa...\n";
                     exit(0);
                 default:
@@ -237,8 +244,8 @@ El metodo por último muestra los detalles del prestamo tramitado*/
         id = obtenerOpcion();
         idInt = std::stoi(id);
 
-        while (idInt > 3 || idInt < 1) {
-            std::cerr << "Error. El ID debe ser un valor entre 1 y 3. Intente de nuevo.\n";
+        while (idInt > 2 || idInt < 0) {
+            std::cerr << "Error. El ID debe ser un valor entre 0 y 2. Intente de nuevo.\n";
             std::cout << "Ingrese el ID del préstamo solicitado\n";
             id = obtenerOpcion();
             idInt = std::stoi(id);
@@ -334,7 +341,7 @@ Verifica si el dato ingresado es valido y se encuentra dentro de las opciones*/
         }
     }
 
-   
+   displayOpcionesPrincipales();
 }
 
 /************************************
@@ -468,6 +475,7 @@ void Menu::realizarOperaciones()
 
 void Menu::pagarPrestamo()
 {
+
 }
 void Menu::displayTipoPrestamos()
 {
