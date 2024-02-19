@@ -31,7 +31,6 @@ void Menu::iniciarMenu()
         
         //nombre ya está validado y listo para ser añadido al .csv y crear el objeto
         std::string nombre = obtenerNombre();
-        banco.buscarCliente(cedula);
 
         cliente = banco.agregarCliente(cedula, nombre); //Crea el objeto cliente
 
