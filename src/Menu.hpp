@@ -8,22 +8,22 @@
 #include "identidad.hpp"
 #include "agregar_cliente.hpp"
 #include "Banco.hpp"
-
+#include "Efectivo.hpp"
 class Menu
 {
 
 public:
     // Constructor de la clase
-    Menu(Banco banco);
+    Menu(Banco &banco);
     // Metodo iniciar el Menu
     void iniciarMenu();
 
 protected:
     // Metodo para obtener la identidad del usario
     int obtenerIdentidad();
-    //Metodo que valida el nombre de usuario.
+    // Metodo que valida el nombre de usuario.
     std::string obtenerNombre();
-    //Metodo que maneja las excepciones de los valores ingresados de un solo número
+    // Metodo que maneja las excepciones de los valores ingresados de un solo número
     std::string obtenerOpcion();
     // Metodo para verificar si el cliente ya existe en el sistema
     bool verificarCliente(int cedula);
@@ -47,6 +47,8 @@ protected:
     // Metodo para mostrar los tipos de prestamos disponibles
     void displayTipoPrestamos();
 
+    bool confirmarTransaccion();
+
     // // Metodo para escoger el tipo de moneda para la transaccion
     // void escogerMoneda();
     // // Metodo para mostrar el monto y desglose de los prestamos
@@ -54,7 +56,7 @@ protected:
 
 private:
     Banco banco;
-    Cliente cliente;
+    Cliente *cliente;
 };
 
 #endif
