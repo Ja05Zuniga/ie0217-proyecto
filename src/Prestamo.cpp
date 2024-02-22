@@ -201,7 +201,7 @@ int Prestamo::solicitarIDprestamo()
     {
         try
         {
-            std::cout << "Ingrese el ID del préstamo que desea consultar:\n";
+            std::cout << "Ingrese el ID del préstamo: \n";
             std::cin >> id;
             if (std::cin.fail())
             {
