@@ -12,6 +12,11 @@
 #define PRESTAMOS_HPP
 #include <iomanip>
 #include <cmath>
+#include <list>
+#include <algorithm>
+#include <fstream>
+#include <sstream>
+#include <regex>
 #include "Producto.hpp"
 #include "Dinero.hpp"
 #include "constants.hpp"
@@ -23,9 +28,10 @@
 enum TipoPrestamo
 {
     PERSONAL,
-    PRENDARIO,
-    HIPOTECARIO
+    PRENDARIO = 3,
+    HIPOTECARIO = 6
 };
+std::istream &operator>>(std::istream &is, TipoPrestamo &tipo);
 /**
  * @brief Clase para manipular préstamo y obtener información
  *
@@ -33,13 +39,13 @@ enum TipoPrestamo
 class Prestamo : public Producto
 {
 private:
+    unsigned int idDueno;
     TipoPrestamo tipo;
     int cuotas;
     unsigned int numCuota;
     float tasaInteresAnual;
     float tasaInteresMensual;
     Dinero montoInicial;
-    Dinero saldoRestante;
     Dinero cuotaMensual;
     std::vector<Amortizacion> amortizacion;
 
@@ -73,25 +79,39 @@ public:
      *
      * @param monto
      */
-    void acreditar(const Dinero &monto) override;
+    void acreditar(Dinero &monto) override;
     /**
      * @brief Aquí se define como actualizar el objeto cada vez que un usuario
      * abre el préstamo
      *
      * @param monto
      */
-    void debitar(const Dinero &monto) override;
+    void debitar(Dinero &monto) override;
     /**
      * @brief Imprime información más detallada del préstamo
      *
      */
-    void obtenerInfoPersonal();
+    void obtenerInfoPersonal(bool reducida = false);
     /**
      * @brief Método para inicializar el atributo amortización
      * el cual contiene el desglose de los pagos mensuales.
      *
      */
     void calcularAmortizacion();
+    /**
+     * @brief Imprime en pantalla la tabla de pago del préstamo
+     *
+     */
+    void obtenerAmortizacion();
+    Dinero obtenerCuotaMensual();
+    void imprimirDesglosePago();
+    void imprimirDesglosePago(unsigned int id);
+    friend std::istream &operator>>(std::istream &in, Prestamo &prestamo);
+    static int solicitarIDprestamo();
+    Prestamo(const Prestamo &otro);
+    void asignarDueno(const unsigned int id);
+    unsigned int obtenerDueno();
+    void calcularCuotaMensual();
 };
 
 #endif

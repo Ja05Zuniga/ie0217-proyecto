@@ -1,12 +1,12 @@
 /**
  * @file Producto.cpp
  * @author your name (you@domain.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2024-02-15
- * 
+ *
  * @copyright Copyright (c) 2024
- * 
+ *
  */
 #include "Producto.hpp"
 Producto::Producto(const std::string &nombre, const unsigned int &id) : nombre(nombre), id(id)
@@ -15,8 +15,8 @@ Producto::Producto(const std::string &nombre, const unsigned int &id) : nombre(n
 Producto::Producto(const std::string &nombre) : nombre(nombre) {}
 
 void Producto::obtenerInfo() {}
-void Producto::acreditar(const Dinero &monto) {}
-void Producto::debitar(const Dinero &monto)
+void Producto::acreditar(Dinero &monto) {}
+void Producto::debitar(Dinero &monto)
 {
 }
 Producto::~Producto()
@@ -37,3 +37,14 @@ void Producto::generarId()
 }
 
 unsigned int Producto::obtenerId() { return id; }
+
+std::ostream &operator<<(std::ostream &out, const Producto &producto)
+{
+    out << producto.nombre << "," << producto.id;
+    return (out);
+}
+
+std::string Producto::obtenerNombre()
+{
+    return nombre;
+}

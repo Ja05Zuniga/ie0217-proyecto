@@ -14,9 +14,9 @@ Certificado::~Certificado()
 
 void Certificado::obtenerInfo() {}
 
-void Certificado::acreditar(const Dinero &monto) {}
+void Certificado::acreditar(Dinero &monto) {}
 
-void Certificado::debitar(const Dinero &monto)
+void Certificado::debitar(Dinero &monto)
 {
 
     montoCertificado = monto;

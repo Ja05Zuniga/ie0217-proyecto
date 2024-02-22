@@ -17,6 +17,8 @@
 #include "Dinero.hpp"
 #include "Transaccion.hpp"
 #include "Cuenta.hpp"
+#include "MetodoPago.hpp"
+#include "Efectivo.hpp"
 
 class Cliente
 {
@@ -51,23 +53,15 @@ public:
      */
     void obtenerInfo();
 
-    /**
-     * @brief Permite agregar un nuevo préstamo al cliente
-     *
-     * @param prestamos
-     * @param monto
-     * @param moneda
-     * @return unsigned int
-     */
-    unsigned int agregarPrestamo(Prestamo prestamos, const float &monto, Moneda moneda);
-
+    Cuenta *obtenerCuenta(Moneda moneda);
+    void pagarPrestamo(Prestamo *prestamo, MetodoPago metodo);
     /**
      * @brief Busca un préstamo del usuario a partir de su ID
      *
      * @param id
      * @return Prestamo
      */
-    Prestamo buscarPrestamo(const unsigned int &id);
+    Prestamo buscarPrestamo(const unsigned int id) const;
 
     /**
      * @brief Permite consultar información detallada del préstamo
@@ -85,15 +79,14 @@ public:
 
     /**
      * @brief Imprime información detallada de la cuenta en la moneda ingresada
-     * 
-     * @param moneda 
+     *
+     * @param moneda
      */
     void obtenerEstadoCuenta(Moneda moneda);
 
-    /**
-     * @brief Modifica
-     * 
-     */
+    friend std::istream &operator>>(std::istream &in, Cliente &Cliente);
+    unsigned int obtenerId();
+    Cliente(const Cliente &otro);
 };
 
 #endif

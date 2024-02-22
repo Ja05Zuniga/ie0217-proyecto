@@ -49,7 +49,7 @@ public:
      *
      * @param monto
      */
-    void acreditar(const Dinero &monto) override;
+    void acreditar(Dinero &monto) override;
 
     /**
      * @brief Método para actualizar el estado del objeto una vez que el usario
@@ -57,8 +57,8 @@ public:
      *
      * @param monto
      */
-    void debitar(const Dinero &monto) override;
-    void calcularInteresesGanados();
+    void debitar(Dinero &monto) override;
+
 };
 
 #endif
