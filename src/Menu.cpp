@@ -182,7 +182,7 @@ void Menu::displayOpcionesPrincipales()
     while (true)
     {
         std::cout << menuOpciones;
-        std ::string opcion = obtenerOpcion();
+        std::string opcion = obtenerOpcion();
         int opcionInt = std::stoi(opcion);
 
         try
@@ -346,7 +346,8 @@ void Menu::agregarPrestamo()
     {
         std::cerr << e.what() << '\n';
     }
-
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     displayOpcionesPrincipales();
 }
 
