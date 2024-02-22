@@ -20,14 +20,28 @@ class Certificado : public Producto
 {
 
 private:
-    Dinero dinero;
+    Dinero montoCertificado;
+    float tasaInteresAnual;
+    int plazo;
 
 public:
-    Certificado(const unsigned int id);
+    /**
+     * @brief Construct a new Certificado object
+     * 
+     */
+    Certificado();
+    /**
+     * @brief Construct a new Certificado object
+     * 
+     * @param montoCertificado 
+     * @param tasaInteresAnual 
+     * @param id 
+     */
+    Certificado(const Dinero &montoCertificado, const float &tasaInteresAnual, const unsigned int &id);
     ~Certificado();
     /**
      * @brief Método para mostrar información general del certificado
-     * 
+     *
      */
     void obtenerInfo() override;
     /**
@@ -44,6 +58,7 @@ public:
      * @param monto
      */
     void debitar(Dinero &monto) override;
+
 };
 
 #endif

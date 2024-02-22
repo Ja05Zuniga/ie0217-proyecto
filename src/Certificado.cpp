@@ -1,14 +1,13 @@
 #include "Certificado.hpp"
+Certificado::Certificado() : Producto("Certificado") {}
 
 /**
  * @brief Construct a new Certificado:: Certificado object
- * 
- * @param id 
+ *
+ * @param id
  */
-Certificado::Certificado(const unsigned int id) : Producto("Certificado", id)
-{
-}
 
+Certificado::Certificado(const Dinero &montoCertificado, const float &tasaInteresAnual, const unsigned int &id) : Producto("Certificado", id), montoCertificado(montoCertificado), tasaInteresAnual(tasaInteresAnual) {}
 Certificado::~Certificado()
 {
 }
@@ -17,9 +16,8 @@ void Certificado::obtenerInfo() {}
 
 void Certificado::acreditar(Dinero &monto) {}
 
-
 void Certificado::debitar(Dinero &monto)
 {
 
-    dinero = monto;
+    montoCertificado = monto;
 }

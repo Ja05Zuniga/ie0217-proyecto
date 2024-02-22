@@ -13,30 +13,34 @@ void Menu::iniciarMenu()
     /*Si la cedula se ecuentra en la base de datos. Entonces crea el objeto cliente
     En el caso de que no. Pide el nombre del usuario, agrega la cedula y el nombre a la base de datos y
     crea el objeto cliente*/
-    if (Identidad(std::to_string(cedula)).verificarCedulaEnCSV("cedulas.csv"))
-    {
-        std::string nombreEncontrado = Identidad(std::to_string(cedula)).extraerNombre("cedulas.csv");
-        cliente = banco.agregarCliente(cedula, nombreEncontrado);
-        std::cout << "Bienvenido" << nombreEncontrado << ". Numero de cédula: " << cedula << std::endl;
-    }
 
-    else
-    {
-        std::cout << "No se encontró el usuario." << '\n'; // Etiqueta que la cedula ingresada no se encuentra en el .csv
+    std::string cedulaString = std::to_string(cedula); //Pasar cedula a string
+
+    if (Identidad(cedulaString).verificarCedulaEnCSV("cedulas.csv")){
+
+        std::string nombreEncontrado = Identidad(cedulaString).extraerNombre("cedulas.csv");
+
+        cliente = banco.agregarCliente(cedula, nombreEncontrado);
+
+        std::cout<<"Bienvenido"<< nombreEncontrado <<". Numero de cédula: " << cedula << std::endl;
+        
+
+        }
+
 
         // nombre ya está validado y listo para ser añadido al .csv y crear el objeto
         std::string nombre = obtenerNombre();
 
         cliente = banco.agregarCliente(cedula, nombre); // Crea el objeto cliente
 
-        std::cout << "Bienvenido " << nombre << ". Numero de cédula: " << cedula << std::endl; // Da la bienvenida
 
-        std::string cedula_string = std::to_string(cedula);                // Transforma cedula a string para poder ser agregado al .csv
-        AgregarCliente(cedula_string, nombre).agregarA_CSV("cedulas.csv"); // Agrega cedula y nombre al .csv
-    }
-
+        std::cout<<"Bienvenido "<< nombre <<". Numero de cédula: " << cedula << std::endl; //Da la bienvenida
+        //std::string cedula_string = std::to_string(cedula); //Transforma cedula a string para poder ser agregado al .csv
+        AgregarCliente(cedulaString, nombre).agregarA_CSV("cedulas.csv"); //Agrega cedula y nombre al .csv
+        }
     // Cargar préstamos del cliente
     banco.cargarPrestamos("prestamos.csv");
+
 
     // El menu de opciones
     displayOpcionesPrincipales();
@@ -46,28 +50,29 @@ void Menu::iniciarMenu()
 std::string Menu::obtenerNombre()
 {
     std::string nombre;
-    while (true)
-    {
-        std::cout << "Ingrese su nombre de usuario: ";
-        std::getline(std::cin, nombre);
 
-        // Expresión regular para validar el nombre de usuario
-        /*El nombre del usuario tiene que iniciar con mayuscula, el resto del nombre tiene que ir en minuscula.
-        Tiene que ingresar como mínimo dos nombres: unNombre + unApellido
-        Tiene que ingresar como máximo cuatro nombres: dosNombres + dosApellidos
-        El nombre no puede poseer signos especiales
-        Los nombres no pueden superar los 15 caracteres
-        Los nombres no pueden tener menos de dos caracteres
-        */
-        std::regex regexNombre("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+){1,4}$");
-        try
-        {
-            if (nombre.empty())
-            {
-                throw std::invalid_argument("Error: No se ha ingresado ninguna opción");
+    while (true) {
+            std::cout << "La primera letra de cada 'nombre' debe iniciar con mayúscula.\nIngrese su nombre de usuario: ";
+            std::getline(std::cin, nombre);
+
+            // Expresión regular para validar el nombre de usuario
+            /*El nombre del usuario tiene que iniciar con mayuscula, el resto del nombre tiene que ir en minuscula.
+            Tiene que ingresar como mínimo dos nombres: unNombre + unApellido
+            Tiene que ingresar como máximo cuatro nombres: dosNombres + dosApellidos
+            El nombre no puede poseer signos especiales
+            Los nombres no pueden superar los 15 caracteres
+            Los nombres no pueden tener menos de dos caracteres
+            */
+            std::regex regexNombre("^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{1,14}(\\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{0,13}){0,2}(\\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{1,14})?$");
+        try{
+            if (nombre.empty()) {
+                    throw std::invalid_argument("Error: No se ha ingresado ninguna opción");
             }
-            if (!std::regex_match(nombre, regexNombre))
-            {
+            if (nombre.find('.') != std::string::npos) {
+                throw std::invalid_argument("Error. Por favor digite su nombre sin puntos '.'.");
+            }
+            if (!std::regex_match(nombre, regexNombre)) {
+
                 throw std::invalid_argument("El formato del nombre de usuario no es válido.");
             }
 
@@ -80,10 +85,11 @@ std::string Menu::obtenerNombre()
     }
 }
 
-// Manejo de excepciones completa
-int Menu::obtenerIdentidad()
-{
-    /*Metodo que supervisa la entrada del numere de cedula.
+
+//Manejo de excepciones completa
+int Menu::obtenerIdentidad(){
+    /*Metodo que supervisa la entrada del número de cedula.
+
     El número de cédula no puede contener letras.
     El número de cédula no puede empezar con cero.
     Debe ingresar un número de cédula de nueve dígitos.
@@ -100,6 +106,14 @@ int Menu::obtenerIdentidad()
             if (numCedulaStr.empty())
             {
                 throw std::invalid_argument("Error: No se ha ingresado ninguna opción");
+            }
+
+            if (numCedulaStr.find('-') != std::string::npos) {
+                throw std::invalid_argument("Error. Ingrese el número de cedula sin '-'.");
+            }
+
+            if (numCedulaStr.find('.') != std::string::npos) {
+                throw std::invalid_argument("Error. Ingrese el número de cedula sin puntos '.'.");
             }
 
             // Verificar si la entrada contiene letras en lugar de números
@@ -145,43 +159,50 @@ void Menu::crearCliente(int cedula) {} // Falta implementar codigo basado de la 
 // Manejo de excepciones completa
 void Menu::displayOpcionesPrincipales()
 {
-    std::string menuOpciones =
+
+    /*Metodo que maneja el menu principal
+    Verifica si los datos ingresados son validos (int) y se encuentra dentro de las opciones*/
+    std::string menuOpciones = 
+
         "\n--- Menu de opciones ---\n"
         "1. Atencion al cliente\n"
         "2. Informacion\n"
         "3. Solicitar préstamo\n"
-        "4. Salir\n";
+        "4. Volver al inicio de sesión\n"
+        "5. Salir\n";
 
     while (true)
     {
         std::cout << menuOpciones;
         std ::string opcion = obtenerOpcion();
         int opcionInt = std::stoi(opcion);
-        try
-        {
-            // Casos
-            switch (opcionInt) // Pasamos opcion a tipo int
-            {
-            case 1: //  Atencion al cliente
-                gestionarCliente();
-                // Falta implementar codigo basado
-                break;
-            case 2: // Informacion
-                displayInformacion();
-                // Falta implementar codigo basado
-                break;
-            case 3: // Solicitud de préstamo
-                agregarPrestamo();
-            case 4: // Salir
-                std::cout << "Saliendo del programa...\n";
-                exit(0);
-            default:
-                std::cout << "Opcion fuera de rango. Intente de nuevo...\n";
-            }
-        }
-        catch (const std::invalid_argument &e)
-        {
-            std::cerr << e.what() << std::endl;
+
+            try{
+                // Casos
+                switch (opcionInt) //Pasamos opcion a tipo int
+                {
+                case 1: //  Atencion al cliente
+                    gestionarCliente();
+                    // Falta implementar codigo basado
+                    break;
+                case 2: // Informacion
+                    displayInformacion();
+                    // Falta implementar codigo basado
+                    break;
+                case 3: // Solicitud de préstamo
+                    agregarPrestamo();
+                case 4: //Volver al inicio de sesión
+                    iniciarMenu();
+                case 5: // Salir por completo del programa
+                    std::cout << "Saliendo del programa...\n";
+                    exit(0);
+                default:
+                    std::cout << "Opcion fuera de rango. Intente de nuevo...\n";
+                }       
+            }catch(const std::invalid_argument& e) {
+                std::cerr << e.what() << std::endl;
+                } 
+
         }
     }
 }
@@ -228,7 +249,37 @@ std::string Menu::obtenerOpcion()
 
 // Manejo de excepciones completa
 void Menu::agregarPrestamo()
+/*Metodo encargado de gestionar los prestamos.
+El metodo solicita los datos y se encarga de crear el objeto dedicado para generar el prestamo solicitado.
+Los datos solicitados tienen que seguir ciertos lineamientos para poder gestionar el prestamo.
+En el caso de que se ingrese un dato que no sigue estos lineamientos, el sistema posee excepciones que ayudarán 
+al operador a ingresar un dato valido.
+El metodo por último muestra los detalles del prestamo tramitado*/
 {
+
+    std::string id/*int*/; 
+    std::string monedaInt/*int*/; 
+    std::string monto/*float*/; 
+    
+    int idInt;
+    float montoFloat;
+
+    Moneda moneda;
+
+    bool terminar = false;
+    while (!terminar) {
+    try {
+        std::cout << "Ingrese el ID del préstamo solicitado\n";
+        id = obtenerOpcion();
+        idInt = std::stoi(id);
+
+        while (idInt > 2 || idInt < 0) {
+            std::cerr << "Error. El ID debe ser un valor entre 0 y 2. Intente de nuevo.\n";
+            std::cout << "Ingrese el ID del préstamo solicitado\n";
+            id = obtenerOpcion();
+            idInt = std::stoi(id);
+        }
+
 
     try
     {
@@ -312,11 +363,29 @@ void Menu::agregarPrestamo()
         std::cerr << e.what() << '\n';
     }
 
+}
+    cliente.agregarPrestamo(banco.buscarPrestamo(idInt), montoFloat, moneda);
+
+    //Se puede puede reducir
+    std::cout << "\nInformación del préstamo efectuado:\n";
+    std::cout << std::setw(Constantes::COL_WIDTH) << std::left << "ID"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Tipo"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Cuotas"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Tasa de interés"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Moneda"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Monto" << std::endl;
+    cliente.obtenerInfoPrestamos();
+
+    displayOpcionesPrincipales();
+
+
     displayOpcionesPrincipales();
 }
 
 // Manejo de excepciones completas
 void Menu::gestionarCliente()
+/*Metodo que maneja el sub menu dedicado a gestionar los clientes
+Verifica si el dato ingresado es valido y se encuentra dentro de las opciones*/
 {
     // Falta implementar logica de codigo basado para manejar las operaciones de cliente
     // de ejecutarOperaciones() con el uso de Prestamo, Producto, etc
@@ -326,10 +395,12 @@ void Menu::gestionarCliente()
         "2. Gestion de Ahorros\n"
         "3. Operaciones\n"
         "4. Regresar\n";
-    while (true)
-    {
-        try
-        {
+
+
+    while (true){
+        try{
+            std::cout<<opciones;
+
             std::string opcion = obtenerOpcion();
             int opcionInt = std::stoi(opcion);
 
@@ -357,6 +428,10 @@ void Menu::gestionarCliente()
             std::cerr << "Error: " << e.what() << std::endl;
         }
     }
+
+
+   displayOpcionesPrincipales();
+
 }
 
 /************************************
@@ -365,12 +440,17 @@ void Menu::gestionarCliente()
 
 // Manejo de excepciones completa
 void Menu::displayInformacion()
-{
-    std::string opciones =
-        "\n--- Menu de Información ---\n"
-        "1. Información general del usuario\n"
-        "2. Información de préstamo\n"
-        "3. Regresar\n";
+
+{   
+/*Metodo encargado de gestionar un sub menu donde se puede obtener informarción de las cuentas de ahorros y prestamos 
+que el usuario tiene.
+El metodo es capaz de manejar los datos no validos. Pide la opción hasta que se ingrese un valor valido*/
+    std::string opciones = 
+                "\n--- Menu de Información ---\n"
+                "1. Información general del usuario\n"
+                "2. Información de préstamo\n"
+                "3. Regresar\n";
+
 
     while (true)
     {
@@ -407,6 +487,9 @@ void Menu::displayInformacion()
 // Manejo de excepciones completa
 void Menu::displayInformacionPrestamo()
 {
+ /*Metodo donde se puede obtener información especifica de un prestamo ingresando el ID del prestamo.
+El metodo es capaz de manejar los datos no validos. Pide la opción hasta que se ingrese un valor valido*/
+
     try
     {
         int id = Prestamo::solicitarIDprestamo();
@@ -415,6 +498,7 @@ void Menu::displayInformacionPrestamo()
     catch (const std::exception &e)
     {
         std::cerr << e.what() << '\n';
+
     }
 
     displayOpcionesPrincipales();
@@ -451,7 +535,8 @@ void Menu::realizarOperaciones()
     std::cout << "1. Pagar préstamo\n";
 
     std::cout << "Ingrese una opcion: ";
-    std::cin >> opcion;
+    std::cin 
+      opcion;
 
     // Casos
     switch (opcion)
@@ -466,6 +551,7 @@ void Menu::realizarOperaciones()
 
 void Menu::pagarPrestamo()
 {
+
 
     // try
     // {
@@ -488,6 +574,7 @@ void Menu::pagarPrestamo()
     // {
     //     std::cerr << e.what() << '\n';
     // }
+
 }
 void Menu::displayTipoPrestamos()
 {
