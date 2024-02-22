@@ -24,6 +24,8 @@ bool Identidad::verificarCedulaEnCSV(const std::string& nombreArchivo) const {
     }
 
     archivo.close(); //Cerrar el archivo
+
+    return true;
 }
 
 std::string Identidad::extraerNombre(const std::string& nombreArchivo) const {

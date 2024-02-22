@@ -19,6 +19,6 @@ namespace Constantes
     // Tasa de compra del dolar
     const int TASA_COMPRA = 500;
     // Tasa de venta del dolar
-    const int TASA_VENTA = 500;
+    const int TASA_VENTA = 510;
 
 } // namespace Constantes

@@ -9,10 +9,12 @@ Menu::Menu(Banco banco) : banco(banco) {}
 //Manejo de excepciones completa
 void Menu::iniciarMenu()
 {
-    int cedula = obtenerIdentidad(); // Falta implentar el uso de la clase Cliente
-    /*Si la cedula se ecuentra en la base de datos. Entonces crea el objeto cliente
-    En el caso de que no. Pide el nombre del usuario, agrega la cedula y el nombre a la base de datos y
-    crea el objeto cliente*/
+    int cedula = obtenerIdentidad(); 
+    /** 
+    * @note Si la cedula se ecuentra en la base de datos. Entonces crea el objeto Cliente
+    * En el caso de que no. Pide el nombre del usuario, agrega la cedula y el nombre a la base de datos y
+    * crea el objeto cliente
+    */
     std::string cedulaString = std::to_string(cedula); //Pasar cedula a string
 
     if (Identidad(cedulaString).verificarCedulaEnCSV("cedulas.csv")){
@@ -448,7 +450,7 @@ void Menu::displayInformacionGeneral()
 
 void Menu::gestionarAhorros()
 {
-    // Falta implementar logica de codigo basado ...
+    // FIXME: Falta implementar logica de codigo basado ...
 }
 
 //Manejo de excepciones incompleta
@@ -465,17 +467,18 @@ void Menu::realizarOperaciones()
     switch (opcion)
     {
     case 1:
-        pagarPrestamo();
+        pagarPrestamo(); // FIXME: Falta implementar este metodo
         break;
     default:
         std::cout << "Opcion no es valida. Intente de nuevo...\n";
     }
 }
 
-void Menu::pagarPrestamo()
+void Menu::pagarPrestamo()// FIXME: Falta implementar este metodo
 {
 
 }
+
 void Menu::displayTipoPrestamos()
 {
     std::cout << std::setw(Constantes::COL_WIDTH) << std::left << "\nID"
