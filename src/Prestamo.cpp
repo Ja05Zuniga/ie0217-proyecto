@@ -130,6 +130,7 @@ void Prestamo::debitar(Dinero &monto)
 {
 
     montoInicial = monto;
+    numCuota = 0;
 
     calcularAmortizacion();
 }
