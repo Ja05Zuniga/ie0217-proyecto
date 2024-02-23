@@ -7,23 +7,33 @@
  */
 Banco::Banco()
 {
-    prestamosPredefinidos[PERSONAL] = Prestamo(PERSONAL, 12, 5.5, PERSONAL);
-    prestamosPredefinidos[PERSONAL + 1] = Prestamo(PERSONAL, 12, 5.5, PERSONAL + 1);
-    prestamosPredefinidos[PERSONAL + 2] = Prestamo(PERSONAL, 12, 5.5, PERSONAL + 2);
-    prestamosPredefinidos[PRENDARIO] = Prestamo(PRENDARIO, 12, 5.5, PRENDARIO);
-    prestamosPredefinidos[PRENDARIO + 1] = Prestamo(PRENDARIO, 12, 5.5, PRENDARIO + 1);
-    prestamosPredefinidos[PRENDARIO + 2] = Prestamo(PRENDARIO, 12, 5.5, PRENDARIO + 2);
-    prestamosPredefinidos[HIPOTECARIO] = Prestamo(HIPOTECARIO, 12, 5.5, HIPOTECARIO);
-    prestamosPredefinidos[HIPOTECARIO + 1] = Prestamo(HIPOTECARIO, 12, 5.5, HIPOTECARIO + 1);
-    prestamosPredefinidos[HIPOTECARIO + 2] = Prestamo(HIPOTECARIO, 12, 5.5, HIPOTECARIO + 2);
+    prestamosPredefinidos[PERSONAL] = Prestamo(PERSONAL, 36, 8, PERSONAL);
+    prestamosPredefinidos[PERSONAL + 1] = Prestamo(PERSONAL, 48, 10, PERSONAL + 1);
+    prestamosPredefinidos[PERSONAL + 2] = Prestamo(PERSONAL, 60, 12, PERSONAL + 2);
+    prestamosPredefinidos[PRENDARIO] = Prestamo(PRENDARIO, 24, 6, PRENDARIO);
+    prestamosPredefinidos[PRENDARIO + 1] = Prestamo(PRENDARIO, 36, 7.5, PRENDARIO + 1);
+    prestamosPredefinidos[PRENDARIO + 2] = Prestamo(PRENDARIO, 48, 9, PRENDARIO + 2);
+    prestamosPredefinidos[HIPOTECARIO] = Prestamo(HIPOTECARIO, 240, 3.5, HIPOTECARIO);
+    prestamosPredefinidos[HIPOTECARIO + 1] = Prestamo(HIPOTECARIO, 360, 4, HIPOTECARIO + 1);
+    prestamosPredefinidos[HIPOTECARIO + 2] = Prestamo(HIPOTECARIO, 480, 4.5, HIPOTECARIO + 2);
+
+    cargarPrestamos("prestamos.csv");
 }
 
 Banco::~Banco()
 {
+}
+
+void Banco::clean()
+{
+    registrarPrestamos("prestamos.csv");
 
     for (auto &entrada : prestamos)
     {
-        delete entrada.second;
+        if (entrada.second != nullptr)
+        {
+            delete entrada.second;
+        }
     }
     prestamos.clear();
 }
@@ -90,8 +100,7 @@ Prestamo Banco::buscarPrestamoOfrecido(const unsigned int id)
     return prestamosPredefinidos[id];
 }
 
-Prestamo *Banco::
-    buscarPrestamo(const unsigned int &id, const unsigned int &idDueno)
+Prestamo *Banco::buscarPrestamo(const unsigned int &id, const unsigned int &idDueno)
 {
     auto it = prestamos.find(std::make_pair(idDueno, id));
 
@@ -117,7 +126,7 @@ void Banco::obtenerInfoPrestamos(const unsigned int &id)
               << std::setw(Constantes::COL_WIDTH) << "Tipo"
               << std::setw(Constantes::COL_WIDTH) << "Cuotas"
               << std::setw(Constantes::COL_WIDTH) << "Tasa de interés anual" << std::endl;
-              
+
     Prestamo *prestamo = buscarPrestamo(id);
     if (prestamo != nullptr)
     {
@@ -191,35 +200,111 @@ void Banco::cargarPrestamos(const std::string &archivoCSV)
         {
             throw std::ios_base::failure("No se pudo abrir el archivo");
         }
-        // std::string encabezado;
-        // std::getline(in, encabezado);
 
         Prestamo temp;
-        while (in >> temp)
+        std::string line;
+
+        while (std::getline(in, line))
         {
-            Prestamo *ptrPrestamo = new Prestamo(temp);
-            if (ptrPrestamo != nullptr)
+            // Verificar si la línea está vacía
+            if (line.empty() || std::all_of(line.begin(), line.end(), ::isspace))
             {
-                agregarPrestamo(ptrPrestamo);
-                // Ya que no se incluye la cuota mensual en el archivo
-                // csv es necesario calcularla al luego de crearlo
-                ptrPrestamo->calcularAmortizacion();
+                break;
+            }
+
+            std::istringstream iss(line);
+            if (iss >> temp)
+            {
+                Prestamo *ptrPrestamo = new Prestamo(temp);
+                if (ptrPrestamo != nullptr)
+                {
+                    agregarPrestamo(ptrPrestamo);
+                    ptrPrestamo->calcularAmortizacion();
+                }
+                else
+                {
+                    throw std::bad_alloc();
+                }
             }
             else
             {
-                throw std::bad_alloc();
+                throw std::invalid_argument("Formato inválido");
             }
         }
-        if (in.fail() && !in.eof())
-        {
-            throw std::invalid_argument("Formato inválido");
-        }
+
         std::cout << "Préstamos cargados con éxito" << std::endl;
     }
     catch (const std::exception &e)
     {
         std::cerr << "Error al cargar préstamos: " << e.what() << '\n';
     }
+}
+
+void Banco::cargarCuentas(const std::string &archivoCSV)
+{
+    // try
+    // {
+    //     std::ifstream in(archivoCSV);
+
+    //     if (!in)
+    //     {
+    //         throw std::ios_base::failure("No se pudo abrir el archivo");
+    //     }
+
+    //     Prestamo temp;
+    //     std::string line;
+
+    //     while (std::getline(in, line))
+    //     {
+    //         // Verificar si la línea está vacía
+    //         if (line.empty() || std::all_of(line.begin(), line.end(), ::isspace))
+    //         {
+    //             break;
+    //         }
+
+    //         std::istringstream iss(line);
+    //         if (iss >> temp)
+    //         {
+    //             Cuenta *ptrPrestamo = new Cuenta(temp);
+    //             if (ptrPrestamo != nullptr)
+    //             {
+    //                 agregarPrestamo(ptrPrestamo);
+    //                 ptrPrestamo->calcularAmortizacion();
+    //             }
+    //             else
+    //             {
+    //                 throw std::bad_alloc();
+    //             }
+    //         }
+    //         else
+    //         {
+    //             throw std::invalid_argument("Formato inválido");
+    //         }
+    //     }
+
+    //     std::cout << "Préstamos cargados con éxito" << std::endl;
+    // }
+    // catch (const std::exception &e)
+    // {
+    //     std::cerr << "Error al cargar préstamos: " << e.what() << '\n';
+    // }
+}
+
+void Banco::registrarPrestamos(const std::string &archivoCSV)
+{
+
+    std::ofstream of(archivoCSV);
+
+    if (!of.is_open())
+    {
+        throw std::runtime_error("Error al abrir archivo de registro de préstamos");
+    }
+    for (const auto &prestamo : prestamos)
+    {
+        of << *prestamo.second << std::endl;
+    }
+
+    of.close();
 }
 
 void Banco::cargarClientes(const std::string &archivoCSV)

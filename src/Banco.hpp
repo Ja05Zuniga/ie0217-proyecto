@@ -90,11 +90,14 @@ public:
      */
     Cliente *agregarCliente(const unsigned int &id, const std::string &nombre);
     void cargarPrestamos(const std::string &archivoCSV);
+    void cargarCuentas(const std::string &archivoCSV);
+    void registrarPrestamos(const std::string &archivoCSV);
     void cargarClientes(const std::string &archivoCSV);
     void agregarPrestamo(Prestamo *prestamo);
     void obtenerInfoPrestamos(const unsigned int &id, const unsigned int &idDueno);
     Prestamo buscarPrestamoOfrecido(const unsigned int id);
     void obtenerInfoPrestamosCliente(const int id);
+    void clean();
 };
 
 #endif
