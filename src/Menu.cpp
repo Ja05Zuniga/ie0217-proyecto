@@ -258,27 +258,22 @@ std::string Menu::obtenerOpcion()
     /*Este metodo se encarga de manejar las excepciones donde se tiene que ingresar un solo valor tipo int
     Return: un valor tipo string -> Cuidado
     */
-    std ::string opcion;
+    std::string opcionStr;
 
     while (true)
     {
         try
         {
-            // Solicitar la opción al usuario
-            std::cout << "opción: ";
-            std::getline(std::cin, opcion);
+            std::cout << "Opción: ";
+            std::getline(std::cin, opcionStr);
 
-            // Verificar si la opción es un entero
-            for (char c : opcion)
-            {
-                if (!std::isdigit(c))
-                {
-                    throw std::invalid_argument("Error: No se permiten letras");
-                }
+            // Verificar si la cadena contiene solo dígitos
+            if (opcionStr.find_first_not_of("0123456789") != std::string::npos) {
+                throw std::invalid_argument("Error: La opción debe ser un número.");
             }
 
-            std::cout << "La opción ingresada fue: " << opcion << std::endl;
-            return opcion;
+            // Convertir la opción a entero y devolverla
+            return opcionStr;
         }
         catch (const std::invalid_argument &e)
         {
@@ -403,8 +398,6 @@ Verifica si el dato ingresado es valido y se encuentra dentro de las opciones*/
         "3. Operaciones\n"
         "4. Regresar\n";
 
-    while (true)
-    {
         try
         {
             std::cout << opciones;
@@ -434,9 +427,7 @@ Verifica si el dato ingresado es valido y se encuentra dentro de las opciones*/
             std::cerr << "Error: " << e.what() << std::endl;
         }
     }
-    // Llamado del metodo para regresar al menu inicial
-    displayOpcionesPrincipales();
-}
+
 
 // Manejo de excepciones completa
 /**
@@ -456,8 +447,6 @@ void Menu::displayInformacion()
         "2. Información de préstamo\n"
         "3. Regresar\n";
 
-    while (true)
-    {
         std::cout << opciones;
 
         try
@@ -486,7 +475,6 @@ void Menu::displayInformacion()
             std::cerr << "Error: " << e.what() << std::endl;
         }
     }
-}
 
 // Manejo de excepciones completa
 /**
@@ -543,8 +531,140 @@ void Menu::displayInformacionGeneral()
 
 void Menu::gestionarAhorros()
 {
-}
+    std::string opcion;
+        try
+        {
+            std::cout<<"1. Depositar en la cuenta\n2. Debitar\nIngrese una opcion\n";
+            opcion = obtenerOpcion();
 
+            switch (std::stoi(opcion))
+            {
+            case 1: 
+                acreditarCuenta();
+                break;
+            case 2: 
+                debitarCuenta();
+                break;
+            default:
+                std::cout << "Opción fuera de rango. Intente de nuevo...\n";
+                break;
+            }
+        }
+        catch (const std::invalid_argument &e)
+        {
+            std::cerr << "Error: " << e.what() << std::endl;
+        }
+}
+void Menu::acreditarCuenta(){
+ // Obtener la cuenta en la que quieres depositar dinero
+    Cuenta* cuentaCliente = nullptr;
+    Moneda monedaDeposito;
+    std::string tipoMoneda;
+
+    // Solicitar al usuario que ingrese el tipo de moneda
+    std::cout << "Ingrese el tipo de moneda (1.COLONES o 2.DOLARES)\n";
+    tipoMoneda = obtenerOpcion();
+
+    if (tipoMoneda == "1") {
+        monedaDeposito = COLONES;
+    } else if (tipoMoneda == "2") {
+        monedaDeposito = DOLARES;
+    } else {
+        std::cerr << "Tipo de moneda inválido." << std::endl;
+        return;
+    }
+
+    // Obtener la cuenta del cliente
+    cuentaCliente = cliente->obtenerCuenta(monedaDeposito);
+    try {
+    // Verificar si la cuenta se encontró correctamente
+    if (cuentaCliente) {
+        // Solicitar al usuario que ingrese el monto a depositar
+        std::string montoString;
+        float monto;
+        std::cout << "Ingrese el monto a depositar\n";
+        montoString=obtenerOpcion();
+        monto = std::stof(montoString);
+        // Manejar excepción en caso de que se ingrese un valor no válido para el monto
+
+            // Crear un objeto Dinero con el monto ingresado y la moneda especificada
+            Dinero montoADepositar(monto, monedaDeposito);
+
+            // Depositar el dinero en la cuenta
+            cuentaCliente->acreditar(montoADepositar);
+
+            // Mostrar información actualizada de la cuenta
+            std::cout << "\nInformación de la cuenta actualizada:\n";
+            std::cout << std::setw(Constantes::COL_WIDTH) << std::left << "ID"
+            << std::setw(Constantes::COL_WIDTH) << std::left << "Estado"
+            << std::setw(Constantes::COL_WIDTH) << std::left << "Moneda"
+            << std::setw(Constantes::COL_WIDTH) << std::left << "Ahorros" << std::endl;
+            cuentaCliente->obtenerInfo();
+            } else {std::cout << "El cliente no tiene una cuenta en " << tipoMoneda << "." << std::endl;}
+
+        } catch (const std::invalid_argument& e) {
+            std::cerr << "Error: El valor ingresado no es válido." << std::endl;
+        }
+    }
+
+
+void Menu::debitarCuenta(){
+// Obtener la cuenta de la que quieres retirar dinero
+    Cuenta* cuentaCliente = nullptr;
+    Moneda monedaRetiro;
+    std::string tipoMoneda;
+
+    // Solicitar al usuario que ingrese el tipo de moneda
+    std::cout << "Ingrese el tipo de moneda (1.COLONES o 2.DOLARES)\n";
+    tipoMoneda = obtenerOpcion();
+
+    if (tipoMoneda == "1") {
+        monedaRetiro = COLONES;
+    } else if (tipoMoneda == "2") {
+        monedaRetiro = DOLARES;
+    } else {
+        std::cerr << "Tipo de moneda inválido." << std::endl;
+        return;
+    }
+
+    // Obtener la cuenta del cliente
+    cuentaCliente = cliente->obtenerCuenta(monedaRetiro);
+
+    // Verificar si la cuenta se encontró correctamente
+    if (cuentaCliente) {
+        try {
+        std::string montoString;
+        // Solicitar al usuario que ingrese el monto a retirar
+        std::cout << "Ingrese el monto a retirar\n";
+        montoString=obtenerOpcion();
+        float monto = std::stof(montoString);
+
+        // Manejar excepción en caso de que se ingrese un valor no válido para el monto
+
+            // Crear un objeto Dinero con el monto ingresado y la moneda especificada
+            Dinero montoARetirar(monto, monedaRetiro);
+
+            // Retirar el dinero de la cuenta
+            cuentaCliente->debitar(montoARetirar);
+
+            // Mostrar información actualizada de la cuenta
+            std::cout << "\nInformación de la cuenta actualizada:\n";
+            std::cout << std::setw(Constantes::COL_WIDTH) << std::left << "ID"
+            << std::setw(Constantes::COL_WIDTH) << std::left << "Estado"
+            << std::setw(Constantes::COL_WIDTH) << std::left << "Moneda"
+            << std::setw(Constantes::COL_WIDTH) << std::left << "Ahorros" << std::endl;
+            cuentaCliente->obtenerInfo(); 
+
+        } catch (const FondosInsuficientes& e) {
+            std::cerr << "Error: Fondos insuficientes." << std::endl;
+        } catch (const std::invalid_argument& e) {
+            std::cerr << "Error: El valor ingresado no es válido." << std::endl;
+        }
+        }else {
+        std::cout << "El cliente no tiene una cuenta en " << tipoMoneda << "." << std::endl;
+    }
+    
+}
 // Manejo de excepciones incompleta
 /**
  * @brief Metodo que maneja el menu de operaciones
@@ -566,8 +686,6 @@ void Menu::realizarOperaciones()
         "5. Cambio de moneda\n"
         "6. Regresar\n";
 
-    while (true)
-    {
         std::cout << menuOpciones;
         std::string opcion = obtenerOpcion();
         int opcionInt = std::stoi(opcion);
@@ -597,7 +715,7 @@ void Menu::realizarOperaciones()
             std::cerr << e.what() << std::endl;
         }
     }
-}
+
 
 void Menu::desactivarCuenta()
 {

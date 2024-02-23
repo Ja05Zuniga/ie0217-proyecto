@@ -82,7 +82,10 @@ protected:
     void desactivarCuenta();
     void activarCuenta();
     bool confirmarTransaccion();
-
+    //Depositar directamente en la cuenta
+    void acreditarCuenta();
+    //Extraer dinero de la cuenta
+    void debitarCuenta();
     
 
 
@@ -92,5 +95,4 @@ private:
     // Instancia de un ptro de la clase Cliente relacionada al Menu
     Cliente *cliente;
 };
-
 #endif
