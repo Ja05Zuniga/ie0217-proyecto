@@ -465,7 +465,7 @@ void Menu::agregarCertificado()
 
             if (pago != nullptr)
             {
-                Transaccion transaccion(certificado, pago, dinero);
+                Transaccion transaccion(pago, certificado, dinero);
                 transaccion();
                 std::cout << "Transacción realizada con éxito\n";
                 std::cout << "Detalles del certificado: \n";
@@ -645,6 +645,7 @@ void Menu::displayInformacionGeneral()
     }
 
     banco.obtenerInfoPrestamosCliente(cliente->obtenerId());
+    banco.obtenerInfoCertificadosCliente(cliente->obtenerId());
 
     displayOpcionesPrincipales();
 }

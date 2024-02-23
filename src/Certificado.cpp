@@ -25,13 +25,26 @@ void Certificado::obtenerInfo()
               << std::setw(Constantes::COL_WIDTH) << std::left << tasaInteresAnual << std::endl;
 }
 
-void Certificado::obtenerInfoPersonal()
+void Certificado::obtenerInfoPersonal(bool reducida)
 {
-    // Imprime la tabla con los valores con un formato establecido
-    std::cout << "ID: " << id << "\n"
-              << "Plazo: " << plazo << "\n"
-              << "Monto: " << montoCertificado.obtenerMoneda() << montoCertificado.obtenerMonto() << "\n"
-              << "Interes: " << intereses.obtenerMoneda() << intereses.obtenerMonto() << std::endl;
+    if (reducida)
+    {
+        // Imprime la tabla con los valores con un formato establecido
+        std::cout << "ID: " << id << "\n"
+                  << "Plazo: " << plazo << "\n"
+                  << "Monto: " << montoCertificado.obtenerMoneda() << montoCertificado.obtenerMonto() << "\n"
+                  << "Interes: " << intereses.obtenerMoneda() << intereses.obtenerMonto() << std::endl;
+    }
+    else
+    {
+        // Imprime la tabla con los valores con un formato establecido
+        std::cout << std::setw(Constantes::COL_WIDTH) << std::left << id
+                  << std::setw(Constantes::COL_WIDTH) << std::left << plazo
+                  << std::setw(Constantes::COL_WIDTH) << std::left << tasaInteresAnual
+                  << std::setw(Constantes::COL_WIDTH) << std::left << intereses.obtenerMonto()
+                  << std::setw(Constantes::COL_WIDTH) << std::left << montoCertificado.obtenerMoneda()
+                  << std::setw(Constantes::COL_WIDTH) << std::left << montoCertificado.obtenerMonto() << std::endl;
+    }
 }
 
 void Certificado::acreditar(Dinero &monto) {}

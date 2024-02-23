@@ -137,6 +137,30 @@ void Banco::obtenerInfoPrestamosCliente(const int id)
     }
 }
 
+void Banco::obtenerInfoCertificadosCliente(const int id)
+{
+    std::cout << "\nInformación de certificados:\n";
+    std::cout << std::setw(Constantes::COL_WIDTH) << std::left << "ID"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Plazo"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Tasa de interés"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Interés a generar"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Moneda"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Monto" << std::endl;
+    for (const auto &entry : certificados)
+    {
+        const auto &idCompuesta = entry.first;
+        const auto &certificado = entry.second;
+
+        if (idCompuesta.first == id)
+        {
+            if (certificado != nullptr)
+            {
+                certificado->obtenerInfoPersonal(false);
+            }
+        }
+    }
+}
+
 Prestamo Banco::buscarPrestamoOfrecido(const unsigned int id)
 {
 

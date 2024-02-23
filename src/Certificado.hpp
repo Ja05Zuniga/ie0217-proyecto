@@ -54,7 +54,7 @@ public:
      * @brief Método para mostrar información detallada del certificado
      *
      */
-    void obtenerInfoPersonal();
+    void obtenerInfoPersonal(bool reducida = true);
     /**
      * @brief Método virtual heredado de la clase producto
      *

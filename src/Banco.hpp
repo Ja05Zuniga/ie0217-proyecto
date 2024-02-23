@@ -128,6 +128,7 @@ public:
     void agregarCertificado(Certificado *certificado);
     Certificado *buscarCertificado(const unsigned int &id, const unsigned int &idDueno);
     void obtenerInfoCertificados(const unsigned int &id, const unsigned int &idDueno);
+    void obtenerInfoCertificadosCliente(const int id);
 };
 
 #endif
