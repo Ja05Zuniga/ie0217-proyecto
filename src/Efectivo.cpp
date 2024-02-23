@@ -43,22 +43,24 @@ void Efectivo::verificarDebito(Dinero &monto)
 {
     solicitarPago();
 
-    if (dinero.obtenerMoneda() == monto.obtenerMoneda() && dinero.obtenerMonto() < monto.obtenerMonto())
+    if (dinero.obtenerMoneda() == monto.obtenerMoneda())
     {
-        throw EfectivoInsuficiente();
-    }
-    else if (dinero.obtenerMoneda() == DOLARES && dinero.venderDolares().obtenerMonto() < monto.obtenerMonto())
-    {
-        throw EfectivoInsuficiente();
-    }
-    else if (dinero.obtenerMoneda() == COLONES && dinero.comprarColones().obtenerMonto() < monto.obtenerMonto())
-    {
-        std::cout << dinero.comprarColones().obtenerMonto();
-        throw EfectivoInsuficiente();
+        if (dinero.obtenerMonto() < monto.obtenerMonto())
+        {
+            throw EfectivoInsuficiente();
+        }
     }
     else
     {
-        return;
+        if (dinero.obtenerMoneda() == DOLARES && dinero.venderDolares().obtenerMonto() < monto.obtenerMonto())
+        {
+            throw EfectivoInsuficiente();
+        }
+        else if (dinero.obtenerMoneda() == COLONES && dinero.comprarColones().obtenerMonto() < monto.obtenerMonto())
+        {
+            std::cout << dinero.comprarColones().obtenerMonto();
+            throw EfectivoInsuficiente();
+        }
     }
 }
 
