@@ -240,12 +240,6 @@ std::string Menu::obtenerOpcion()
                 }
             }
 
-            // Verifica que se haya ingresada una opción
-            if (opcion.empty())
-            {
-                throw std::invalid_argument("Error: No se ha ingresado ninguna opción");
-            }
-
             std::cout << "La opción ingresada fue: " << opcion << std::endl;
             return opcion;
         }
