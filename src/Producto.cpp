@@ -23,11 +23,11 @@ Producto::~Producto()
 {
 }
 
-void Producto::verificarDebito(const Dinero &monto)
+void Producto::verificarDebito(Dinero &monto)
 {
     return;
 }
-void Producto::verificarCredito(const Dinero &monto) { return; }
+void Producto::verificarCredito(Dinero &monto) { return; }
 
 /**
  * @details Los números del 1 al 9 están reservados para préstamos ofrecidos por el banco

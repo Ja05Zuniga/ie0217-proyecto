@@ -77,8 +77,8 @@ public:
     virtual void debitar(Dinero &monto);
     friend std::ostream &operator<<(std::ostream &out, const Producto &producto);
     std::string obtenerNombre();
-    virtual void verificarDebito(const Dinero &monto);
-    virtual void verificarCredito(const Dinero &monto);
+    virtual void verificarDebito(Dinero &monto);
+    virtual void verificarCredito(Dinero &monto);
 };
 
 #endif
