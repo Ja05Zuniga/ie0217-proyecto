@@ -2,6 +2,9 @@
 #include "Dinero.hpp"
 #include "Menu.hpp"
 #include <iostream>
+#include <cstdlib>
+
+
 int main(int argc, char const *argv[])
 {
     Banco banco;

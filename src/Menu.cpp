@@ -40,8 +40,6 @@ void Menu::iniciarMenu()
         // std::string cedula_string = std::to_string(cedula); //Transforma cedula a string para poder ser agregado al .csv
         AgregarCliente(cedulaString, nombre).agregarA_CSV("cedulas.csv"); // Agrega cedula y nombre al .csv
     }
-    // Cargar préstamos del cliente
-    banco.cargarPrestamos("prestamos.csv");
 
     // El menu de opciones
     displayOpcionesPrincipales();
@@ -178,8 +176,8 @@ void Menu::displayOpcionesPrincipales()
         "3. Solicitar préstamo\n"
         "4. Volver al inicio de sesión\n"
         "5. Salir\n";
-
-    while (true)
+    bool continuar = true;
+    while (continuar)
     {
         std::cout << menuOpciones;
         std::string opcion = obtenerOpcion();
@@ -200,11 +198,15 @@ void Menu::displayOpcionesPrincipales()
                 break;
             case 3: // Solicitud de préstamo
                 agregarPrestamo();
+                break;
             case 4: // Volver al inicio de sesión
                 iniciarMenu();
+                break;
             case 5: // Salir por completo del programa
                 std::cout << "Saliendo del programa...\n";
+                banco.clean();
                 exit(0);
+                break;
             default:
                 std::cout << "Opcion fuera de rango. Intente de nuevo...\n";
             }
@@ -297,7 +299,6 @@ void Menu::agregarPrestamo()
             {
                 throw std::bad_alloc();
             }
-
             Producto *pago;
             switch (metodo)
             {
@@ -320,11 +321,6 @@ void Menu::agregarPrestamo()
                 std::cout << "Transacción realizada con éxito\n";
                 std::cout << "Detalles del préstamo: \n";
                 banco.obtenerInfoPrestamos(prestamo->obtenerId(), cliente->obtenerId());
-
-                if (metodo == EFECTIVO)
-                {
-                    delete pago;
-                }
             }
             else
             {
@@ -583,7 +579,6 @@ void Menu::pagarPrestamo()
     {
         std::cerr << e.what() << '\n';
     }
-
 
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
