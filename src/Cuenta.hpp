@@ -66,6 +66,8 @@ public:
      * @return Estado
      */
     bool obtenerEstado();
+    
+    void cambiarEstado(bool nuevoEstado);
 };
 /**
  * @brief Excepción para lanzar en el caso de cuentas inactivas

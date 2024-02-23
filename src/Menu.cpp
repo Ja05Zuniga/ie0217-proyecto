@@ -571,6 +571,12 @@ void Menu::realizarOperaciones()
             case 1: //  Pagar préstamo
                 pagarPrestamo();
                 break;
+            case 2:
+                activarCuenta();
+                break;
+            case 3:
+                desactivarCuenta();
+                break;
             case 6:
                 displayOpcionesPrincipales();
             default:
@@ -582,6 +588,48 @@ void Menu::realizarOperaciones()
             std::cerr << e.what() << std::endl;
         }
     }
+}
+
+void Menu::desactivarCuenta(){
+    std::cout<<"1. Desactivar cuenta COLONES\n2. Desactivar cuenta DOLARES"<<std::endl;
+    std::string opcion = obtenerOpcion();
+
+    try{
+        if (opcion=="1"){
+             cliente->activacionCuenta(COLONES, false);
+             std::cout<<"Cuenta de COLONES desactivada con exito"<<std::endl;
+        }
+        else if (opcion=="2"){
+            cliente->activacionCuenta(DOLARES, false);
+            std::cout<<"Cuenta de DOLARES desactivada con exito"<<std::endl;
+        }
+
+        else{throw std::invalid_argument("Opción inválida: " + opcion);}
+    }catch (const std::exception& e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+    // Manejo adicional de excepciones si es necesario
+}
+}
+
+void Menu::activarCuenta(){
+    std::cout<<"1. Activar cuenta COLONES\n2. Activar cuenta DOLARES"<<std::endl;
+    std::string opcion = obtenerOpcion();
+
+    try{
+        if (opcion=="1"){
+             cliente->activacionCuenta(COLONES, true);
+             std::cout<<"Cuenta de COLONES activada"<<std::endl;
+        }
+        else if (opcion=="2"){
+            cliente->activacionCuenta(DOLARES, true);
+            std::cout<<"Cuenta de DOLARES activada"<<std::endl;
+        }
+
+        else{throw std::invalid_argument("Opción inválida: " + opcion);}
+    }catch (const std::exception& e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+    // Manejo adicional de excepciones si es necesario
+}
 }
 
 void Menu::pagarPrestamo()

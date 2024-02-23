@@ -79,7 +79,8 @@ protected:
     void realizarOperaciones();
     // Metodo para mostrar los tipos de prestamos disponibles
     void displayTipoPrestamos();
-
+    void desactivarCuenta();
+    void activarCuenta();
     bool confirmarTransaccion();
 
     

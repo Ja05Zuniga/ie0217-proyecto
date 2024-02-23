@@ -106,9 +106,13 @@ public:
      */
     void obtenerEstadoCuenta(Moneda moneda);
 
+        
+    void activacionCuenta(Moneda moneda, bool activacion);
+
     friend std::istream &operator>>(std::istream &in, Cliente &Cliente);
     unsigned int obtenerId();
     Cliente(const Cliente &otro);
+
 };
 
 #endif
