@@ -1,12 +1,12 @@
 /**
  * @file Menu.hpp
  * @authors J. Zuñiga, A. Franchi, G. Escobar
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2024-02-22
- * 
+ *
  * @copyright Copyright (c) 2024
- * 
+ *
  */
 #ifndef MENU_HPP
 #define MENU_HPP
@@ -25,7 +25,7 @@
  * @brief Clase que gestiona el menu interactivo del sistema bancario.
  *
  * Esta clase se encarga de ser la interfaz del usuario del sistema bancario,
- * realiza la identificacion de usuario, verifica la existencia del cliente y 
+ * realiza la identificacion de usuario, verifica la existencia del cliente y
  * brinda multiples funcionalidades del sistema como la informacion de la cuentas
  * del usuario, manejo de prestamos y distintas operaciones o transacciones bancarias.
  */
@@ -71,6 +71,8 @@ protected:
     // Metodo para
     void agregarPrestamo();
     // Metodo para
+    void agregarCertificado();
+    // Metodo para
     void pagarPrestamo();
     // Metodos que deben ir dentro de gestionarCliente() y displayInformacion()
     // Metodo para gestionar los Ahorros
@@ -82,9 +84,6 @@ protected:
     void desactivarCuenta();
     void activarCuenta();
     bool confirmarTransaccion();
-
-    
-
 
 private:
     // Instancia de la clase Banco relacionada al menu

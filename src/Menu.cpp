@@ -202,8 +202,9 @@ void Menu::displayOpcionesPrincipales()
         "1. Atencion al cliente\n"
         "2. Informacion\n"
         "3. Solicitar préstamo\n"
-        "4. Volver al inicio de sesión\n"
-        "5. Salir\n";
+        "4. Solicitar certificado\n"
+        "5. Volver al inicio de sesión\n"
+        "6. Salir\n";
     bool continuar = true;
     while (continuar)
     {
@@ -228,11 +229,15 @@ void Menu::displayOpcionesPrincipales()
                 agregarPrestamo(); // Llamado de metodo
 
                 break;
-            case 4:            // Volver al inicio de sesión
+            case 4:
+                agregarCertificado(); // Abre un certificado para el cliente
+
+                break;
+            case 5:            // Volver al inicio de sesión
                 iniciarMenu(); // Llamado de metodo
 
                 break;
-            case 5: // Salir por completo del programa
+            case 6: // Salir por completo del programa
                 std::cout << "Saliendo del programa...\n";
                 banco.clean();
                 exit(0);
@@ -317,6 +322,11 @@ void Menu::agregarPrestamo()
             {
                 /* code */
                 id = Prestamo::solicitarIDprestamo();
+                if (id == -1)
+                {
+                    throw std::runtime_error("Operación cancelada");
+                }
+
                 if (id < Constantes::NUM_PRESTAMOS)
                 {
                     break;
@@ -385,6 +395,104 @@ void Menu::agregarPrestamo()
     displayOpcionesPrincipales();
 }
 
+void Menu::agregarCertificado()
+{
+
+    try
+    {
+        std::cout << "El banco ofrece las siguientes opciones de certificados: " << std::endl;
+        banco.obtenerInfoCertificados();
+        std::cout << "\nDebe ingresar el ID del certificado que desea solicitar según lo mostrado en la tabla.\n";
+        int id;
+        while (true)
+        {
+            /* code */
+            id = Certificado::solicitarIDcertificado();
+            if (id == -1)
+            {
+                std::cout << "Operación cancelada" << std::endl;
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                displayOpcionesPrincipales();
+                return;
+            }
+
+            if (id < Constantes::NUM_CERTIFICADOS)
+            {
+                break;
+            }
+            else
+            {
+                std::cout << "El ID no corresponde a ningún certificado ofrecido. Intente nuevamente." << std::endl;
+            }
+        }
+        Dinero dinero;
+        dinero.solicitarMonto();
+        dinero.solicitarMoneda();
+
+        Certificado *certificado = new Certificado(banco.buscarCertificadoOfrecido(id));
+        if (certificado == nullptr)
+        {
+            throw std::bad_alloc();
+        }
+
+        Dinero intereses = certificado->calcularIntereses(dinero);
+        std::cout << "El certificado le generará en intereses: " << intereses.obtenerMoneda() << intereses.obtenerMonto() << std::endl;
+
+        if (confirmarTransaccion())
+        {
+
+            MetodoPago metodo = solicitarMetodoPago();
+            certificado->asignarDueno(cliente->obtenerId());
+            certificado->generarId();
+            banco.agregarCertificado(certificado);
+
+            Producto *pago;
+            switch (metodo)
+            {
+            case EFECTIVO:
+                pago = new Efectivo();
+                break;
+            case CUENTA_COLONES:
+                pago = banco.buscarCuenta(cliente->obtenerId(), COLONES);
+                break;
+            case CUENTA_DOLARES:
+                pago = banco.buscarCuenta(cliente->obtenerId(), DOLARES);
+                break;
+            default:
+                break;
+            }
+
+            if (pago != nullptr)
+            {
+                Transaccion transaccion(certificado, pago, dinero);
+                transaccion();
+                std::cout << "Transacción realizada con éxito\n";
+                std::cout << "Detalles del certificado: \n";
+                banco.obtenerInfoCertificados(certificado->obtenerId(), cliente->obtenerId());
+            }
+            else
+            {
+                throw std::runtime_error("Ocurrió un problema al establecer método de pago");
+            }
+        }
+        else
+        {
+            delete certificado;
+        }
+    }
+    catch (const std::bad_alloc &e)
+    {
+        std::cerr << "No se pudo agregar el certificado";
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    displayOpcionesPrincipales();
+}
 // Manejo de excepciones completas
 /**
  * @brief Metodo que maneja el sub menu dedicado a gestionar los clientes

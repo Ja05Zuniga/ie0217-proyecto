@@ -10,6 +10,9 @@
  */
 #ifndef CERTIFICADO_HPP
 #define CERTIFICADO_HPP
+#include <iomanip>
+#include <fstream>
+#include <sstream>
 #include "Producto.hpp"
 
 /**
@@ -20,9 +23,12 @@ class Certificado : public Producto
 {
 
 private:
-    Dinero montoCertificado;
     float tasaInteresAnual;
+    float tasaInteresMensual;
     int plazo;
+    Dinero montoCertificado;
+    Dinero intereses;
+    unsigned int idDueno;
 
 public:
     /**
@@ -45,6 +51,11 @@ public:
      */
     void obtenerInfo() override;
     /**
+     * @brief Método para mostrar información detallada del certificado
+     *
+     */
+    void obtenerInfoPersonal();
+    /**
      * @brief Método virtual heredado de la clase producto
      *
      * @param monto
@@ -57,9 +68,16 @@ public:
      *
      * @param monto
      */
+    Certificado(const Certificado &otro);
+
     void debitar(Dinero &monto) override;
     void verificarDebito(Dinero &monto) override;
     void verificarCredito(Dinero &monto) override;
+    Certificado(const float &tasaInteresAnual, const unsigned int &id, const int plazo);
+    static int solicitarIDcertificado();
+    Dinero calcularIntereses(Dinero &monto);
+    void asignarDueno(unsigned int id);
+    unsigned int obtenerDueno();
 };
 
 #endif
