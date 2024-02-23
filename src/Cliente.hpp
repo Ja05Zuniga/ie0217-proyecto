@@ -63,18 +63,18 @@ public:
 
     /**
      * @brief Obtiene la cuenta del cliente segun la moneda
-     * 
+     *
      * @param moneda Tipo  de moneda del prestamo.
-     * @return Cuenta* 
+     * @return Cuenta*
      */
     Cuenta *obtenerCuenta(Moneda moneda);
 
     /**
-    * @brief Agrega un nuevo prestamo al cliente.
-    * 
-    * @param *prestamo Puntero de Prestamo a agregar.
-    * @param metodo Tipo  de metodo de pago del prestamo.
-    */ 
+     * @brief Agrega un nuevo prestamo al cliente.
+     *
+     * @param *prestamo Puntero de Prestamo a agregar.
+     * @param metodo Tipo  de metodo de pago del prestamo.
+     */
     void pagarPrestamo(Prestamo *prestamo, MetodoPago metodo);
 
     /**
@@ -86,7 +86,7 @@ public:
     Prestamo buscarPrestamo(const unsigned int id) const;
 
     /**
-     * @brief Permite consultar información detallada del préstamo por el ID 
+     * @brief Permite consultar información detallada del préstamo por el ID
      * a partir de su ID
      *
      * @param id Identificador unico del prestamo a consultar.
@@ -106,13 +106,12 @@ public:
      */
     void obtenerEstadoCuenta(Moneda moneda);
 
-        
     void activacionCuenta(Moneda moneda, bool activacion);
 
     friend std::istream &operator>>(std::istream &in, Cliente &Cliente);
     unsigned int obtenerId();
     Cliente(const Cliente &otro);
-
+    static int solicitarIDcliente();
 };
 
 #endif

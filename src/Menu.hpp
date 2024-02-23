@@ -84,10 +84,11 @@ protected:
     void desactivarCuenta();
     void activarCuenta();
     bool confirmarTransaccion();
-    //Depositar directamente en la cuenta
+    // Depositar directamente en la cuenta
     void acreditarCuenta();
-    //Extraer dinero de la cuenta
+    // Extraer dinero de la cuenta
     void debitarCuenta();
+    void realizarTransferencia();
 
 private:
     // Instancia de la clase Banco relacionada al menu

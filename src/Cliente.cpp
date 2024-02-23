@@ -8,9 +8,9 @@ Cliente::Cliente() {}
 /**
  * @details El constructor automaticante asigna cuentas en dolares y en colones para
  * el usuario
-*
-* @param userId Identificador unico (cedula) del cliente.
-* @param nombre Nombre del cliente.
+ *
+ * @param userId Identificador unico (cedula) del cliente.
+ * @param nombre Nombre del cliente.
  */
 Cliente::Cliente(unsigned int userId, std::string nombre) : userId(userId), nombre(nombre)
 {
@@ -19,8 +19,8 @@ Cliente::Cliente(unsigned int userId, std::string nombre) : userId(userId), nomb
 }
 
 /**
-* @brief Destructor de la clase Cliente.
-*/
+ * @brief Destructor de la clase Cliente.
+ */
 Cliente::~Cliente()
 {
 }
@@ -35,11 +35,11 @@ void Cliente::obtenerInfo()
 }
 
 /**
-     * @brief Obtiene la cuenta del cliente segun la moneda
-     * 
-     * @param moneda Tipo  de moneda del prestamo.
-     * @return Cuenta* 
-     */
+ * @brief Obtiene la cuenta del cliente segun la moneda
+ *
+ * @param moneda Tipo  de moneda del prestamo.
+ * @return Cuenta*
+ */
 Cuenta *Cliente::obtenerCuenta(Moneda Moneda)
 {
     switch (Moneda)
@@ -98,13 +98,13 @@ void Cliente::obtenerInfoPrestamos()
 
 /**
  * @brief Muestra el estado de la cuenta del cliente en la moneda especificada.
- * 
+ *
  * @param moneda Tipo de moneda de la cuenta a consultar
  */
 void Cliente::obtenerEstadoCuenta(Moneda moneda)
 {
     Cuenta cuenta;
-    
+
     switch (moneda)
     {
     case COLONES:
@@ -138,7 +138,6 @@ void Cliente::activacionCuenta(Moneda moneda, bool activacion)
     cuenta->cambiarEstado(activacion);
 }
 
-
 std::istream &operator>>(std::istream &in, Cliente &cliente)
 {
     char delimitador;
@@ -150,3 +149,42 @@ std::istream &operator>>(std::istream &in, Cliente &cliente)
 unsigned int Cliente::obtenerId() { return userId; }
 
 Cliente::Cliente(const Cliente &otro) : userId(otro.userId), nombre(otro.nombre) {}
+
+int Cliente::solicitarIDcliente()
+{
+    std::string input;
+    int id;
+
+    while (true)
+    {
+        try
+        {
+            std::cout << "Ingrese el ID del cliente o escriba 'cancelar' para cancelar: \n";
+            std::cin >> input;
+
+            if (input == "cancelar")
+            {
+                return -1;
+            }
+
+            std::stringstream ss(input);
+            if (!(ss >> id) || !ss.eof())
+            {
+                throw std::invalid_argument("Entrada inválida: Debe ingresar un valor entero.");
+            }
+
+            if (id < 0 || id > std::numeric_limits<int>::max())
+            {
+                throw std::out_of_range("ID fuera de rango. El valor debe ser un número entero no negativo.");
+            }
+
+            return id;
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << "Error: " << e.what() << '\n';
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+    }
+}
