@@ -1,6 +1,6 @@
 /**
  * @file constants.hpp
- * @author your name (you@domain.com)
+ * @authors J. Zuñiga, A. Franchi, G. Escobar
  * @brief 
  * @version 0.1
  * @date 2024-02-15
@@ -21,4 +21,4 @@ namespace Constantes
     // Tasa de venta del dolar
     const int TASA_VENTA = 517;
 
-} // namespace Constantes
+} 

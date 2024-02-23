@@ -9,10 +9,12 @@ Menu::Menu(Banco &banco) : banco(banco) {}
 // Manejo de excepciones completa
 void Menu::iniciarMenu()
 {
-    int cedula = obtenerIdentidad(); // Falta implentar el uso de la clase Cliente
-    /*Si la cedula se ecuentra en la base de datos. Entonces crea el objeto cliente
-    En el caso de que no. Pide el nombre del usuario, agrega la cedula y el nombre a la base de datos y
-    crea el objeto cliente*/
+    int cedula = obtenerIdentidad(); 
+    /** 
+    * @note Si la cedula se ecuentra en la base de datos. Entonces crea el objeto Cliente
+    * En el caso de que no. Pide el nombre del usuario, agrega la cedula y el nombre a la base de datos y
+    * crea el objeto cliente
+    */
 
     std::string cedulaString = std::to_string(cedula); // Pasar cedula a string
 
@@ -26,15 +28,15 @@ void Menu::iniciarMenu()
         std::cout << "Bienvenido" << nombreEncontrado << ". Numero de cédula: " << cedula << std::endl;
     }
     else
-    {
-        std::cout << "No se encontró el usuario." << '\n'; // Etiqueta que la cedula ingresada no se encuentra en el .csv
-
-        // nombre ya está validado y listo para ser añadido al .csv y crear el objeto
+    {   
+        // Etiqueta que la cedula ingresada no se encuentra en el .csv
+        std::cout << "No se encontró el usuario." << '\n'; 
 
         // nombre ya está validado y listo para ser añadido al .csv y crear el objeto
         std::string nombre = obtenerNombre();
 
-        cliente = banco.agregarCliente(cedula, nombre); // Crea el objeto cliente
+        // Crea el objeto cliente
+        cliente = banco.agregarCliente(cedula, nombre); 
 
         std::cout << "Bienvenido " << nombre << ". Numero de cédula: " << cedula << std::endl; // Da la bienvenida
         // std::string cedula_string = std::to_string(cedula); //Transforma cedula a string para poder ser agregado al .csv
@@ -55,15 +57,19 @@ std::string Menu::obtenerNombre()
         std::cout << "La primera letra de cada 'nombre' debe iniciar con mayúscula.\nIngrese su nombre de usuario: ";
         std::getline(std::cin, nombre);
 
-        // Expresión regular para validar el nombre de usuario
-        /*El nombre del usuario tiene que iniciar con mayuscula, el resto del nombre tiene que ir en minuscula.
-        Tiene que ingresar como mínimo dos nombres: unNombre + unApellido
-        Tiene que ingresar como máximo cuatro nombres: dosNombres + dosApellidos
-        El nombre no puede poseer signos especiales
-        Los nombres no pueden superar los 15 caracteres
-        Los nombres no pueden tener menos de dos caracteres
-        */
+        /**
+         * @note Expresión regular para validar el nombre de usuario
+         * 
+         * @details El nombre del usuario tiene que iniciar con mayuscula, el resto del nombre tiene que ir en minuscula.
+         * Tiene que ingresar como mínimo dos nombres: unNombre + unApellido
+        *  Tiene que ingresar como máximo cuatro nombres: dosNombres + dosApellidos
+        *  El nombre no puede poseer signos especiales
+        *  Los nombres no pueden superar los 15 caracteres
+        *  Los nombres no pueden tener menos de dos caracteres
+         */
         std::regex regexNombre("^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{1,14}(\\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{0,13}){0,2}(\\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{1,14})?$");
+        
+        // Manejo de excepciones
         try
         {
             if (nombre.empty())
@@ -82,6 +88,7 @@ std::string Menu::obtenerNombre()
 
             return nombre;
         }
+
         catch (const std::invalid_argument &e)
         {
             std::cerr << "Error: " << e.what() << std::endl;
@@ -90,14 +97,16 @@ std::string Menu::obtenerNombre()
 }
 
 // Manejo de excepciones completa
+/**
+ * @brief Metodo que supervisa la entrada del número de cedula.
+ * 
+ * @details El número de cédula no puede contener letras.
+ *   El número de cédula no puede empezar con cero.
+ *   Debe ingresar un número de cédula de nueve dígitos.
+ */
 int Menu::obtenerIdentidad()
 {
-    /*Metodo que supervisa la entrada del número de cedula.
 
-    El número de cédula no puede contener letras.
-    El número de cédula no puede empezar con cero.
-    Debe ingresar un número de cédula de nueve dígitos.
-    */
     std::string numCedulaStr;
 
     while (true)
@@ -153,6 +162,13 @@ int Menu::obtenerIdentidad()
     }
 }
 
+/**
+ * @brief 
+ * 
+ * @param cedula 
+ * @return true 
+ * @return false 
+ */
 bool Menu::verificarCliente(int cedula)
 {
     bool status = true;
@@ -160,9 +176,15 @@ bool Menu::verificarCliente(int cedula)
     return status;
 }
 
-void Menu::crearCliente(int cedula) {} // Falta implementar codigo basado de la clase AgregarCliente con cedula y nombre
+
+void Menu::crearCliente(int cedula) {} 
 
 // Manejo de excepciones completa
+/**
+ * @brief Metodo que maneja el menu principal
+ * Verifica si los datos ingresados son validos (int) y se encuentra dentro de las opciones
+ * 
+ */
 void Menu::displayOpcionesPrincipales()
 {
 
@@ -189,18 +211,21 @@ void Menu::displayOpcionesPrincipales()
             switch (opcionInt) // Pasamos opcion a tipo int
             {
             case 1: //  Atencion al cliente
-                gestionarCliente();
-                // Falta implementar codigo basado
+                gestionarCliente(); // Llamado de metodo
                 break;
+
             case 2: // Informacion
-                displayInformacion();
-                // Falta implementar codigo basado
+                displayInformacion(); // Llamado de metodo
                 break;
+
             case 3: // Solicitud de préstamo
+                agregarPrestamo(); // Llamado de metodo
+
                 agregarPrestamo();
                 break;
             case 4: // Volver al inicio de sesión
-                iniciarMenu();
+                iniciarMenu(); // Llamado de metodo
+
                 break;
             case 5: // Salir por completo del programa
                 std::cout << "Saliendo del programa...\n";
@@ -218,6 +243,11 @@ void Menu::displayOpcionesPrincipales()
     }
 }
 
+/**
+ * @brief Este metodo se encarga de manejar las excepciones donde se tiene que ingresar un solo valor tipo int
+ *
+ * @return std::string 
+ */
 std::string Menu::obtenerOpcion()
 {
     /*Este metodo se encarga de manejar las excepciones donde se tiene que ingresar un solo valor tipo int
@@ -253,6 +283,15 @@ std::string Menu::obtenerOpcion()
 }
 
 // Manejo de excepciones completa
+/**
+ * @brief Metodo encargado de gestionar los prestamos.
+ * 
+ * @details El metodo solicita los datos y se encarga de crear el objeto dedicado para generar el prestamo solicitado.
+*  Los datos solicitados tienen que seguir ciertos lineamientos para poder gestionar el prestamo.
+*  En el caso de que se ingrese un dato que no sigue estos lineamientos, el sistema posee excepciones que ayudarán
+*  al operador a ingresar un dato valido.
+*  El metodo por último muestra los detalles del prestamo tramitado
+ */
 void Menu::agregarPrestamo()
 {
     /*Metodo encargado de gestionar los prestamos.
@@ -342,12 +381,16 @@ void Menu::agregarPrestamo()
 }
 
 // Manejo de excepciones completas
+/**
+ * @brief Metodo que maneja el sub menu dedicado a gestionar los clientes
+ * Verifica si el dato ingresado es valido y se encuentra dentro de las opciones
+ * 
+ */
 void Menu::gestionarCliente()
 /*Metodo que maneja el sub menu dedicado a gestionar los clientes
 Verifica si el dato ingresado es valido y se encuentra dentro de las opciones*/
 {
-    // Falta implementar logica de codigo basado para manejar las operaciones de cliente
-    // de ejecutarOperaciones() con el uso de Prestamo, Producto, etc
+    
     std::string opciones =
         "\n--- Menu de Atencion al Cliente ---\n"
         "1. Tipos de Prestamos\n"
@@ -368,17 +411,15 @@ Verifica si el dato ingresado es valido y se encuentra dentro de las opciones*/
             switch (opcionInt)
             {
             case 1: //  Tipos de Prestamos
-                displayTipoPrestamos();
-                // Falta implementar codigo basado ...
+                displayTipoPrestamos(); // Llamado del metodo
                 break;
             case 2: // Gestion de Ahorros
-                gestionarAhorros();
-                // Falta implementar codigo basado
+                gestionarAhorros(); // Llamado del metodo
                 break;
             case 3: // Operaciones
-                realizarOperaciones();
+                realizarOperaciones(); // Llamado del metodo
             case 4: // Regresar
-                displayOpcionesPrincipales();
+                displayOpcionesPrincipales(); // Llamado del metodo
             default:
                 std::cout << "Opcion no es valida. Intente de nuevo...\n";
             }
@@ -388,17 +429,20 @@ Verifica si el dato ingresado es valido y se encuentra dentro de las opciones*/
             std::cerr << "Error: " << e.what() << std::endl;
         }
     }
-
+    // Llamado del metodo para regresar al menu inicial
     displayOpcionesPrincipales();
 }
 
-/************************************
- * Metodos que faltan implentar
- *************************************/
+
 
 // Manejo de excepciones completa
+/**
+ * @brief Metodo encargado de gestionar un sub menu
+ * donde se puede obtener informarción de las cuentas de ahorros y prestamos
+ * que el usuario tiene. El metodo es capaz de manejar los datos no validos. Pide la opción hasta que se ingrese un valor valido
+ * 
+ */
 void Menu::displayInformacion()
-
 {
     /*Metodo encargado de gestionar un sub menu donde se puede obtener informarción de las cuentas de ahorros y prestamos
     que el usuario tiene.
@@ -420,14 +464,14 @@ void Menu::displayInformacion()
 
             switch (opcionInt)
             {
-            case 1:
-                displayInformacionGeneral();
+            case 1: // Información general del usuario
+                displayInformacionGeneral();    // Llamado del metodo
                 break;
-            case 2:
-                displayInformacionPrestamo();
+            case 2: // Información de préstamo
+                displayInformacionPrestamo(); // Llamado del metodo
                 break;
-            case 3:
-                displayOpcionesPrincipales();
+            case 3: // Regresar al menu principal
+                displayOpcionesPrincipales(); // Llamado del metodo
                 break;
             default:
                 std::cout << "Opción fuera de rango. Intente de nuevo...\n";
@@ -442,6 +486,11 @@ void Menu::displayInformacion()
 }
 
 // Manejo de excepciones completa
+/**
+ * @brief Metodo donde se puede obtener información especifica de un prestamo ingresando el ID del prestamo.
+ *  El metodo es capaz de manejar los datos no validos. Pide la opción hasta que se ingrese un valor valido
+ * 
+ */
 void Menu::displayInformacionPrestamo()
 {
     /*Metodo donde se puede obtener información especifica de un prestamo ingresando el ID del prestamo.
@@ -460,6 +509,10 @@ void Menu::displayInformacionPrestamo()
     displayOpcionesPrincipales();
 }
 
+/**
+ * @brief Imprime en pantalla la informacion general de las cuentas del
+ * 
+ */
 void Menu::displayInformacionGeneral()
 {
     cliente->obtenerInfo();
@@ -480,10 +533,15 @@ void Menu::displayInformacionGeneral()
 
 void Menu::gestionarAhorros()
 {
-    // Falta implementar logica de codigo basado ...
+    
 }
 
 // Manejo de excepciones incompleta
+/**
+ * @brief Metodo que maneja el menu de operaciones
+ * Ademas imprime en pantalla el submenu de las operaciones disponibles
+ * 
+ */
 void Menu::realizarOperaciones()
 {
 

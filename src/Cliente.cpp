@@ -1,13 +1,16 @@
 #include "Cliente.hpp"
 
+/**
+ * @brief Constructor de la clase Cliente
+ */
 Cliente::Cliente() {}
 
 /**
- * @details El constructor automaticante asigna cuentas es dolares y en colones para
+ * @details El constructor automaticante asigna cuentas en dolares y en colones para
  * el usuario
- *
- * @param userId
- * @param nombre
+*
+* @param userId Identificador unico (cedula) del cliente.
+* @param nombre Nombre del cliente.
  */
 Cliente::Cliente(unsigned int userId, std::string nombre) : userId(userId), nombre(nombre)
 {
@@ -15,16 +18,28 @@ Cliente::Cliente(unsigned int userId, std::string nombre) : userId(userId), nomb
     cuentaDolares = Cuenta(0, DOLARES, userId);
 }
 
+/**
+* @brief Destructor de la clase Cliente.
+*/
 Cliente::~Cliente()
 {
 }
 
+/**
+ * @brief Muestra la información básica del cliente
+ */
 void Cliente::obtenerInfo()
 {
     std::cout << "Nombre: " << nombre << "\n"
               << "ID: " << userId << std::endl;
 }
 
+/**
+     * @brief Obtiene la cuenta del cliente segun la moneda
+     * 
+     * @param moneda Tipo  de moneda del prestamo.
+     * @return Cuenta* 
+     */
 Cuenta *Cliente::obtenerCuenta(Moneda Moneda)
 {
     switch (Moneda)
@@ -41,6 +56,12 @@ Cuenta *Cliente::obtenerCuenta(Moneda Moneda)
     }
 }
 
+/**
+ * @details Busca un préstamo del usuario a partir de su ID
+ *
+ * @param id Identificador unico del prestamo a buscar
+ * @return Prestamo El prestamo buscado
+ */
 Prestamo Cliente::buscarPrestamo(const unsigned int id) const
 {
     try
@@ -67,6 +88,7 @@ void Cliente::obtenerInfoPrestamos()
               << std::setw(Constantes::COL_WIDTH) << std::left << "Moneda"
               << std::setw(Constantes::COL_WIDTH) << std::left << "Monto" << std::endl;
 
+    // Instanciando un objeto iterador
     std::unordered_map<unsigned int, Prestamo>::iterator iter;
     for (iter = prestamos.begin(); iter != prestamos.end(); ++iter)
     {
@@ -74,9 +96,15 @@ void Cliente::obtenerInfoPrestamos()
     }
 }
 
+/**
+ * @brief Muestra el estado de la cuenta del cliente en la moneda especificada.
+ * 
+ * @param moneda Tipo de moneda de la cuenta a consultar
+ */
 void Cliente::obtenerEstadoCuenta(Moneda moneda)
 {
     Cuenta cuenta;
+    
     switch (moneda)
     {
     case COLONES:

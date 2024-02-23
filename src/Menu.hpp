@@ -1,3 +1,13 @@
+/**
+ * @file Menu.hpp
+ * @authors J. Zuñiga, A. Franchi, G. Escobar
+ * @brief 
+ * @version 0.1
+ * @date 2024-02-22
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #ifndef MENU_HPP
 #define MENU_HPP
 #include <string>
@@ -9,13 +19,32 @@
 #include "agregar_cliente.hpp"
 #include "Banco.hpp"
 #include "Efectivo.hpp"
+
+/**
+ * @class Menu
+ * @brief Clase que gestiona el menu interactivo del sistema bancario.
+ *
+ * Esta clase se encarga de ser la interfaz del usuario del sistema bancario,
+ * realiza la identificacion de usuario, verifica la existencia del cliente y 
+ * brinda multiples funcionalidades del sistema como la informacion de la cuentas
+ * del usuario, manejo de prestamos y distintas operaciones o transacciones bancarias.
+ */
 class Menu
 {
 
 public:
-    // Constructor de la clase
+    /**
+     * @brief Constructor para la clase Menu.
+     * @param banco puntero de la clase Banco asociado a este menu.
+     */
     Menu(Banco &banco);
-    // Metodo iniciar el Menu
+
+    /**
+     * @brief Inicia el menu interactivo para el usuario.
+     *
+     * Este metodo arranca el flujo del menu principal permitiendo al usuario realizar
+     * diferentes acciones disponibles en el sistema.
+     */
     void iniciarMenu();
 
 protected:
@@ -33,11 +62,15 @@ protected:
     void displayOpcionesPrincipales();
     // Metodo para manejar las opciones del cliente
     void gestionarCliente();
-    // Metodo para mostrar informacion general
+    // Metodo para mostrar el submenu de la categoria de Informacion
     void displayInformacion();
+    // Metodo para mostrar informacion general
     void displayInformacionGeneral();
+    // Metodo para mostrar informacion de prestamos
     void displayInformacionPrestamo();
+    // Metodo para
     void agregarPrestamo();
+    // Metodo para
     void pagarPrestamo();
     // Metodos que deben ir dentro de gestionarCliente() y displayInformacion()
     // Metodo para gestionar los Ahorros
@@ -49,13 +82,13 @@ protected:
 
     bool confirmarTransaccion();
 
-    // // Metodo para escoger el tipo de moneda para la transaccion
-    // void escogerMoneda();
-    // // Metodo para mostrar el monto y desglose de los prestamos
-    // void displayMontoDesglosado();
+    
+
 
 private:
+    // Instancia de la clase Banco relacionada al menu
     Banco banco;
+    // Instancia de un ptro de la clase Cliente relacionada al Menu
     Cliente *cliente;
 };
 

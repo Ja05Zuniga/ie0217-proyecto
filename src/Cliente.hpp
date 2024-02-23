@@ -1,6 +1,6 @@
 /**
  * @file Cliente.hpp
- * @author your name (you@domain.com)
+ * @authors J. Zuñiga, A. Franchi, G. Escobar
  * @brief
  * @version 0.1
  * @date 2024-02-15
@@ -20,12 +20,17 @@
 #include "MetodoPago.hpp"
 #include "Efectivo.hpp"
 
+/**
+ * @class Cliente
+ * @brief Gestiona la informacion y las operaciones financieras de un cliente.
+ *
+ * La clase Cliente se encarga de almacenar los detalles del cliente, como prestamos y
+ * cuentas bancarias en diferentes monedas. Proporciona metodos para agregar y consultar
+ * prestamos
+ */
 class Cliente
 {
-    /**
-     * @brief Clase para gestionar tramites del cliente
-     *
-     */
+
 private:
     unsigned int userId;
     std::string nombre;
@@ -35,39 +40,56 @@ private:
 
 public:
     /**
-     * @brief Construct a new Cliente object
-     *
+     * @brief Constructor de la clase Cliente
      */
     Cliente();
+
     /**
-     * @brief Construct a new Cliente object
-     *
-     * @param userId
-     * @param nombre
+     * @brief Constructor de la clase Cliente con ID de usuario y nombre.
+     * @param userId Identificador unico (cedula) del cliente.
+     * @param nombre Nombre del cliente.
      */
     Cliente(unsigned int userId, std::string nombre);
+
+    /**
+     * @brief Destructor de la clase Cliente.
+     */
     ~Cliente();
+
     /**
      * @brief Muestra la información básica del cliente
-     *
      */
     void obtenerInfo();
 
+    /**
+     * @brief Obtiene la cuenta del cliente segun la moneda
+     * 
+     * @param moneda Tipo  de moneda del prestamo.
+     * @return Cuenta* 
+     */
     Cuenta *obtenerCuenta(Moneda moneda);
+
+    /**
+    * @brief Agrega un nuevo prestamo al cliente.
+    * 
+    * @param *prestamo Puntero de Prestamo a agregar.
+    * @param metodo Tipo  de metodo de pago del prestamo.
+    */ 
     void pagarPrestamo(Prestamo *prestamo, MetodoPago metodo);
+
     /**
      * @brief Busca un préstamo del usuario a partir de su ID
      *
-     * @param id
-     * @return Prestamo
+     * @param id Identificador unico del prestamo a buscar
+     * @return Prestamo El prestamo buscado
      */
     Prestamo buscarPrestamo(const unsigned int id) const;
 
     /**
-     * @brief Permite consultar información detallada del préstamo
+     * @brief Permite consultar información detallada del préstamo por el ID 
      * a partir de su ID
      *
-     * @param id
+     * @param id Identificador unico del prestamo a consultar.
      */
     void obtenerInfoPrestamo(const unsigned int &id);
 
@@ -80,7 +102,7 @@ public:
     /**
      * @brief Imprime información detallada de la cuenta en la moneda ingresada
      *
-     * @param moneda
+     * @param moneda Tipo de moneda de la cuenta a consultar
      */
     void obtenerEstadoCuenta(Moneda moneda);
 

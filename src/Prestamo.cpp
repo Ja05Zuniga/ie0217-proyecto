@@ -73,17 +73,39 @@ Prestamo::~Prestamo()
 {
 }
 
+Prestamo::~Prestamo() {}
+
+/**
+ * @brief Constructor por defecto de la clase Prestamo.
+ * 
+ * Se inicializa un prestamo con el arg. "Prestamo" por defecto.
+ */
 Prestamo::Prestamo() : Producto("Prestamo") {}
 
+/**
+ * @brief Constructor de la clase Prestamo con parametros especificos.
+ * Inicializa un prestamo con valores especificos y calcula la tasa de interes mensual.
+ * 
+ * @param tipo Tipo de prestamo.
+ * @param cuotas Numero de cuotas del prestamo.
+ * @param tasaInteresAnual Tasa de interes anual del prestamo.
+ * @param id Identificador unico del prestamo.
+ * 
+ */
 Prestamo::Prestamo(const TipoPrestamo &tipo, const unsigned int &cuotas, const float &tasaInteresAnual, const unsigned int &id) : Producto("Prestamo", id), tipo(tipo), cuotas(cuotas), tasaInteresAnual(tasaInteresAnual)
 {
     numCuota = 0;
     tasaInteresMensual = tasaInteresAnual / 12 / 100;
 }
 
+/**
+ * @brief Imprime en pantalla informacion basica del prestamo.
+ */
 void Prestamo::obtenerInfo()
 {
     std::string tipo_str;
+    
+    // Casos para los prestamos
     switch (tipo)
     {
     case PERSONAL:
@@ -99,12 +121,18 @@ void Prestamo::obtenerInfo()
         break;
     }
 
+
+    // Imprime la tabla con los valores con un formato establecido
     std::cout << std::setw(Constantes::COL_WIDTH) << std::left << id
               << std::setw(Constantes::COL_WIDTH) << std::left << tipo_str
               << std::setw(Constantes::COL_WIDTH) << std::left << cuotas
               << std::setw(Constantes::COL_WIDTH) << std::left << tasaInteresAnual << std::endl;
 }
 
+/**
+ * @brief Imprime información detallada del préstamo.
+ * @param reducida
+ */ 
 void Prestamo::obtenerInfoPersonal(bool reducida)
 {
     std::string tipo_str;
@@ -143,16 +171,23 @@ void Prestamo::obtenerInfoPersonal(bool reducida)
                   << std::setw(Constantes::COL_WIDTH) << std::left << montoInicial.obtenerMonto() << std::endl;
     }
 }
+
+/**
+ * @details Aquí se define como actualizar el objeto cada vez que el usuario paga
+ *
+ * @param monto Monto del pago realizado.
+ */
 void Prestamo::acreditar(Dinero &monto)
 {
     numCuota += 1;
+    
 }
 
 /**
- * @ Por debitar a un préstamo se entiende que este se está abriendo por un usuario y se le hará el
+ * @details Por debitar a un préstamo se entiende que este se está abriendo por un usuario y se le hará el
  * depósito respectivo. Por esta razón, aquí se incializa la información relacionada a un préstamo específico.
  *
- * @param monto
+ * @param monto Monto del prestamo al abrirlo.
  */
 void Prestamo::debitar(Dinero &monto)
 {
@@ -166,7 +201,8 @@ void Prestamo::debitar(Dinero &monto)
 /**
  * @brief Los datos de la amortización se almacenan en una vector que alamcena
  * estructuras
- *
+ * @details Calcula la tabla de amortización para el préstamo.
+ * Genera el desglose de los pagos mensuales incluyendo interés y amortización principal.
  */
 void Prestamo::calcularAmortizacion()
 {
@@ -182,11 +218,16 @@ void Prestamo::calcularAmortizacion()
 
         montoSaldoRestante -= amortizacionPrincipal;
 
+        // Usa un struct de tipo Amortizacion para almacenar info del pago
         Amortizacion pago = {cuota, interesPendiente, amortizacionPrincipal, montoSaldoRestante};
         amortizacion.push_back(pago);
     }
 }
 
+/**
+ * @brief 
+ * 
+ */
 void Prestamo::obtenerAmortizacion()
 {
     std::cout << std::setw(Constantes::COL_WIDTH) << std::left << "Cuota"
@@ -201,6 +242,10 @@ void Prestamo::obtenerAmortizacion()
 
 Dinero Prestamo::obtenerCuotaMensual() { return cuotaMensual; }
 
+/**
+ * @brief 
+ * 
+ */
 void Prestamo::imprimirDesglosePago()
 {
 
@@ -220,6 +265,11 @@ void Prestamo::imprimirDesglosePago()
               << std::setw(Constantes::COL_WIDTH) << std::left << pago.saldoRestante << std::endl;
 }
 
+/**
+ * @brief 
+ * 
+ * @param id 
+ */
 void Prestamo::imprimirDesglosePago(unsigned int id)
 {
     Amortizacion pago = amortizacion.at(id);
@@ -229,6 +279,11 @@ void Prestamo::imprimirDesglosePago(unsigned int id)
               << std::setw(Constantes::COL_WIDTH) << std::left << pago.saldoRestante << std::endl;
 }
 
+/**
+ * @brief 
+ * 
+ * @return int 
+ */
 int Prestamo::solicitarIDprestamo()
 {
     std::string input;
@@ -268,6 +323,11 @@ int Prestamo::solicitarIDprestamo()
     }
 }
 
+/**
+ * @brief Construct a new Prestamo:: Prestamo object
+ * 
+ * @param otro 
+ */
 Prestamo::Prestamo(const Prestamo &otro) : Producto("Prestamo", otro.id), idDueno(otro.idDueno), tipo(otro.tipo), cuotas(otro.cuotas), tasaInteresAnual(otro.tasaInteresAnual)
 {
     tasaInteresMensual = tasaInteresAnual / 12 / 100;
@@ -280,6 +340,11 @@ Prestamo::Prestamo(const Prestamo &otro) : Producto("Prestamo", otro.id), idDuen
     }
 }
 
+/**
+ * @brief 
+ * 
+ * @param id 
+ */
 void Prestamo::asignarDueno(const unsigned int id)
 {
     idDueno = id;
@@ -304,6 +369,7 @@ void Prestamo::verificarCredito(Dinero &monto)
     return;
 }
 
+// Manejo de excepciones
 const char *PagoInvalido::what() const noexcept
 {
     return "El préstamo ya fue cancelado";

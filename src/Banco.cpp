@@ -1,12 +1,17 @@
 #include "Banco.hpp"
 
 /**
- * @brief Construct a new Banco:: Banco object
+ * @brief Constructor de un nuevo objeto Banco::Banco 
  * @details Aquí se definen los préstamos ofrecidos por el usuario
- *
  */
 Banco::Banco()
 {
+    // Inicializacion de prestamos con valores predeterminados.
+    /** 
+    * @note basados en aproximaciones a valores comerciales (en la tasa de interes)
+    * los plazos se toman toman todos a un año
+    */
+
     prestamosPredefinidos[PERSONAL] = Prestamo(PERSONAL, 36, 8, PERSONAL);
     prestamosPredefinidos[PERSONAL + 1] = Prestamo(PERSONAL, 48, 10, PERSONAL + 1);
     prestamosPredefinidos[PERSONAL + 2] = Prestamo(PERSONAL, 60, 12, PERSONAL + 2);
@@ -20,6 +25,9 @@ Banco::Banco()
     cargarPrestamos("prestamos.csv");
 }
 
+/**
+ * @brief Desconstructor de un nuevo objeto Banco::Banco 
+ */
 Banco::~Banco()
 {
 }
@@ -38,6 +46,12 @@ void Banco::clean()
     prestamos.clear();
 }
 
+/**
+ * @brief Busca el cliente por su ced (id) en el contenedor de clientes
+ * 
+ * @param id numero de indentificacion del cliente
+ * @return Cliente Una instancia del clase Cliente
+ */
 Cliente *Banco::buscarCliente(const unsigned int &id)
 {
     auto it = clientes.find(id);
@@ -53,6 +67,12 @@ Cliente *Banco::buscarCliente(const unsigned int &id)
     }
 }
 
+/**
+ * @brief Busca el cliente en el contenedor de prestamos
+ * 
+ * @param id Identificacion unica del prestamo
+ * @return Prestamo Una instancia del clase Prestamo
+ */
 Prestamo *Banco::buscarPrestamo(const int id)
 {
 
@@ -116,9 +136,9 @@ Prestamo *Banco::buscarPrestamo(const unsigned int &id, const unsigned int &idDu
 }
 
 /**
- * @details Llama el método obtenerInfo de la clase préstamo
- *
- * @param id
+ * @brief Imprime en pantalla información del básica del préstamo
+ * 
+ * @param id Identificacion unica del prestamo
  */
 void Banco::obtenerInfoPrestamos(const unsigned int &id)
 {
@@ -165,17 +185,29 @@ void Banco::obtenerInfoPrestamos()
     }
 }
 
-/**
- * @details Llama el método obtenerInfo de la clase certificado
- *
- * @param id
- */
+ /**
+ * @brief Imprime en pantalla informacion basica del certificado
+ *        Llama el metodo obtenerInfo de la clase certificado
+* 
+* @param id Identificacion unica del certificado
+*/
 void Banco::obtenerInfoCertificados(const unsigned int &id)
 {
+    // Instancia del objeto de clase Certificado 
+    // se accede al elemento id del mapa certificados
     Certificado certificado = certificados.at(id);
+
+    // Llamado del metodo obtenerInfo de la clase Certificado
     certificado.obtenerInfo();
 }
 
+/**
+ * @brief Agrega un cliente nuevo al contenedor de clientes del Banco
+ * 
+ * @param id cedula de identificacion del cliente
+ * @param nombre Nombre del cliente a registrar
+ * @return Cliente Una instancia del clase Cliente
+ */
 Cliente *Banco::agregarCliente(const unsigned int &id, const std::string &nombre)
 {
 
