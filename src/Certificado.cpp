@@ -13,6 +13,11 @@ Certificado::Certificado(const float &tasaInteresAnual, const unsigned int &id, 
 }
 Certificado::Certificado(const Dinero &montoCertificado, const float &tasaInteresAnual, const unsigned int &id) : Producto("Certificado", id), montoCertificado(montoCertificado), tasaInteresAnual(tasaInteresAnual) {}
 Certificado::Certificado(const Certificado &otro) : Producto("Certificado", otro.id), tasaInteresAnual(otro.tasaInteresAnual), tasaInteresMensual(otro.tasaInteresMensual), plazo(otro.plazo) {}
+Certificado::Certificado(const Certificado &otro, int idDueno) : Producto("Certificado", otro.id), tasaInteresAnual(otro.tasaInteresAnual), idDueno(otro.idDueno), plazo(otro.plazo), montoCertificado(otro.montoCertificado)
+{
+    tasaInteresMensual = tasaInteresAnual / 12 / 100;
+    intereses = calcularIntereses(montoCertificado);
+}
 Certificado::~Certificado()
 {
 }
@@ -47,12 +52,13 @@ void Certificado::obtenerInfoPersonal(bool reducida)
     }
 }
 
-void Certificado::acreditar(Dinero &monto) {}
-
-void Certificado::debitar(Dinero &monto)
+void Certificado::acreditar(Dinero &monto)
 {
     montoCertificado = monto;
     intereses = calcularIntereses(monto);
+}
+void Certificado::debitar(Dinero &monto)
+{
 }
 
 void Certificado::verificarDebito(Dinero &monto)
@@ -118,4 +124,18 @@ void Certificado::asignarDueno(unsigned int id)
 unsigned int Certificado::obtenerDueno()
 {
     return idDueno;
+}
+
+std::istream &operator>>(std::istream &in, Certificado &certificado)
+{
+    char delimitador;
+    in >> certificado.idDueno >> delimitador >> certificado.id >> delimitador >> certificado.plazo >> delimitador >> certificado.tasaInteresAnual >> delimitador >> certificado.montoCertificado;
+    return in;
+}
+
+std::ostream &operator<<(std::ostream &os, Certificado &certificado)
+{
+    char delimitador = ',';
+    os << certificado.idDueno << delimitador << certificado.id << delimitador << certificado.plazo << delimitador << certificado.tasaInteresAnual << delimitador << certificado.montoCertificado;
+    return os;
 }

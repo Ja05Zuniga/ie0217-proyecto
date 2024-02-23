@@ -69,6 +69,7 @@ public:
      * @param monto
      */
     Certificado(const Certificado &otro);
+    Certificado(const Certificado &otro, int idDueno);
 
     void debitar(Dinero &monto) override;
     void verificarDebito(Dinero &monto) override;
@@ -78,6 +79,8 @@ public:
     Dinero calcularIntereses(Dinero &monto);
     void asignarDueno(unsigned int id);
     unsigned int obtenerDueno();
+    friend std::istream &operator>>(std::istream &in, Certificado &certificado);
+    friend std::ostream &operator<<(std::ostream &os, Certificado &certificado);
 };
 
 #endif

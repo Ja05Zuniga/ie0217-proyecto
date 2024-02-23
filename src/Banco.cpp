@@ -28,6 +28,7 @@ Banco::Banco()
 
     cargarPrestamos("prestamos.csv");
     cargarCuentas("cuentas.csv");
+    cargarCertificados("certificados.csv");
 }
 
 /**
@@ -41,6 +42,7 @@ void Banco::clean()
 {
     registrarPrestamos("prestamos.csv");
     registrarCuentas("cuentas.csv");
+    registrarCertificados("certificados.csv");
 
     for (auto &entrada : prestamos)
     {
@@ -357,6 +359,55 @@ void Banco::cargarPrestamos(const std::string &archivoCSV)
     }
 }
 
+void Banco::cargarCertificados(const std::string &archivoCSV)
+{
+    try
+    {
+        std::ifstream in(archivoCSV);
+
+        if (!in)
+        {
+            throw std::ios_base::failure("No se pudo abrir el archivo");
+        }
+
+        Certificado temp;
+        std::string line;
+
+        while (std::getline(in, line))
+        {
+            // Verificar si la línea está vacía
+            if (line.empty() || std::all_of(line.begin(), line.end(), ::isspace))
+            {
+                break;
+            }
+
+            std::istringstream iss(line);
+            if (iss >> temp)
+            {
+                Certificado *ptrCertificado = new Certificado(temp, temp.obtenerDueno());
+                if (ptrCertificado != nullptr)
+                {
+                    agregarCertificado(ptrCertificado);
+                }
+                else
+                {
+                    throw std::bad_alloc();
+                }
+            }
+            else
+            {
+                throw std::invalid_argument("Formato inválido");
+            }
+        }
+
+        std::cout << "Certificados cargados con éxito" << std::endl;
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "Error al cargar certificados: " << e.what() << '\n';
+    }
+}
+
 void Banco::cargarCuentas(const std::string &archivoCSV)
 {
     try
@@ -417,6 +468,23 @@ void Banco::registrarPrestamos(const std::string &archivoCSV)
     for (const auto &prestamo : prestamos)
     {
         of << *prestamo.second << std::endl;
+    }
+
+    of.close();
+}
+
+void Banco::registrarCertificados(const std::string &archivoCSV)
+{
+
+    std::ofstream of(archivoCSV);
+
+    if (!of.is_open())
+    {
+        throw std::runtime_error("Error al abrir archivo de registro de préstamos");
+    }
+    for (const auto &certificado : certificados)
+    {
+        of << *certificado.second << std::endl;
     }
 
     of.close();

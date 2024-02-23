@@ -114,8 +114,10 @@ public:
 
     // Heredando metodos de la clase Banco
     void cargarPrestamos(const std::string &archivoCSV);
+    void cargarCertificados(const std::string &archivoCSV);
     void cargarCuentas(const std::string &archivoCSV);
     void registrarPrestamos(const std::string &archivoCSV);
+    void registrarCertificados(const std::string &archivoCSV);
     void registrarCuentas(const std::string &archivoCSV);
     void cargarClientes(const std::string &archivoCSV);
     void agregarPrestamo(Prestamo *prestamo);
