@@ -706,7 +706,7 @@ void Menu::acreditarCuenta()
 
             // Crear un objeto Dinero con el monto ingresado y la moneda especificada
             Dinero montoADepositar(monto, monedaDeposito);
-
+            cuentaCliente->verificarCredito(montoADepositar);
             // Depositar el dinero en la cuenta
             cuentaCliente->acreditar(montoADepositar);
 
@@ -772,6 +772,7 @@ void Menu::debitarCuenta()
 
             // Crear un objeto Dinero con el monto ingresado y la moneda especificada
             Dinero montoARetirar(monto, monedaRetiro);
+            cuentaCliente->verificarDebito(montoARetirar);
 
             // Retirar el dinero de la cuenta
             cuentaCliente->debitar(montoARetirar);
