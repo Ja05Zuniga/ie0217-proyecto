@@ -33,8 +33,9 @@ private:
     std::unordered_map<unsigned int, Cuenta *> cuentasDolares;
     // ID dueño, luego ID propio
     std::map<std::pair<int, int>, Prestamo *> prestamos;
-    std::unordered_map<unsigned int, Certificado> certificados;
+    std::map<std::pair<int, int>, Certificado *> certificados;
     std::array<Prestamo, Constantes::NUM_PRESTAMOS> prestamosPredefinidos;
+    std::array<Certificado, Constantes::NUM_CERTIFICADOS> certificadosPredefinidos;
 
 public:
     /**
@@ -74,10 +75,10 @@ public:
 
     /**
      * @brief Busca la cuenta en el contenedor de cuentas apropiado
-     * 
-     * @param id 
-     * @param moneda 
-     * @return Cuenta* 
+     *
+     * @param id
+     * @param moneda
+     * @return Cuenta*
      */
     Cuenta *buscarCuenta(const unsigned int id, Moneda moneda);
 
@@ -100,7 +101,7 @@ public:
      *
      * @param id Identificacion unica del certificado
      */
-    void obtenerInfoCertificados(const unsigned int &id);
+    void obtenerInfoCertificados();
 
     /**
      * @brief Agrega un cliente al contenedor clientes
@@ -121,8 +122,12 @@ public:
     void agregarCuenta(Cuenta *cuenta);
     void obtenerInfoPrestamos(const unsigned int &id, const unsigned int &idDueno);
     Prestamo buscarPrestamoOfrecido(const unsigned int id);
+    Certificado buscarCertificadoOfrecido(const unsigned int id);
     void obtenerInfoPrestamosCliente(const int id);
     void clean();
+    void agregarCertificado(Certificado *certificado);
+    Certificado *buscarCertificado(const unsigned int &id, const unsigned int &idDueno);
+    void obtenerInfoCertificados(const unsigned int &id, const unsigned int &idDueno);
 };
 
 #endif

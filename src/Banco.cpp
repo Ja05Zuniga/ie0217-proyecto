@@ -22,6 +22,10 @@ Banco::Banco()
     prestamosPredefinidos[HIPOTECARIO + 1] = Prestamo(HIPOTECARIO, 360, 4, HIPOTECARIO + 1);
     prestamosPredefinidos[HIPOTECARIO + 2] = Prestamo(HIPOTECARIO, 480, 4.5, HIPOTECARIO + 2);
 
+    certificadosPredefinidos[0] = Certificado(2.5, 0, 12);
+    certificadosPredefinidos[1] = Certificado(3.0, 1, 18);
+    certificadosPredefinidos[2] = Certificado(4.0, 2, 24);
+
     cargarPrestamos("prestamos.csv");
     cargarCuentas("cuentas.csv");
 }
@@ -139,6 +143,12 @@ Prestamo Banco::buscarPrestamoOfrecido(const unsigned int id)
     return prestamosPredefinidos[id];
 }
 
+Certificado Banco::buscarCertificadoOfrecido(const unsigned int id)
+{
+
+    return certificadosPredefinidos[id];
+}
+
 Prestamo *Banco::buscarPrestamo(const unsigned int &id, const unsigned int &idDueno)
 {
     auto it = prestamos.find(std::make_pair(idDueno, id));
@@ -146,6 +156,21 @@ Prestamo *Banco::buscarPrestamo(const unsigned int &id, const unsigned int &idDu
     if (it != prestamos.end())
     {
         Prestamo *ptrPrestamo = it->second;
+        return ptrPrestamo;
+    }
+    else
+    {
+        return nullptr;
+    }
+}
+
+Certificado *Banco::buscarCertificado(const unsigned int &id, const unsigned int &idDueno)
+{
+    auto it = certificados.find(std::make_pair(idDueno, id));
+
+    if (it != certificados.end())
+    {
+        Certificado *ptrPrestamo = it->second;
         return ptrPrestamo;
     }
     else
@@ -190,6 +215,19 @@ void Banco::obtenerInfoPrestamos(const unsigned int &id, const unsigned int &idD
     }
 }
 
+void Banco::obtenerInfoCertificados(const unsigned int &id, const unsigned int &idDueno)
+{
+    Certificado *certificado = buscarCertificado(id, idDueno);
+    if (certificado != nullptr)
+    {
+        certificado->obtenerInfoPersonal();
+    }
+    else
+    {
+        throw std::out_of_range("No se encontró el préstamo indicado");
+    }
+}
+
 void Banco::obtenerInfoPrestamos()
 {
     std::cout << std::left << std::setw(Constantes::COL_WIDTH) << "ID"
@@ -210,14 +248,18 @@ void Banco::obtenerInfoPrestamos()
  *
  * @param id Identificacion unica del certificado
  */
-void Banco::obtenerInfoCertificados(const unsigned int &id)
+void Banco::obtenerInfoCertificados()
 {
+    std::cout << std::left << std::setw(Constantes::COL_WIDTH) << "ID"
+              << std::setw(Constantes::COL_WIDTH) << "Plazo (meses)"
+              << std::setw(Constantes::COL_WIDTH) << "Tasa de interés anual" << std::endl;
     // Instancia del objeto de clase Certificado
     // se accede al elemento id del mapa certificados
-    Certificado certificado = certificados.at(id);
+    for (auto certificado : certificadosPredefinidos)
+    {
 
-    // Llamado del metodo obtenerInfo de la clase Certificado
-    certificado.obtenerInfo();
+        certificado.obtenerInfo();
+    }
 }
 
 /**
@@ -417,6 +459,20 @@ void Banco::agregarPrestamo(Prestamo *prestamo)
     if (prestamo != nullptr)
     {
         prestamos[std::make_pair(prestamo->obtenerDueno(), prestamo->obtenerId())] = prestamo;
+    }
+}
+
+/**
+ * @details La verificación nos asegura que el contenedor nunca almacenará punteros nulos
+ *
+ * @param prestamo
+ * @return void*
+ */
+void Banco::agregarCertificado(Certificado *certificado)
+{
+    if (certificado != nullptr)
+    {
+        certificados[std::make_pair(certificado->obtenerDueno(), certificado->obtenerId())] = certificado;
     }
 }
 
