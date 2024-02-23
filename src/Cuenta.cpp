@@ -2,6 +2,7 @@
 Cuenta::Cuenta(/* args */) : Producto("Cuenta")
 {
 }
+Cuenta::Cuenta(const Cuenta &otro) : Producto(std::string("Cuenta") + std::string(otro.moneda == COLONES ? " Colones" : " Dolares"), id), ahorros(otro.ahorros), moneda(otro.moneda) {}
 
 Cuenta::Cuenta(const float &monto, Moneda moneda, unsigned int id) : Producto(std::string("Cuenta") + std::string(moneda == COLONES ? " Colones" : " Dolares"), id), ahorros(Dinero(monto, moneda)), moneda(moneda)
 {
@@ -17,7 +18,7 @@ void Cuenta::obtenerInfo()
 {
     std::cout << std::setw(Constantes::COL_WIDTH) << std::left << id
               << std::setw(Constantes::COL_WIDTH) << std::left << estado
-              << std::setw(Constantes::COL_WIDTH) << std::left << ahorros << std::endl;
+              << std::setw(Constantes::COL_WIDTH) << std::left << ahorros.obtenerMoneda() << ahorros.obtenerMonto() << std::endl;
 }
 
 /**
@@ -88,13 +89,21 @@ const char *FondosInsuficientes::what() const noexcept
     return "Fondos insuficientes!";
 }
 
-void Cuenta::verificarDebito(const Dinero &monto)
+void Cuenta::verificarDebito(Dinero &monto)
 {
     if (!estado)
     {
         throw CuentaInactiva();
     }
-    else if (ahorros.obtenerMonto() < monto.obtenerMonto())
+    else if (moneda == monto.obtenerMoneda() && ahorros.obtenerMonto() < monto.obtenerMonto())
+    {
+        throw FondosInsuficientes();
+    }
+    else if (moneda == COLONES && ahorros.obtenerMonto() < monto.venderColones().obtenerMonto())
+    {
+        throw FondosInsuficientes();
+    }
+    else if (moneda == DOLARES && ahorros.obtenerMonto() < monto.comprarColones().obtenerMonto())
     {
         throw FondosInsuficientes();
     }
@@ -103,7 +112,7 @@ void Cuenta::verificarDebito(const Dinero &monto)
         return;
     }
 }
-void Cuenta::verificarCredito(const Dinero &monto)
+void Cuenta::verificarCredito(Dinero &monto)
 {
     if (!estado)
     {

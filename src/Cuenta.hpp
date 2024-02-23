@@ -35,6 +35,7 @@ private:
 
 public:
     Cuenta(/* args */);
+    Cuenta(const Cuenta &otro);
     Cuenta(const float &monto, Moneda moneda, unsigned int id);
     ~Cuenta();
     /**
@@ -56,8 +57,8 @@ public:
      * @param monto
      */
     void debitar(Dinero &monto) override;
-    void verificarDebito(const Dinero &monto) override;
-    void verificarCredito(const Dinero &monto) override;
+    void verificarDebito(Dinero &monto) override;
+    void verificarCredito(Dinero &monto) override;
 
     /**
      * @brief Devuelve un enumerador indicando el estado de la cuenta

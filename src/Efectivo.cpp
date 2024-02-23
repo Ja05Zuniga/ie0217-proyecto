@@ -39,16 +39,30 @@ void Efectivo::solicitarPago()
     dinero.solicitarMoneda();
 }
 
-void Efectivo::verificarDebito(const Dinero &monto)
+void Efectivo::verificarDebito(Dinero &monto)
 {
     solicitarPago();
-    if (dinero.obtenerMonto() < monto.obtenerMonto())
+
+    if (dinero.obtenerMoneda() == monto.obtenerMoneda() && dinero.obtenerMonto() < monto.obtenerMonto())
     {
         throw EfectivoInsuficiente();
     }
+    else if (dinero.obtenerMoneda() == DOLARES && dinero.venderDolares().obtenerMonto() < monto.obtenerMonto())
+    {
+        throw EfectivoInsuficiente();
+    }
+    else if (dinero.obtenerMoneda() == COLONES && dinero.comprarColones().obtenerMonto() < monto.obtenerMonto())
+    {
+        std::cout << dinero.comprarColones().obtenerMonto();
+        throw EfectivoInsuficiente();
+    }
+    else
+    {
+        return;
+    }
 }
 
-void Efectivo::verificarCredito(const Dinero &monto) { return; }
+void Efectivo::verificarCredito(Dinero &monto) { return; }
 
 const char *EfectivoInsuficiente::what() const noexcept
 {

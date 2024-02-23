@@ -186,7 +186,7 @@ void Dinero::solicitarMonto()
  */
 std::ostream &operator<<(std::ostream &os, const Dinero &obj)
 {
-
+    char delimitador = ',';
     std::string prefix;
     switch (obj.moneda)
     {
@@ -199,7 +199,7 @@ std::ostream &operator<<(std::ostream &os, const Dinero &obj)
     default:
         break;
     }
-    os << prefix << obj.monto;
+    os << prefix << delimitador << obj.monto;
     return os;
 }
 std::istream &operator>>(std::istream &in, Dinero &dinero)
