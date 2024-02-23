@@ -9,12 +9,12 @@ Menu::Menu(Banco &banco) : banco(banco) {}
 // Manejo de excepciones completa
 void Menu::iniciarMenu()
 {
-    int cedula = obtenerIdentidad(); 
-    /** 
-    * @note Si la cedula se ecuentra en la base de datos. Entonces crea el objeto Cliente
-    * En el caso de que no. Pide el nombre del usuario, agrega la cedula y el nombre a la base de datos y
-    * crea el objeto cliente
-    */
+    int cedula = obtenerIdentidad();
+    /**
+     * @note Si la cedula se ecuentra en la base de datos. Entonces crea el objeto Cliente
+     * En el caso de que no. Pide el nombre del usuario, agrega la cedula y el nombre a la base de datos y
+     * crea el objeto cliente
+     */
 
     std::string cedulaString = std::to_string(cedula); // Pasar cedula a string
 
@@ -25,18 +25,25 @@ void Menu::iniciarMenu()
 
         cliente = banco.agregarCliente(cedula, nombreEncontrado);
 
-        std::cout << "Bienvenido" << nombreEncontrado << ". Numero de cédula: " << cedula << std::endl;
+        std::cout
+            << "Bienvenido" << nombreEncontrado << ". Numero de cédula: " << cedula << std::endl;
     }
     else
-    {   
+    {
         // Etiqueta que la cedula ingresada no se encuentra en el .csv
-        std::cout << "No se encontró el usuario." << '\n'; 
+        std::cout << "No se encontró el usuario." << '\n';
 
         // nombre ya está validado y listo para ser añadido al .csv y crear el objeto
         std::string nombre = obtenerNombre();
 
         // Crea el objeto cliente
-        cliente = banco.agregarCliente(cedula, nombre); 
+        cliente = banco.agregarCliente(cedula, nombre);
+
+        // Crea sus cuentas
+        Cuenta *cuentasColones = new Cuenta(0, COLONES, cedula);
+        banco.agregarCuenta(cuentasColones);
+        Cuenta *cuentasDolares = new Cuenta(0, DOLARES, cedula);
+        banco.agregarCuenta(cuentasDolares);
 
         std::cout << "Bienvenido " << nombre << ". Numero de cédula: " << cedula << std::endl; // Da la bienvenida
         // std::string cedula_string = std::to_string(cedula); //Transforma cedula a string para poder ser agregado al .csv
@@ -59,16 +66,16 @@ std::string Menu::obtenerNombre()
 
         /**
          * @note Expresión regular para validar el nombre de usuario
-         * 
+         *
          * @details El nombre del usuario tiene que iniciar con mayuscula, el resto del nombre tiene que ir en minuscula.
          * Tiene que ingresar como mínimo dos nombres: unNombre + unApellido
-        *  Tiene que ingresar como máximo cuatro nombres: dosNombres + dosApellidos
-        *  El nombre no puede poseer signos especiales
-        *  Los nombres no pueden superar los 15 caracteres
-        *  Los nombres no pueden tener menos de dos caracteres
+         *  Tiene que ingresar como máximo cuatro nombres: dosNombres + dosApellidos
+         *  El nombre no puede poseer signos especiales
+         *  Los nombres no pueden superar los 15 caracteres
+         *  Los nombres no pueden tener menos de dos caracteres
          */
         std::regex regexNombre("^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{1,14}(\\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{0,13}){0,2}(\\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{1,14})?$");
-        
+
         // Manejo de excepciones
         try
         {
@@ -99,7 +106,7 @@ std::string Menu::obtenerNombre()
 // Manejo de excepciones completa
 /**
  * @brief Metodo que supervisa la entrada del número de cedula.
- * 
+ *
  * @details El número de cédula no puede contener letras.
  *   El número de cédula no puede empezar con cero.
  *   Debe ingresar un número de cédula de nueve dígitos.
@@ -163,11 +170,11 @@ int Menu::obtenerIdentidad()
 }
 
 /**
- * @brief 
- * 
- * @param cedula 
- * @return true 
- * @return false 
+ * @brief
+ *
+ * @param cedula
+ * @return true
+ * @return false
  */
 bool Menu::verificarCliente(int cedula)
 {
@@ -176,14 +183,13 @@ bool Menu::verificarCliente(int cedula)
     return status;
 }
 
-
-void Menu::crearCliente(int cedula) {} 
+void Menu::crearCliente(int cedula) {}
 
 // Manejo de excepciones completa
 /**
  * @brief Metodo que maneja el menu principal
  * Verifica si los datos ingresados son validos (int) y se encuentra dentro de las opciones
- * 
+ *
  */
 void Menu::displayOpcionesPrincipales()
 {
@@ -210,20 +216,19 @@ void Menu::displayOpcionesPrincipales()
             // Casos
             switch (opcionInt) // Pasamos opcion a tipo int
             {
-            case 1: //  Atencion al cliente
+            case 1:                 //  Atencion al cliente
                 gestionarCliente(); // Llamado de metodo
                 break;
 
-            case 2: // Informacion
+            case 2:                   // Informacion
                 displayInformacion(); // Llamado de metodo
                 break;
 
-            case 3: // Solicitud de préstamo
+            case 3:                // Solicitud de préstamo
                 agregarPrestamo(); // Llamado de metodo
 
-                agregarPrestamo();
                 break;
-            case 4: // Volver al inicio de sesión
+            case 4:            // Volver al inicio de sesión
                 iniciarMenu(); // Llamado de metodo
 
                 break;
@@ -246,7 +251,7 @@ void Menu::displayOpcionesPrincipales()
 /**
  * @brief Este metodo se encarga de manejar las excepciones donde se tiene que ingresar un solo valor tipo int
  *
- * @return std::string 
+ * @return std::string
  */
 std::string Menu::obtenerOpcion()
 {
@@ -285,12 +290,12 @@ std::string Menu::obtenerOpcion()
 // Manejo de excepciones completa
 /**
  * @brief Metodo encargado de gestionar los prestamos.
- * 
+ *
  * @details El metodo solicita los datos y se encarga de crear el objeto dedicado para generar el prestamo solicitado.
-*  Los datos solicitados tienen que seguir ciertos lineamientos para poder gestionar el prestamo.
-*  En el caso de que se ingrese un dato que no sigue estos lineamientos, el sistema posee excepciones que ayudarán
-*  al operador a ingresar un dato valido.
-*  El metodo por último muestra los detalles del prestamo tramitado
+ *  Los datos solicitados tienen que seguir ciertos lineamientos para poder gestionar el prestamo.
+ *  En el caso de que se ingrese un dato que no sigue estos lineamientos, el sistema posee excepciones que ayudarán
+ *  al operador a ingresar un dato valido.
+ *  El metodo por último muestra los detalles del prestamo tramitado
  */
 void Menu::agregarPrestamo()
 {
@@ -384,13 +389,13 @@ void Menu::agregarPrestamo()
 /**
  * @brief Metodo que maneja el sub menu dedicado a gestionar los clientes
  * Verifica si el dato ingresado es valido y se encuentra dentro de las opciones
- * 
+ *
  */
 void Menu::gestionarCliente()
 /*Metodo que maneja el sub menu dedicado a gestionar los clientes
 Verifica si el dato ingresado es valido y se encuentra dentro de las opciones*/
 {
-    
+
     std::string opciones =
         "\n--- Menu de Atencion al Cliente ---\n"
         "1. Tipos de Prestamos\n"
@@ -410,15 +415,15 @@ Verifica si el dato ingresado es valido y se encuentra dentro de las opciones*/
             // Casos
             switch (opcionInt)
             {
-            case 1: //  Tipos de Prestamos
+            case 1:                     //  Tipos de Prestamos
                 displayTipoPrestamos(); // Llamado del metodo
                 break;
-            case 2: // Gestion de Ahorros
+            case 2:                 // Gestion de Ahorros
                 gestionarAhorros(); // Llamado del metodo
                 break;
-            case 3: // Operaciones
-                realizarOperaciones(); // Llamado del metodo
-            case 4: // Regresar
+            case 3:                           // Operaciones
+                realizarOperaciones();        // Llamado del metodo
+            case 4:                           // Regresar
                 displayOpcionesPrincipales(); // Llamado del metodo
             default:
                 std::cout << "Opcion no es valida. Intente de nuevo...\n";
@@ -433,14 +438,12 @@ Verifica si el dato ingresado es valido y se encuentra dentro de las opciones*/
     displayOpcionesPrincipales();
 }
 
-
-
 // Manejo de excepciones completa
 /**
  * @brief Metodo encargado de gestionar un sub menu
  * donde se puede obtener informarción de las cuentas de ahorros y prestamos
  * que el usuario tiene. El metodo es capaz de manejar los datos no validos. Pide la opción hasta que se ingrese un valor valido
- * 
+ *
  */
 void Menu::displayInformacion()
 {
@@ -464,13 +467,13 @@ void Menu::displayInformacion()
 
             switch (opcionInt)
             {
-            case 1: // Información general del usuario
-                displayInformacionGeneral();    // Llamado del metodo
+            case 1:                          // Información general del usuario
+                displayInformacionGeneral(); // Llamado del metodo
                 break;
-            case 2: // Información de préstamo
+            case 2:                           // Información de préstamo
                 displayInformacionPrestamo(); // Llamado del metodo
                 break;
-            case 3: // Regresar al menu principal
+            case 3:                           // Regresar al menu principal
                 displayOpcionesPrincipales(); // Llamado del metodo
                 break;
             default:
@@ -489,7 +492,7 @@ void Menu::displayInformacion()
 /**
  * @brief Metodo donde se puede obtener información especifica de un prestamo ingresando el ID del prestamo.
  *  El metodo es capaz de manejar los datos no validos. Pide la opción hasta que se ingrese un valor valido
- * 
+ *
  */
 void Menu::displayInformacionPrestamo()
 {
@@ -511,7 +514,7 @@ void Menu::displayInformacionPrestamo()
 
 /**
  * @brief Imprime en pantalla la informacion general de las cuentas del
- * 
+ *
  */
 void Menu::displayInformacionGeneral()
 {
@@ -522,9 +525,16 @@ void Menu::displayInformacionGeneral()
               << std::setw(Constantes::COL_WIDTH) << std::left << "Estado"
               << std::setw(Constantes::COL_WIDTH) << std::left << "Moneda"
               << std::setw(Constantes::COL_WIDTH) << std::left << "Ahorros" << std::endl;
-
-    cliente->obtenerEstadoCuenta(COLONES);
-    cliente->obtenerEstadoCuenta(DOLARES);
+    Cuenta *cuentaColones = banco.buscarCuenta(cliente->obtenerId(), COLONES);
+    if (cuentaColones != nullptr)
+    {
+        cuentaColones->obtenerInfo();
+    }
+    Cuenta *cuentaDolares = banco.buscarCuenta(cliente->obtenerId(), DOLARES);
+    if (cuentaDolares != nullptr)
+    {
+        cuentaDolares->obtenerInfo();
+    }
 
     banco.obtenerInfoPrestamosCliente(cliente->obtenerId());
 
@@ -533,14 +543,13 @@ void Menu::displayInformacionGeneral()
 
 void Menu::gestionarAhorros()
 {
-    
 }
 
 // Manejo de excepciones incompleta
 /**
  * @brief Metodo que maneja el menu de operaciones
  * Ademas imprime en pantalla el submenu de las operaciones disponibles
- * 
+ *
  */
 void Menu::realizarOperaciones()
 {
@@ -590,46 +599,64 @@ void Menu::realizarOperaciones()
     }
 }
 
-void Menu::desactivarCuenta(){
-    std::cout<<"1. Desactivar cuenta COLONES\n2. Desactivar cuenta DOLARES"<<std::endl;
+void Menu::desactivarCuenta()
+{
+    std::cout << "1. Desactivar cuenta COLONES\n2. Desactivar cuenta DOLARES" << std::endl;
     std::string opcion = obtenerOpcion();
 
-    try{
-        if (opcion=="1"){
-             cliente->activacionCuenta(COLONES, false);
-             std::cout<<"Cuenta de COLONES desactivada con exito"<<std::endl;
+    try
+    {
+        if (opcion == "1")
+        {
+            banco.buscarCuenta(cliente->obtenerId(), COLONES)->cambiarEstado(false);
+            std::cout << "Cuenta de COLONES desactivada con exito" << std::endl;
         }
-        else if (opcion=="2"){
-            cliente->activacionCuenta(DOLARES, false);
-            std::cout<<"Cuenta de DOLARES desactivada con exito"<<std::endl;
+        else if (opcion == "2")
+        {
+            banco.buscarCuenta(cliente->obtenerId(), DOLARES)->cambiarEstado(false);
+            std::cout << "Cuenta de DOLARES desactivada con exito" << std::endl;
         }
 
-        else{throw std::invalid_argument("Opción inválida: " + opcion);}
-    }catch (const std::exception& e) {
-    std::cerr << "Error: " << e.what() << std::endl;
-    // Manejo adicional de excepciones si es necesario
-}
+        else
+        {
+            throw std::invalid_argument("Opción inválida: " + opcion);
+        }
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "Error: " << e.what() << std::endl;
+        // Manejo adicional de excepciones si es necesario
+    }
 }
 
-void Menu::activarCuenta(){
-    std::cout<<"1. Activar cuenta COLONES\n2. Activar cuenta DOLARES"<<std::endl;
+void Menu::activarCuenta()
+{
+    std::cout << "1. Activar cuenta COLONES\n2. Activar cuenta DOLARES" << std::endl;
     std::string opcion = obtenerOpcion();
 
-    try{
-        if (opcion=="1"){
-             cliente->activacionCuenta(COLONES, true);
-             std::cout<<"Cuenta de COLONES activada"<<std::endl;
+    try
+    {
+        if (opcion == "1")
+        {
+            banco.buscarCuenta(cliente->obtenerId(), COLONES)->cambiarEstado(true);
+            std::cout << "Cuenta de COLONES activada" << std::endl;
         }
-        else if (opcion=="2"){
-            cliente->activacionCuenta(DOLARES, true);
-            std::cout<<"Cuenta de DOLARES activada"<<std::endl;
+        else if (opcion == "2")
+        {
+            banco.buscarCuenta(cliente->obtenerId(), DOLARES)->cambiarEstado(true);
+            std::cout << "Cuenta de DOLARES activada" << std::endl;
         }
 
-        else{throw std::invalid_argument("Opción inválida: " + opcion);}
-    }catch (const std::exception& e) {
-    std::cerr << "Error: " << e.what() << std::endl;
-    // Manejo adicional de excepciones si es necesario
-}
+        else
+        {
+            throw std::invalid_argument("Opción inválida: " + opcion);
+        }
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "Error: " << e.what() << std::endl;
+        // Manejo adicional de excepciones si es necesario
+    }
 }
 
 void Menu::pagarPrestamo()
@@ -658,10 +685,10 @@ void Menu::pagarPrestamo()
             switch (metodo)
             {
             case CUENTA_COLONES:
-                pago = cliente->obtenerCuenta(COLONES);
+                pago = banco.buscarCuenta(cliente->obtenerId(), COLONES);
                 break;
             case CUENTA_DOLARES:
-                pago = cliente->obtenerCuenta(DOLARES);
+                pago = banco.buscarCuenta(cliente->obtenerId(), DOLARES);
                 break;
             case EFECTIVO:
                 pago = new Efectivo();

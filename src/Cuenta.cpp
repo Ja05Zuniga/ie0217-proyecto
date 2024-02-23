@@ -60,9 +60,10 @@ std::istream &operator>>(std::istream &in, Cuenta &cuenta)
 
 std::ostream &operator<<(std::ostream &os, Cuenta &cuenta)
 {
-    // char delimitador = ',';
-    // os << prestamo.idDueno << delimitador << prestamo.id << delimitador << prestamo.tipo << delimitador << prestamo.cuotas << delimitador << prestamo.tasaInteresAnual << delimitador << prestamo.montoInicial << delimitador << prestamo.numCuota;
-    // return os;
+    char delimitador = ',';
+    os << cuenta.id << delimitador << cuenta.estado << delimitador << cuenta.ahorros;
+    
+    return os;
 }
 
 /**
@@ -140,4 +141,9 @@ void Cuenta::verificarCredito(Dinero &monto)
     {
         throw CuentaInactiva();
     }
+}
+
+Moneda Cuenta::obtenerMoneda()
+{
+    return moneda;
 }

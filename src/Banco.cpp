@@ -36,6 +36,7 @@ Banco::~Banco()
 void Banco::clean()
 {
     registrarPrestamos("prestamos.csv");
+    registrarCuentas("cuentas.csv");
 
     for (auto &entrada : prestamos)
     {
@@ -46,14 +47,22 @@ void Banco::clean()
     }
 
     prestamos.clear();
-    for (auto &entrada : cuentas)
+    for (auto &entrada : cuentasColones)
     {
         if (entrada.second != nullptr)
         {
             delete entrada.second;
         }
     }
-    cuentas.clear();
+    cuentasColones.clear();
+    for (auto &entrada : cuentasDolares)
+    {
+        if (entrada.second != nullptr)
+        {
+            delete entrada.second;
+        }
+    }
+    cuentasDolares.clear();
 }
 
 /**
@@ -347,6 +356,27 @@ void Banco::registrarPrestamos(const std::string &archivoCSV)
     of.close();
 }
 
+void Banco::registrarCuentas(const std::string &archivoCSV)
+{
+
+    std::ofstream of(archivoCSV);
+
+    if (!of.is_open())
+    {
+        throw std::runtime_error("Error al abrir archivo de registro de préstamos");
+    }
+    for (const auto &cuenta : cuentasColones)
+    {
+        of << *cuenta.second << std::endl;
+    }
+    for (const auto &cuenta : cuentasDolares)
+    {
+        of << *cuenta.second << std::endl;
+    }
+
+    of.close();
+}
+
 void Banco::cargarClientes(const std::string &archivoCSV)
 {
     try
@@ -400,6 +430,43 @@ void Banco::agregarCuenta(Cuenta *cuenta)
 {
     if (cuenta != nullptr)
     {
-        cuentas[cuenta->obtenerId()] = cuenta;
+        switch (cuenta->obtenerMoneda())
+        {
+        case COLONES:
+            cuentasColones[cuenta->obtenerId()] = cuenta;
+            /* code */
+            break;
+        case DOLARES:
+            cuentasDolares[cuenta->obtenerId()] = cuenta;
+
+        default:
+            break;
+        }
     }
+}
+
+Cuenta *Banco::buscarCuenta(const unsigned int id, Moneda moneda)
+{
+    std::unordered_map<unsigned int, Cuenta *>::iterator it;
+    switch (moneda)
+    {
+    case COLONES:
+        it = cuentasColones.find(id);
+        if (it != cuentasColones.end())
+        {
+            return it->second;
+        }
+        break;
+    case DOLARES:
+        it = cuentasDolares.find(id);
+        if (it != cuentasDolares.end())
+        {
+            return it->second;
+        }
+        break;
+    default:
+        break;
+    }
+
+    return nullptr;
 }
