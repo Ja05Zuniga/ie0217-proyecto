@@ -58,8 +58,8 @@ public:
      * @param monto
      */
     void debitar(Dinero &monto) override;
-    void verificarDebito(const Dinero &monto) override;
-    void verificarCredito(const Dinero &monto) override;
+    void verificarDebito(Dinero &monto) override;
+    void verificarCredito(Dinero &monto) override;
 };
 
 #endif
