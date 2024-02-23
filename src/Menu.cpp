@@ -496,49 +496,108 @@ void Menu::gestionarAhorros()
 // Manejo de excepciones incompleta
 void Menu::realizarOperaciones()
 {
-    int opcion;
-    std::cout << "\n--- Menu de Operaciones ---\n";
-    std::cout << "1. Pagar préstamo\n";
 
-    std::cout << "Ingrese una opcion: ";
-    std::cin >> opcion;
+    /*Metodo que maneja el menu de operaciones
+    Verifica si los datos ingresados son validos (int) y se encuentra dentro de las opciones*/
+    std::string menuOpciones =
 
-    // Casos
-    switch (opcion)
+        "\n--- Menu de opciones ---\n"
+        "1. Pagar préstamo\n"
+        "2. Activar Cuenta\n"
+        "3. Desactivar Cuenta\n"
+        "4. Transferencia\n"
+        "5. Cambio de moneda\n"
+        "6. Regresar\n";
+
+    while (true)
     {
-    case 1:
-        pagarPrestamo();
-        break;
-    default:
-        std::cout << "Opcion no es valida. Intente de nuevo...\n";
+        std::cout << menuOpciones;
+        std::string opcion = obtenerOpcion();
+        int opcionInt = std::stoi(opcion);
+
+        try
+        {
+            // Casos
+            switch (opcionInt) // Pasamos opcion a tipo int
+            {
+            case 1: //  Pagar préstamo
+                pagarPrestamo();
+                break;
+            case 6:
+                displayOpcionesPrincipales();
+            default:
+                std::cout << "Opcion fuera de rango. Intente de nuevo...\n";
+            }
+        }
+        catch (const std::invalid_argument &e)
+        {
+            std::cerr << e.what() << std::endl;
+        }
     }
 }
 
 void Menu::pagarPrestamo()
 {
 
-    // try
-    // {
-    //     int id = Prestamo::obtenerIDprestamo();
-    //     if (id < 9)
-    //     {
-    //         throw std::out_of_range("ID incorrecto. Valor reservado.");
-    //     }
-    //     Prestamo *prestamo = Prestamo::buscarPrestamo(id);
-    //     std::cout << "Desglose del pago: ";
-    //     prestamo->imprimirDesglosePago();
+    try
+    {
+        int id = Prestamo::solicitarIDprestamo();
 
-    //     MetodoPago metodo = solicitarMetodoPago();
+        if (id == -1)
+        {
+            std::cout << "Operación cancelada" << std::endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            displayOpcionesPrincipales();
+            return;
+        }
 
-    //     cliente->pagarPrestamo(prestamo, metodo);
+        Prestamo *prestamo = banco.buscarPrestamo(id);
+        if (prestamo != nullptr)
+        {
+            std::cout << "Desglose del pago: " << std::endl;
+            prestamo->imprimirDesglosePago();
+            MetodoPago metodo = solicitarMetodoPago();
 
-    //     // cliente->pagarPrestamo();
-    // }
-    // catch (const std::exception &e)
-    // {
-    //     std::cerr << e.what() << '\n';
-    // }
+            Producto *pago;
+            switch (metodo)
+            {
+            case CUENTA_COLONES:
+                pago = cliente->obtenerCuenta(COLONES);
+                break;
+            case CUENTA_DOLARES:
+                pago = cliente->obtenerCuenta(DOLARES);
+            case EFECTIVO:
+                pago = new Efectivo();
+            default:
+                break;
+            }
+
+            if (pago != nullptr)
+            {
+                Transaccion transaccion(pago, prestamo, prestamo->obtenerCuotaMensual());
+                transaccion();
+                std::cout << "Transacción realizada con éxito\n";
+                if (metodo == EFECTIVO)
+                {
+                    delete pago;
+                }
+            }
+        }
+        else
+        {
+            throw std::out_of_range("No se encontró el préstamo");
+        }
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    displayOpcionesPrincipales();
 }
+
 void Menu::displayTipoPrestamos()
 {
     banco.obtenerInfoPrestamos();
