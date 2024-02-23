@@ -67,4 +67,14 @@ public:
     void registrarTransaccion(const std::string &archivoCSV);
 };
 
+/**
+ * @brief Excepción para indicar transacción fallida
+ *
+ */
+class TransaccionFallida : public std::exception
+{
+public:
+    const char *what() const noexcept override;
+};
+
 #endif

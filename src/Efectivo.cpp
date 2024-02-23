@@ -47,3 +47,9 @@ void Efectivo::solicitarPago()
     dinero.solicitarMonto();
     dinero.solicitarMoneda();
 }
+
+void Efectivo::verificarDebito(const Dinero &monto)
+{
+    
+}
+void Efectivo::verificarCredito(const Dinero &monto) { return; }

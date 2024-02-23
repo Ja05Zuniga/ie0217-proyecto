@@ -21,3 +21,9 @@ void Certificado::debitar(Dinero &monto)
 
     montoCertificado = monto;
 }
+
+void Certificado::verificarDebito(const Dinero &monto)
+{
+    return;
+}
+void Certificado::verificarCredito(const Dinero &monto) { return; }

@@ -116,7 +116,6 @@ void Prestamo::obtenerInfoPersonal(bool reducida)
 }
 void Prestamo::acreditar(Dinero &monto)
 {
-
     numCuota += 1;
 }
 
@@ -175,6 +174,7 @@ Dinero Prestamo::obtenerCuotaMensual() { return cuotaMensual; }
 
 void Prestamo::imprimirDesglosePago()
 {
+
     Amortizacion pago = amortizacion.at(numCuota);
     std::cout << std::left
               << std::setw(Constantes::COL_WIDTH) << "Cuota"
@@ -186,6 +186,7 @@ void Prestamo::imprimirDesglosePago()
               << std::setw(Constantes::COL_WIDTH) << std::left << pago.amortizacion
               << std::setw(Constantes::COL_WIDTH) << std::left << pago.saldoRestante << std::endl;
 }
+
 void Prestamo::imprimirDesglosePago(unsigned int id)
 {
     Amortizacion pago = amortizacion.at(id);
@@ -197,18 +198,25 @@ void Prestamo::imprimirDesglosePago(unsigned int id)
 
 int Prestamo::solicitarIDprestamo()
 {
+    std::string input;
     int id;
+
     while (true)
     {
         try
         {
-            std::cout << "Ingrese el ID del préstamo: \n";
-            std::cin >> id;
-            if (std::cin.fail())
+            std::cout << "Ingrese el ID del préstamo o escriba 'cancelar' para cancelar: \n";
+            std::cin >> input;
+
+            if (input == "cancelar")
             {
-                std::cin.clear();                                                                // Restaura el estado del flujo de entrada
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');              // Descarta la entrada no válida
-                throw std::invalid_argument("Entrada inválida: Debe ingresar un valor entero."); // Lanza una excepción si la entrada no es un entero
+                return -1;
+            }
+
+            std::stringstream ss(input);
+            if (!(ss >> id) || !ss.eof())
+            {
+                throw std::invalid_argument("Entrada inválida: Debe ingresar un valor entero.");
             }
 
             if (id < 0 || id > std::numeric_limits<int>::max())
@@ -221,6 +229,8 @@ int Prestamo::solicitarIDprestamo()
         catch (const std::exception &e)
         {
             std::cerr << "Error: " << e.what() << '\n';
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
     }
 }
@@ -245,4 +255,23 @@ void Prestamo::asignarDueno(const unsigned int id)
 unsigned int Prestamo::obtenerDueno()
 {
     return idDueno;
+}
+
+void Prestamo::verificarDebito(const Dinero &monto)
+{
+    return;
+}
+
+void Prestamo::verificarCredito(const Dinero &monto)
+{
+    if (numCuota >= cuotas)
+    {
+        throw PagoInvalido();
+    }
+    return;
+}
+
+const char *PagoInvalido::what() const noexcept
+{
+    return "El préstamo ya fue cancelado";
 }

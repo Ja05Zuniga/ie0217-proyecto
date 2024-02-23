@@ -27,15 +27,15 @@ private:
 public:
     /**
      * @brief Construct a new Certificado object
-     * 
+     *
      */
     Certificado();
     /**
      * @brief Construct a new Certificado object
-     * 
-     * @param montoCertificado 
-     * @param tasaInteresAnual 
-     * @param id 
+     *
+     * @param montoCertificado
+     * @param tasaInteresAnual
+     * @param id
      */
     Certificado(const Dinero &montoCertificado, const float &tasaInteresAnual, const unsigned int &id);
     ~Certificado();
@@ -58,7 +58,8 @@ public:
      * @param monto
      */
     void debitar(Dinero &monto) override;
-
+    void verificarDebito(const Dinero &monto) override;
+    void verificarCredito(const Dinero &monto) override;
 };
 
 #endif

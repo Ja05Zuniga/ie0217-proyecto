@@ -42,7 +42,7 @@ private:
     unsigned int idDueno;
     TipoPrestamo tipo;
     int cuotas;
-    unsigned int numCuota;
+    int numCuota;
     float tasaInteresAnual;
     float tasaInteresMensual;
     Dinero montoInicial;
@@ -112,6 +112,16 @@ public:
     void asignarDueno(const unsigned int id);
     unsigned int obtenerDueno();
     void calcularCuotaMensual();
+    void verificarDebito(const Dinero &monto) override;
+    void verificarCredito(const Dinero &monto) override;
 };
-
+/**
+ * @brief Excepción para lanzar en el de que el prestamo esté pago
+ *
+ */
+class PagoInvalido : public std::exception
+{
+public:
+    const char *what() const noexcept override;
+};
 #endif

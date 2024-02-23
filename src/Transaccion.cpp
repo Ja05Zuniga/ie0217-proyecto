@@ -16,6 +16,8 @@ Transaccion::Transaccion(Producto *pagador, Producto *receptor, Dinero monto) : 
 
 void Transaccion::operator()()
 {
+    receptor->verificarCredito(monto);
+    pagador->verificarDebito(monto);
     try
     {
         receptor->acreditar(monto);
@@ -25,8 +27,7 @@ void Transaccion::operator()()
     }
     catch (const std::exception &e)
     {
-        std::cerr << e.what() << '\n';
-        throw std::runtime_error("No se pudo completar la transacción");
+        std::cerr << "Ocurrió un error inesperado" << '\n';
     }
 }
 
@@ -75,4 +76,9 @@ void Transaccion::registrarTransaccion(const std::string &archivoCSV)
 
     of << *this;
     of.close();
+}
+
+const char *TransaccionFallida::what() const noexcept
+{
+    return "No se pudo realizar la transacción";
 }

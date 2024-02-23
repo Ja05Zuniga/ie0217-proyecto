@@ -29,6 +29,8 @@ public:
      * @param monto
      */
     void debitar(Dinero &monto) override;
+    void verificarCredito(const Dinero &monto) override;
+    void verificarDebito(const Dinero &monto) override;
     void solicitarPago();
 };
 

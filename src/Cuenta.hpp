@@ -56,6 +56,8 @@ public:
      * @param monto
      */
     void debitar(Dinero &monto) override;
+    void verificarDebito(const Dinero &monto) override;
+    void verificarCredito(const Dinero &monto) override;
 
     /**
      * @brief Devuelve un enumerador indicando el estado de la cuenta
@@ -69,6 +71,15 @@ public:
  *
  */
 class CuentaInactiva : public std::exception
+{
+public:
+    const char *what() const noexcept override;
+};
+/**
+ * @brief Excepción para lanzar en el caso fondos insuficientes
+ *
+ */
+class FondosInsuficientes : public std::exception
 {
 public:
     const char *what() const noexcept override;

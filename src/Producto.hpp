@@ -17,7 +17,7 @@
 
 /**
  * @brief Clase abstracta con métodos y atributos heredados por
- * las clases certificado, préstamo y cuent
+ * las clases certificado, préstamo y cuenta
  *
  */
 class Producto
@@ -77,6 +77,8 @@ public:
     virtual void debitar(Dinero &monto);
     friend std::ostream &operator<<(std::ostream &out, const Producto &producto);
     std::string obtenerNombre();
+    virtual void verificarDebito(const Dinero &monto);
+    virtual void verificarCredito(const Dinero &monto);
 };
 
 #endif

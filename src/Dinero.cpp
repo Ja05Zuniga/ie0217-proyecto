@@ -17,7 +17,7 @@ Dinero Dinero::comprarDolares()
 {
     float cantidad_dolares = monto / Constantes::TASA_COMPRA;
     Dinero dinero(cantidad_dolares, DOLARES);
-    monto = 0;
+    // monto = 0;
     return dinero;
 }
 
@@ -25,7 +25,7 @@ Dinero Dinero::comprarDolares(const float &cantidad_colones)
 {
     float cantidad_dolares = cantidad_colones / Constantes::TASA_COMPRA;
     Dinero dinero(cantidad_dolares, DOLARES);
-    monto -= cantidad_colones;
+    // monto -= cantidad_colones;
     return dinero;
 }
 
@@ -33,7 +33,7 @@ Dinero Dinero::venderColones()
 {
     float cantidad_colones = Constantes::TASA_VENTA * monto;
     Dinero dinero(cantidad_colones, COLONES);
-    monto -= cantidad_colones;
+    // monto -= cantidad_colones;
     return dinero;
 }
 
@@ -41,7 +41,7 @@ Dinero Dinero::venderColones(const float &cantidad_dolares)
 {
     float cantidad_colones = Constantes::TASA_VENTA * cantidad_dolares;
     Dinero dinero(cantidad_colones, COLONES);
-    monto -= cantidad_colones;
+    // monto -= cantidad_colones;
     return dinero;
 }
 
@@ -49,7 +49,7 @@ Dinero Dinero::comprarColones(const float &cantidad_colones)
 {
     float cantidad_dolares = Constantes::TASA_COMPRA * cantidad_colones;
     Dinero dinero(cantidad_dolares, DOLARES);
-    monto -= cantidad_dolares;
+    // monto -= cantidad_dolares;
     return dinero;
 }
 
@@ -57,7 +57,7 @@ Dinero Dinero::comprarColones()
 {
     float cantidad_dolares = Constantes::TASA_COMPRA * monto;
     Dinero dinero(cantidad_dolares, DOLARES);
-    monto -= cantidad_dolares;
+    // monto -= cantidad_dolares;
     return dinero;
 }
 
@@ -65,14 +65,14 @@ Dinero Dinero::venderDolares(const float &cantidad_dolares)
 {
     float cantidad_colones = cantidad_dolares / Constantes::TASA_VENTA;
     Dinero dinero(cantidad_colones, COLONES);
-    monto -= cantidad_colones;
+    // monto -= cantidad_colones;
     return dinero;
 }
 Dinero Dinero::venderDolares()
 {
     float cantidad_colones = monto / Constantes::TASA_VENTA;
     Dinero dinero(cantidad_colones, COLONES);
-    monto = 0;
+    // monto = 0;
     return dinero;
 }
 

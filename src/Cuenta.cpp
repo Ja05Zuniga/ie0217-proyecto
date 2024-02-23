@@ -62,31 +62,25 @@ void Cuenta::acreditar(Dinero &monto)
  */
 void Cuenta::debitar(Dinero &monto)
 {
-    if (estado)
-    {
-        Moneda monedaMonto = monto.obtenerMoneda();
-        if (moneda == monedaMonto)
-        {
-            ahorros = ahorros - monto;
-        }
-        else
-        {
-            switch (monedaMonto)
-            {
-            case COLONES:
-                ahorros = ahorros - monto.comprarColones();
-                break;
-            case DOLARES:
-                ahorros = ahorros - monto.venderColones();
 
-            default:
-                break;
-            }
-        }
+    Moneda monedaMonto = monto.obtenerMoneda();
+    if (moneda == monedaMonto)
+    {
+        ahorros = ahorros - monto;
     }
     else
     {
-        throw CuentaInactiva();
+        switch (monedaMonto)
+        {
+        case COLONES:
+            ahorros = ahorros - monto.comprarColones();
+            break;
+        case DOLARES:
+            ahorros = ahorros - monto.venderColones();
+
+        default:
+            break;
+        }
     }
 }
 
@@ -94,3 +88,25 @@ const char *CuentaInactiva::what() const noexcept
 {
     return "Cuenta inactiva!";
 }
+
+const char *FondosInsuficientes::what() const noexcept
+{
+    return "Fondos insuficientes!";
+}
+
+void Cuenta::verificarDebito(const Dinero &monto)
+{
+    if (!estado)
+    {
+        throw CuentaInactiva();
+    }
+    else if (ahorros.obtenerMonto() < monto.obtenerMonto())
+    {
+        throw FondosInsuficientes();
+    }
+    else
+    {
+        return;
+    }
+}
+void Cuenta::verificarCredito(const Dinero &monto) { return; }

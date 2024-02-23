@@ -23,6 +23,12 @@ Producto::~Producto()
 {
 }
 
+void Producto::verificarDebito(const Dinero &monto)
+{
+    return;
+}
+void Producto::verificarCredito(const Dinero &monto) { return; }
+
 /**
  * @details Los números del 1 al 9 están reservados para préstamos ofrecidos por el banco
  * No hay problema si productos de clases distintas tienen el mismo ID ya que se almacenan
