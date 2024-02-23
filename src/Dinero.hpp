@@ -92,7 +92,7 @@ public:
     Dinero comprarColones();
 
     /**
-     * @brief Devuelve cuantos colones nos da el banco al comprar la
+     * @brief Devuelve cuantos colones nos da el banco al
      * vender la cantidad especificada de dolares
      *
      * @param cantidad
@@ -101,7 +101,7 @@ public:
     Dinero venderDolares(const float &cantidad);
 
     /**
-     * @brief Devuelve cuantos colones nos da el banco al comprar una cantidad
+     * @brief Devuelve cuantos colones nos da el banco al vender una cantidad
      * de dolares igual al atributo monto
      *
      * @return Dinero
