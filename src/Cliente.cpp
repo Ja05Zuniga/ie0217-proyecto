@@ -41,30 +41,6 @@ Cuenta *Cliente::obtenerCuenta(Moneda Moneda)
     }
 }
 
-void Cliente::pagarPrestamo(Prestamo *prestamo, MetodoPago metodo)
-{
-
-    // Dinero cuotaMensual = prestamo->obtenerCuotaMensual();
-
-    // Producto *pago = nullptr;
-    // switch (metodo)
-    // {
-    // case CUENTA_COLONES:
-    //     pago = &cuentaColones;
-    //     break;
-    // case CUENTA_DOLARES:
-    //     pago = &cuentaDolares;
-    //     break;
-    // case EFECTIVO:
-    //     Efectivo efectivo;
-    //     efectivo.solicitarPago();
-    //     pago = &efectivo;
-    //     break;
-    // }
-    // Transaccion transaccion(pago, prestamo, cuotaMensual);
-    // transaccion();
-}
-
 Prestamo Cliente::buscarPrestamo(const unsigned int id) const
 {
     try
