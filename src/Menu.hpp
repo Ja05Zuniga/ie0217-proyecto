@@ -1,3 +1,13 @@
+/**
+ * @file Menu.hpp
+ * @authors J. Zuñiga, A. Franchi, G. Escobar
+ * @brief 
+ * @version 0.1
+ * @date 2024-02-22
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #ifndef MENU_HPP
 #define MENU_HPP
 #include <string>
@@ -8,7 +18,7 @@
 #include "identidad.hpp"
 #include "agregar_cliente.hpp"
 #include "Banco.hpp"
-
+#include "Efectivo.hpp"
 /**
  * @class Menu
  * @brief Clase que gestiona el menu interactivo del sistema bancario.
@@ -24,9 +34,9 @@ class Menu
 public:
     /**
      * @brief Constructor para la clase Menu.
-     * @param banco Instancia de la clase Banco asociado a este menu.
+     * @param banco puntero de la clase Banco asociado a este menu.
      */
-    Menu(Banco banco);
+    Menu(Banco &banco);
 
     /**
      * @brief Inicia el menu interactivo para el usuario.
@@ -39,9 +49,9 @@ public:
 protected:
     // Metodo para obtener la identidad del usario
     int obtenerIdentidad();
-    //Metodo que valida el nombre de usuario.
+    // Metodo que valida el nombre de usuario.
     std::string obtenerNombre();
-    //Metodo que maneja las excepciones de los valores ingresados de un solo número
+    // Metodo que maneja las excepciones de los valores ingresados de un solo número
     std::string obtenerOpcion();
     // Metodo para verificar si el cliente ya existe en el sistema
     bool verificarCliente(int cedula);
@@ -69,12 +79,16 @@ protected:
     // Metodo para mostrar los tipos de prestamos disponibles
     void displayTipoPrestamos();
 
+    bool confirmarTransaccion();
+
+    
+
 
 private:
     // Instancia de la clase Banco relacionada al menu
     Banco banco;
-    // Instancia de la clase Cliente relacionada al Menu
-    Cliente cliente;
+    // Instancia de un ptro de la clase Cliente relacionada al Menu
+    Cliente *cliente;
 };
 
 #endif

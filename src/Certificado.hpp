@@ -27,15 +27,15 @@ private:
 public:
     /**
      * @brief Construct a new Certificado object
-     * 
+     *
      */
     Certificado();
     /**
      * @brief Construct a new Certificado object
-     * 
-     * @param montoCertificado 
-     * @param tasaInteresAnual 
-     * @param id 
+     *
+     * @param montoCertificado
+     * @param tasaInteresAnual
+     * @param id
      */
     Certificado(const Dinero &montoCertificado, const float &tasaInteresAnual, const unsigned int &id);
     ~Certificado();
@@ -49,7 +49,7 @@ public:
      *
      * @param monto
      */
-    void acreditar(const Dinero &monto) override;
+    void acreditar(Dinero &monto) override;
 
     /**
      * @brief Método para actualizar el estado del objeto una vez que el usario
@@ -57,8 +57,9 @@ public:
      *
      * @param monto
      */
-    void debitar(const Dinero &monto) override;
-    void calcularInteresesGanados();
+    void debitar(Dinero &monto) override;
+    void verificarDebito(const Dinero &monto) override;
+    void verificarCredito(const Dinero &monto) override;
 };
 
 #endif

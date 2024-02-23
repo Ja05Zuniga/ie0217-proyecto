@@ -1,12 +1,12 @@
 /**
  * @file Cuenta.hpp
  * @author your name (you@domain.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2024-02-15
- * 
+ *
  * @copyright Copyright (c) 2024
- * 
+ *
  */
 #ifndef CUENTA_HPP
 #define CUENTA_HPP
@@ -18,56 +18,70 @@
 
 /**
  * @brief Enumerador para representar el estado de la cuenta
- * 
+ *
  */
-enum Estado
-{
-    ACTIVA,
-    INACTIVA
-};
 
 /**
- * @brief Clase para realizar operaciones sobre las cuentas y obtener su información 
- * 
+ * @brief Clase para realizar operaciones sobre las cuentas y obtener su información
+ *
  */
 class Cuenta : public Producto
 {
 private:
     // Por defecto las cuentas están activas
-    Estado estado = ACTIVA;
+    bool estado = true;
     Dinero ahorros;
     Moneda moneda;
 
 public:
     Cuenta(/* args */);
-    Cuenta(const float &monto, Moneda moneda);
+    Cuenta(const float &monto, Moneda moneda, unsigned int id);
     ~Cuenta();
     /**
      * @brief Imprime información básica de la cuenta
-     * 
+     *
      */
     void obtenerInfo() override;
 
     /**
      * @brief Método para acreditar dinero a la cuenta
-     * 
-     * @param monto 
+     *
+     * @param monto
      */
-    void acreditar(const Dinero &monto) override;
+    void acreditar(Dinero &monto) override;
 
     /**
      * @brief Método para debitar dinero de la cuenta
-     * 
-     * @param monto 
+     *
+     * @param monto
      */
-    void debitar(const Dinero &monto) override;
+    void debitar(Dinero &monto) override;
+    void verificarDebito(const Dinero &monto) override;
+    void verificarCredito(const Dinero &monto) override;
 
     /**
      * @brief Devuelve un enumerador indicando el estado de la cuenta
-     * 
-     * @return Estado 
+     *
+     * @return Estado
      */
-    Estado obtenerEstado();
+    bool obtenerEstado();
 };
-
+/**
+ * @brief Excepción para lanzar en el caso de cuentas inactivas
+ *
+ */
+class CuentaInactiva : public std::exception
+{
+public:
+    const char *what() const noexcept override;
+};
+/**
+ * @brief Excepción para lanzar en el caso fondos insuficientes
+ *
+ */
+class FondosInsuficientes : public std::exception
+{
+public:
+    const char *what() const noexcept override;
+};
 #endif

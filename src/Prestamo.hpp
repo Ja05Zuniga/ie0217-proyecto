@@ -12,6 +12,11 @@
 #define PRESTAMOS_HPP
 #include <iomanip>
 #include <cmath>
+#include <list>
+#include <algorithm>
+#include <fstream>
+#include <sstream>
+#include <regex>
 #include "Producto.hpp"
 #include "Dinero.hpp"
 #include "constants.hpp"
@@ -25,9 +30,10 @@
 enum TipoPrestamo
 {
     PERSONAL,
-    PRENDARIO,
-    HIPOTECARIO
+    PRENDARIO = 3,
+    HIPOTECARIO = 6
 };
+std::istream &operator>>(std::istream &is, TipoPrestamo &tipo);
 
 /**
  * @class Prestamo
@@ -41,14 +47,14 @@ class Prestamo : public Producto
 
 // Atributos privados de la clase 
 private:
+    unsigned int idDueno;
     TipoPrestamo tipo;              // Tipo de prsstamo.
-    int cuotas;                     // Numero total de cuotas.
-    unsigned int numCuota;          // Numero de la cuota actual.
-    float tasaInteresAnual;         // Tasa de interes anual del prestamo.
+    int cuotas;       // Numero total de cuotas.
+    int numCuota;       // Numero de la cuota actual.
+    float tasaInteresAnual;       // Tasa de interes anual del prestamo.
     float tasaInteresMensual;       // Tasa de interes mensual del prestamo (calc. a partir de la anual).
-    Dinero montoInicial;            // Monto inicial del prestamo.
-    Dinero saldoRestante;           // Saldo restante del prestamo
-    Dinero cuotaMensual;            // Monto de la cuota mensual
+    Dinero montoInicial;       // Monto inicial del prestamo.
+    Dinero cuotaMensual;       // Monto de la cuota mensual
     std::vector<Amortizacion> amortizacion;     // Lista de amortizaciones para el prestamo
 
 public:
@@ -59,7 +65,7 @@ public:
     Prestamo();
 
     /**
-     * @brief Construct a new Prestamo object
+     * @brief Constructor de la clase Prestamo
      *
      * @param tipo Tipo del prestamo
      * @param cuotas Numero total de cuotas para el prestamo
@@ -84,7 +90,7 @@ public:
      * @brief Actualiza el saldo del préstamo al acreditar un pago.
      * @param monto Monto del pago realizado.
      */
-    void acreditar(const Dinero &monto) override;
+    void acreditar(Dinero &monto) override;
 
     /**
      * @brief Inicializa el prestamo y calcula la amortizacion al abrir el prestamo.
@@ -94,13 +100,13 @@ public:
      *
      * @param monto Monto inicial del prestamo
      */
-    void debitar(const Dinero &monto) override;
+    void debitar(Dinero &monto) override;
 
     /**
      * @brief Imprime información más detallada del préstamo
-     *
+     * @param reducida
      */
-    void obtenerInfoPersonal();
+    void obtenerInfoPersonal(bool reducida = false);
 
     /**
      * @brief Método para inicializar el atributo amortización
@@ -109,6 +115,31 @@ public:
      *
      */
     void calcularAmortizacion();
+    
+    /**
+     * @brief Imprime en pantalla la tabla de pago del préstamo
+     *
+     */
+    void obtenerAmortizacion();
+    Dinero obtenerCuotaMensual();
+    void imprimirDesglosePago();
+    void imprimirDesglosePago(unsigned int id);
+    friend std::istream &operator>>(std::istream &in, Prestamo &prestamo);
+    static int solicitarIDprestamo();
+    Prestamo(const Prestamo &otro);
+    void asignarDueno(const unsigned int id);
+    unsigned int obtenerDueno();
+    void calcularCuotaMensual();
+    void verificarDebito(const Dinero &monto) override;
+    void verificarCredito(const Dinero &monto) override;
 };
-
+/**
+ * @brief Excepción para lanzar en el de que el prestamo esté pago
+ *
+ */
+class PagoInvalido : public std::exception
+{
+public:
+    const char *what() const noexcept override;
+};
 #endif

@@ -1,6 +1,6 @@
 /**
  * @file Cliente.hpp
- * @author your name (you@domain.com)
+ * @author J. Zuñiga, A. Franchi, G. Escobar
  * @brief
  * @version 0.1
  * @date 2024-02-15
@@ -17,15 +17,9 @@
 #include "Dinero.hpp"
 #include "Transaccion.hpp"
 #include "Cuenta.hpp"
+#include "MetodoPago.hpp"
+#include "Efectivo.hpp"
 
-/**
- * @class Cliente
- * @brief Gestiona la informacion y las operaciones financieras de un cliente.
- *
- * La clase Cliente se encarga de almacenar los detalles del cliente, como prestamos y
- * cuentas bancarias en diferentes monedas. Proporciona metodos para agregar y consultar
- * prestamos
- */
 class Cliente
 {
 
@@ -59,23 +53,15 @@ public:
      */
     void obtenerInfo();
 
-   /**
-    * @brief Agrega un nuevo prestamo al cliente.
-    * 
-    * @param prestamos Objeto de Prestamo a agregar.
-    * @param monto Monto del prestamo.
-    * @param moneda Tipo  de moneda del prestamo.
-    * @return unsigned int Identificador unico del nuevo prestamo
-    */
-    unsigned int agregarPrestamo(Prestamo prestamos, const float &monto, Moneda moneda);
-
+    Cuenta *obtenerCuenta(Moneda moneda);
+    void pagarPrestamo(Prestamo *prestamo, MetodoPago metodo);
     /**
      * @brief Busca un préstamo del usuario a partir de su ID
      *
      * @param id Identificador unico del prestamo a buscar
      * @return Prestamo El prestamo buscado
      */
-    Prestamo buscarPrestamo(const unsigned int &id);
+    Prestamo buscarPrestamo(const unsigned int id) const;
 
     /**
      * @brief Permite consultar información detallada del préstamo por el ID 
@@ -93,12 +79,14 @@ public:
 
     /**
      * @brief Imprime información detallada de la cuenta en la moneda ingresada
-     * 
-     * @param moneda Tipo de moneda de la cuenta a consultar
+     *
+     * @param moneda
      */
     void obtenerEstadoCuenta(Moneda moneda);
 
-    
+    friend std::istream &operator>>(std::istream &in, Cliente &Cliente);
+    unsigned int obtenerId();
+    Cliente(const Cliente &otro);
 };
 
 #endif

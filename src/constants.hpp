@@ -1,6 +1,6 @@
 /**
  * @file constants.hpp
- * @author your name (you@domain.com)
+ * @authors J. Zuñiga, A. Franchi, G. Escobar
  * @brief 
  * @version 0.1
  * @date 2024-02-15
@@ -17,8 +17,8 @@ namespace Constantes
     // Número de préstamos ofrecidos por el banco
     const int NUM_PRESTAMOS = 9;
     // Tasa de compra del dolar
-    const int TASA_COMPRA = 500;
+    const int TASA_COMPRA = 511;
     // Tasa de venta del dolar
-    const int TASA_VENTA = 510;
+    const int TASA_VENTA = 517;
 
 } // namespace Constantes

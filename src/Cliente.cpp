@@ -14,8 +14,8 @@ Cliente::Cliente() {}
  */
 Cliente::Cliente(unsigned int userId, std::string nombre) : userId(userId), nombre(nombre)
 {
-    cuentaColones = Cuenta(0, COLONES);
-    cuentaDolares = Cuenta(0, DOLARES);
+    cuentaColones = Cuenta(0, COLONES, userId);
+    cuentaDolares = Cuenta(0, DOLARES, userId);
 }
 
 /**
@@ -35,45 +35,25 @@ void Cliente::obtenerInfo()
 }
 
 /**
- * @details Aquí se inicializan los atributos necesarios cuando se abre el préstamo,
- * se llama la clase transacción para mover el dinero y finalmente se devuelve el ID del préstamo 
- * creado
- *
-* @param prestamos Objeto de Prestamo a agregar.
-* @param monto Monto del prestamo.
-* @param moneda Tipo  de moneda del prestamo.
-* @return unsigned int Identificador unico del nuevo prestamo
- */
-unsigned int Cliente::agregarPrestamo(Prestamo prestamo, const float &monto, Moneda moneda)
+     * @brief Obtiene la cuenta del cliente segun la moneda
+     * 
+     * @param moneda Tipo  de moneda del prestamo.
+     * @return Cuenta* 
+     */
+Cuenta *Cliente::obtenerCuenta(Moneda Moneda)
 {
-    // Instancia de objeto de la clase Dinero
-    Dinero dinero(monto, moneda);
-    // Instancia de un ptro de clase Cuenta
-    Cuenta *cuenta;
-
-    // Casos para los tipos de monedas
-    switch (moneda)
+    switch (Moneda)
     {
-    case 0:
-        cuenta = &cuentaColones;
+    case COLONES:
+        return &cuentaColones;
         break;
-
-    case 1:
-        cuenta = &cuentaDolares;
+    case DOLARES:
+        return &cuentaDolares;
         break;
     default:
+        return nullptr;
         break;
     }
-
-    // Instancia de objeto de la clase Transaccion
-    Transaccion transaccion(&prestamo, cuenta, dinero);
-
-    transaccion();
-    // Llamado al metodo de obtenerId de clase Producto
-    unsigned int id = prestamo.obtenerId();
-    prestamos[id] = prestamo;
-
-    return id;
 }
 
 /**
@@ -82,29 +62,32 @@ unsigned int Cliente::agregarPrestamo(Prestamo prestamo, const float &monto, Mon
  * @param id Identificador unico del prestamo a buscar
  * @return Prestamo El prestamo buscado
  */
-Prestamo Cliente::buscarPrestamo(const unsigned int &id)
+Prestamo Cliente::buscarPrestamo(const unsigned int id) const
 {
-    return prestamos.at(id);
+    try
+    {
+        return prestamos.at(id);
+    }
+    catch (const std::out_of_range &)
+    {
+        throw std::out_of_range("No se pudo encontrar el préstamo.");
+    }
 }
 
 /**
- * @details Muestra información detallada de un préstamo específico por el ID del prestamo
+ * @details Itera sobre el contenedor préstamos para imprimir su información
  *
- * @param id Identificador unico del prestamo a buscar
- */
-void Cliente::obtenerInfoPrestamo(const unsigned int &id)
-{
-    // Llamado al metodo de buscarPrestamo
-    Prestamo prestamo = this->buscarPrestamo(id);
-    prestamo.obtenerInfoPersonal();
-}
-
-/**
- * @details Itera sobre el contenedor préstamos para imprimir su información 
- * 
  */
 void Cliente::obtenerInfoPrestamos()
 {
+    std::cout << "\nInformación de préstamos:\n";
+    std::cout << std::setw(Constantes::COL_WIDTH) << std::left << "ID"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Tipo"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Cuotas"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Tasa de interés"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Moneda"
+              << std::setw(Constantes::COL_WIDTH) << std::left << "Monto" << std::endl;
+
     // Instanciando un objeto iterador
     std::unordered_map<unsigned int, Prestamo>::iterator iter;
     for (iter = prestamos.begin(); iter != prestamos.end(); ++iter)
@@ -119,21 +102,31 @@ void Cliente::obtenerInfoPrestamos()
  * @param moneda Tipo de moneda de la cuenta a consultar
  */
 void Cliente::obtenerEstadoCuenta(Moneda moneda)
-{   
-    // Instancia de un ptro de clase Cuenta
-    Cuenta *cuenta;
-
-    // Casos
+{
+    Cuenta cuenta;
+    
     switch (moneda)
     {
-    case 0:
-        cuenta = &cuentaColones;
+    case COLONES:
+        cuenta = cuentaColones;
         break;
-    case 1:
-        cuenta = &cuentaDolares;
+    case DOLARES:
+        cuenta = cuentaDolares;
 
     default:
         break;
     }
-    cuenta->obtenerInfo();
+    cuenta.obtenerInfo();
 }
+
+std::istream &operator>>(std::istream &in, Cliente &cliente)
+{
+    char delimitador;
+    in >> cliente.userId >> delimitador;
+    std::getline(in, cliente.nombre);
+    return in;
+}
+
+unsigned int Cliente::obtenerId() { return userId; }
+
+Cliente::Cliente(const Cliente &otro) : userId(otro.userId), nombre(otro.nombre) {}
