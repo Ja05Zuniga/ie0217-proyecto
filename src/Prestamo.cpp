@@ -180,10 +180,14 @@ void Prestamo::imprimirDesglosePago()
               << std::setw(Constantes::COL_WIDTH) << "Cuota"
               << std::setw(Constantes::COL_WIDTH) << "Intereses"
               << std::setw(Constantes::COL_WIDTH) << "Amortización"
+              << std::setw(Constantes::COL_WIDTH) << "Total"
+              << std::setw(Constantes::COL_WIDTH) << "Moneda"
               << std::setw(Constantes::COL_WIDTH) << "Saldo restante" << std::endl;
     std::cout << std::setw(Constantes::COL_WIDTH) << std::left << pago.cuota
               << std::setw(Constantes::COL_WIDTH) << std::left << pago.intereses
               << std::setw(Constantes::COL_WIDTH) << std::left << pago.amortizacion
+              << std::setw(Constantes::COL_WIDTH) << std::left << cuotaMensual.obtenerMonto()
+              << std::setw(Constantes::COL_WIDTH) << std::left << cuotaMensual.obtenerMoneda()
               << std::setw(Constantes::COL_WIDTH) << std::left << pago.saldoRestante << std::endl;
 }
 

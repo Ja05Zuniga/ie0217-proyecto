@@ -27,31 +27,25 @@ void Cuenta::obtenerInfo()
  */
 void Cuenta::acreditar(Dinero &monto)
 {
-    if (estado)
-    {
-        Moneda monedaMonto = monto.obtenerMoneda();
-        if (moneda == monedaMonto)
-        {
-            ahorros = ahorros + monto;
-        }
-        else
-        {
-            switch (monedaMonto)
-            {
-            case COLONES:
-                ahorros = ahorros + monto.comprarDolares();
-                break;
-            case DOLARES:
-                ahorros = ahorros + monto.venderDolares();
 
-            default:
-                break;
-            }
-        }
+    Moneda monedaMonto = monto.obtenerMoneda();
+    if (moneda == monedaMonto)
+    {
+        ahorros = ahorros + monto;
     }
     else
     {
-        throw CuentaInactiva();
+        switch (monedaMonto)
+        {
+        case COLONES:
+            ahorros = ahorros + monto.comprarDolares();
+            break;
+        case DOLARES:
+            ahorros = ahorros + monto.venderDolares();
+
+        default:
+            break;
+        }
     }
 }
 
@@ -109,4 +103,10 @@ void Cuenta::verificarDebito(const Dinero &monto)
         return;
     }
 }
-void Cuenta::verificarCredito(const Dinero &monto) { return; }
+void Cuenta::verificarCredito(const Dinero &monto)
+{
+    if (!estado)
+    {
+        throw CuentaInactiva();
+    }
+}

@@ -29,17 +29,8 @@ void Efectivo::debitar(Dinero &monto)
             break;
         }
     }
-    float montoEfectivo = dinero.obtenerMonto();
-    float montoPorPagar = monto.obtenerMonto();
 
-    if (montoEfectivo < montoPorPagar)
-    {
-        std::cout << "Fondos insuficientes";
-    }
-    else
-    {
-        std::cout << "Cambio: " << montoEfectivo - montoPorPagar;
-    }
+    std::cout << "Cambio: " << dinero.obtenerMonto() - monto.obtenerMonto() << std::endl;
 }
 
 void Efectivo::solicitarPago()
@@ -50,6 +41,16 @@ void Efectivo::solicitarPago()
 
 void Efectivo::verificarDebito(const Dinero &monto)
 {
-    
+    solicitarPago();
+    if (dinero.obtenerMonto() < monto.obtenerMonto())
+    {
+        throw EfectivoInsuficiente();
+    }
 }
+
 void Efectivo::verificarCredito(const Dinero &monto) { return; }
+
+const char *EfectivoInsuficiente::what() const noexcept
+{
+    return "Efectivo insuficiente!";
+}

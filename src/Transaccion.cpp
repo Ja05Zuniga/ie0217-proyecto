@@ -31,8 +31,22 @@ void Transaccion::operator()()
     }
 }
 
+/**
+ * @brief Destroy the Transaccion:: Transaccion object
+ * @details Aquí nos aseguramos que se destroyan los objetos de 
+ * la clase efectivo si fueron creados
+ * 
+ */
 Transaccion::~Transaccion()
 {
+    if (pagador != nullptr && pagador->obtenerNombre() == "Efectivo")
+    {
+        delete pagador;
+    }
+    else if (receptor != nullptr && receptor->obtenerNombre() == "Efectivo")
+    {
+        delete receptor;
+    }
 }
 unsigned int Transaccion::generarId()
 {

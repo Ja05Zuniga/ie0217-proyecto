@@ -33,5 +33,9 @@ public:
     void verificarDebito(const Dinero &monto) override;
     void solicitarPago();
 };
-
+class EfectivoInsuficiente : public std::exception
+{
+public:
+    const char *what() const noexcept override;
+};
 #endif
