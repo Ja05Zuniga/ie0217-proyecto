@@ -774,7 +774,7 @@ void Menu::debitarCuenta()
             Dinero montoARetirar(monto, monedaRetiro);
 
             // Retirar el dinero de la cuenta
-            Transaccion 
+            cuentaCliente->debitar(montoARetirar);
 
             // Mostrar información actualizada de la cuenta
             std::cout << "\nInformación de la cuenta actualizada:\n";
