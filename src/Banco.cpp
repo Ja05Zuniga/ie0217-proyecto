@@ -1,16 +1,16 @@
 #include "Banco.hpp"
 
 /**
- * @brief Constructor de un nuevo objeto Banco::Banco 
+ * @brief Constructor de un nuevo objeto Banco::Banco
  * @details Aquí se definen los préstamos ofrecidos por el usuario
  */
 Banco::Banco()
 {
     // Inicializacion de prestamos con valores predeterminados.
-    /** 
-    * @note basados en aproximaciones a valores comerciales (en la tasa de interes)
-    * los plazos se toman toman todos a un año
-    */
+    /**
+     * @note basados en aproximaciones a valores comerciales (en la tasa de interes)
+     * los plazos se toman toman todos a un año
+     */
 
     prestamosPredefinidos[PERSONAL] = Prestamo(PERSONAL, 36, 8, PERSONAL);
     prestamosPredefinidos[PERSONAL + 1] = Prestamo(PERSONAL, 48, 10, PERSONAL + 1);
@@ -23,10 +23,11 @@ Banco::Banco()
     prestamosPredefinidos[HIPOTECARIO + 2] = Prestamo(HIPOTECARIO, 480, 4.5, HIPOTECARIO + 2);
 
     cargarPrestamos("prestamos.csv");
+    cargarCuentas("cuentas.csv");
 }
 
 /**
- * @brief Desconstructor de un nuevo objeto Banco::Banco 
+ * @brief Desconstructor de un nuevo objeto Banco::Banco
  */
 Banco::~Banco()
 {
@@ -43,12 +44,21 @@ void Banco::clean()
             delete entrada.second;
         }
     }
+
     prestamos.clear();
+    for (auto &entrada : cuentas)
+    {
+        if (entrada.second != nullptr)
+        {
+            delete entrada.second;
+        }
+    }
+    cuentas.clear();
 }
 
 /**
  * @brief Busca el cliente por su ced (id) en el contenedor de clientes
- * 
+ *
  * @param id numero de indentificacion del cliente
  * @return Cliente Una instancia del clase Cliente
  */
@@ -69,7 +79,7 @@ Cliente *Banco::buscarCliente(const unsigned int &id)
 
 /**
  * @brief Busca el cliente en el contenedor de prestamos
- * 
+ *
  * @param id Identificacion unica del prestamo
  * @return Prestamo Una instancia del clase Prestamo
  */
@@ -137,7 +147,7 @@ Prestamo *Banco::buscarPrestamo(const unsigned int &id, const unsigned int &idDu
 
 /**
  * @brief Imprime en pantalla información del básica del préstamo
- * 
+ *
  * @param id Identificacion unica del prestamo
  */
 void Banco::obtenerInfoPrestamos(const unsigned int &id)
@@ -185,15 +195,15 @@ void Banco::obtenerInfoPrestamos()
     }
 }
 
- /**
+/**
  * @brief Imprime en pantalla informacion basica del certificado
  *        Llama el metodo obtenerInfo de la clase certificado
-* 
-* @param id Identificacion unica del certificado
-*/
+ *
+ * @param id Identificacion unica del certificado
+ */
 void Banco::obtenerInfoCertificados(const unsigned int &id)
 {
-    // Instancia del objeto de clase Certificado 
+    // Instancia del objeto de clase Certificado
     // se accede al elemento id del mapa certificados
     Certificado certificado = certificados.at(id);
 
@@ -203,7 +213,7 @@ void Banco::obtenerInfoCertificados(const unsigned int &id)
 
 /**
  * @brief Agrega un cliente nuevo al contenedor de clientes del Banco
- * 
+ *
  * @param id cedula de identificacion del cliente
  * @param nombre Nombre del cliente a registrar
  * @return Cliente Una instancia del clase Cliente
@@ -274,52 +284,50 @@ void Banco::cargarPrestamos(const std::string &archivoCSV)
 
 void Banco::cargarCuentas(const std::string &archivoCSV)
 {
-    // try
-    // {
-    //     std::ifstream in(archivoCSV);
+    try
+    {
+        std::ifstream in(archivoCSV);
 
-    //     if (!in)
-    //     {
-    //         throw std::ios_base::failure("No se pudo abrir el archivo");
-    //     }
+        if (!in)
+        {
+            throw std::ios_base::failure("No se pudo abrir el archivo");
+        }
 
-    //     Prestamo temp;
-    //     std::string line;
+        Cuenta temp;
+        std::string line;
 
-    //     while (std::getline(in, line))
-    //     {
-    //         // Verificar si la línea está vacía
-    //         if (line.empty() || std::all_of(line.begin(), line.end(), ::isspace))
-    //         {
-    //             break;
-    //         }
+        while (std::getline(in, line))
+        {
+            // Verificar si la línea está vacía
+            if (line.empty() || std::all_of(line.begin(), line.end(), ::isspace))
+            {
+                break;
+            }
+            std::istringstream iss(line);
+            if (iss >> temp)
+            {
+                Cuenta *ptrCuenta = new Cuenta(temp);
+                if (ptrCuenta != nullptr)
+                {
+                    agregarCuenta(ptrCuenta);
+                }
+                else
+                {
+                    throw std::bad_alloc();
+                }
+            }
+            else
+            {
+                throw std::invalid_argument("Formato inválido");
+            }
+        }
 
-    //         std::istringstream iss(line);
-    //         if (iss >> temp)
-    //         {
-    //             Cuenta *ptrPrestamo = new Cuenta(temp);
-    //             if (ptrPrestamo != nullptr)
-    //             {
-    //                 agregarPrestamo(ptrPrestamo);
-    //                 ptrPrestamo->calcularAmortizacion();
-    //             }
-    //             else
-    //             {
-    //                 throw std::bad_alloc();
-    //             }
-    //         }
-    //         else
-    //         {
-    //             throw std::invalid_argument("Formato inválido");
-    //         }
-    //     }
-
-    //     std::cout << "Préstamos cargados con éxito" << std::endl;
-    // }
-    // catch (const std::exception &e)
-    // {
-    //     std::cerr << "Error al cargar préstamos: " << e.what() << '\n';
-    // }
+        std::cout << "Cuentas cargadas con éxito" << std::endl;
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "Error al cargar cuentas: " << e.what() << '\n';
+    }
 }
 
 void Banco::registrarPrestamos(const std::string &archivoCSV)
@@ -379,5 +387,19 @@ void Banco::agregarPrestamo(Prestamo *prestamo)
     if (prestamo != nullptr)
     {
         prestamos[std::make_pair(prestamo->obtenerDueno(), prestamo->obtenerId())] = prestamo;
+    }
+}
+
+/**
+ * @details La verificación nos asegura que el contenedor nunca almacenará punteros nulos
+ *
+ * @param prestamo
+ * @return void*
+ */
+void Banco::agregarCuenta(Cuenta *cuenta)
+{
+    if (cuenta != nullptr)
+    {
+        cuentas[cuenta->obtenerId()] = cuenta;
     }
 }

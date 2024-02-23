@@ -29,6 +29,7 @@ class Banco
 private:
     // Instancia de la clase Cliente relacionada a la Banco
     std::unordered_map<unsigned int, Cliente *> clientes;
+    std::unordered_map<unsigned int, Cuenta *> cuentas;
     // ID dueño, luego ID propio
     std::map<std::pair<int, int>, Prestamo *> prestamos;
     std::unordered_map<unsigned int, Certificado> certificados;
@@ -107,6 +108,7 @@ public:
     void registrarPrestamos(const std::string &archivoCSV);
     void cargarClientes(const std::string &archivoCSV);
     void agregarPrestamo(Prestamo *prestamo);
+    void agregarCuenta(Cuenta *cuenta);
     void obtenerInfoPrestamos(const unsigned int &id, const unsigned int &idDueno);
     Prestamo buscarPrestamoOfrecido(const unsigned int id);
     void obtenerInfoPrestamosCliente(const int id);
