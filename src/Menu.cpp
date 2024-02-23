@@ -541,6 +541,7 @@ void Menu::pagarPrestamo()
 
     try
     {
+        Producto *pago;
         int id = Prestamo::solicitarIDprestamo();
 
         if (id == -1)
@@ -558,8 +559,6 @@ void Menu::pagarPrestamo()
             std::cout << "Desglose del pago: " << std::endl;
             prestamo->imprimirDesglosePago();
             MetodoPago metodo = solicitarMetodoPago();
-
-            Producto *pago;
             switch (metodo)
             {
             case CUENTA_COLONES:
@@ -567,6 +566,7 @@ void Menu::pagarPrestamo()
                 break;
             case CUENTA_DOLARES:
                 pago = cliente->obtenerCuenta(DOLARES);
+                break;
             case EFECTIVO:
                 pago = new Efectivo();
             default:
@@ -578,10 +578,6 @@ void Menu::pagarPrestamo()
                 Transaccion transaccion(pago, prestamo, prestamo->obtenerCuotaMensual());
                 transaccion();
                 std::cout << "Transacción realizada con éxito\n";
-                if (metodo == EFECTIVO)
-                {
-                    delete pago;
-                }
             }
         }
         else
@@ -593,6 +589,8 @@ void Menu::pagarPrestamo()
     {
         std::cerr << e.what() << '\n';
     }
+
+
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     displayOpcionesPrincipales();
