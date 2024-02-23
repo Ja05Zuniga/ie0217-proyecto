@@ -32,6 +32,7 @@ enum TipoPrestamo
     HIPOTECARIO = 6
 };
 std::istream &operator>>(std::istream &is, TipoPrestamo &tipo);
+// std::ostream &operator<<(std::istream &os, TipoPrestamo &tipo);
 /**
  * @brief Clase para manipular préstamo y obtener información
  *
@@ -107,13 +108,14 @@ public:
     void imprimirDesglosePago();
     void imprimirDesglosePago(unsigned int id);
     friend std::istream &operator>>(std::istream &in, Prestamo &prestamo);
+    friend std::ostream &operator<<(std::ostream &os, Prestamo &prestamo);
     static int solicitarIDprestamo();
     Prestamo(const Prestamo &otro);
     void asignarDueno(const unsigned int id);
     unsigned int obtenerDueno();
     void calcularCuotaMensual();
-    void verificarDebito(const Dinero &monto) override;
-    void verificarCredito(const Dinero &monto) override;
+    void verificarDebito(Dinero &monto) override;
+    void verificarCredito(Dinero &monto) override;
 };
 /**
  * @brief Excepción para lanzar en el de que el prestamo esté pago

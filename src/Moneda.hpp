@@ -26,5 +26,6 @@ enum Moneda
 };
 
 std::istream &operator>>(std::istream &is, Moneda &moneda);
+std::ostream &operator<<(std::ostream &os, const Moneda &obj);
 
 #endif

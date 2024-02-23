@@ -17,13 +17,13 @@ std::istream &operator>>(std::istream &is, TipoPrestamo &tipo)
 
     switch (tipoInt)
     {
-    case 1:
+    case 0:
         tipo = PERSONAL;
         break;
-    case 2:
+    case 3:
         tipo = PRENDARIO;
         break;
-    case 3:
+    case 6:
         tipo = HIPOTECARIO;
         break;
     default:
@@ -34,11 +34,39 @@ std::istream &operator>>(std::istream &is, TipoPrestamo &tipo)
     return is;
 }
 
+std::ostream &operator<<(std::ostream &os, TipoPrestamo &tipo)
+{
+    int tipoInt;
+    switch (tipo)
+    {
+    case PERSONAL:
+        tipoInt = 0;
+        break;
+    case PRENDARIO:
+        tipoInt = 3;
+        break;
+    case HIPOTECARIO:
+        tipoInt = 6;
+        break;
+    default:
+        break;
+    }
+    os << tipoInt;
+    return os;
+}
+
 std::istream &operator>>(std::istream &in, Prestamo &prestamo)
 {
     char delimitador;
     in >> prestamo.idDueno >> delimitador >> prestamo.id >> delimitador >> prestamo.tipo >> delimitador >> prestamo.cuotas >> delimitador >> prestamo.tasaInteresAnual >> delimitador >> prestamo.montoInicial >> delimitador >> prestamo.numCuota;
     return in;
+}
+
+std::ostream &operator<<(std::ostream &os, Prestamo &prestamo)
+{
+    char delimitador = ',';
+    os << prestamo.idDueno << delimitador << prestamo.id << delimitador << prestamo.tipo << delimitador << prestamo.cuotas << delimitador << prestamo.tasaInteresAnual << delimitador << prestamo.montoInicial << delimitador << prestamo.numCuota;
+    return os;
 }
 
 Prestamo::~Prestamo()
@@ -100,8 +128,8 @@ void Prestamo::obtenerInfoPersonal(bool reducida)
         std::cout << "ID: " << id << "\n"
                   << "Tipo de préstamo: " << tipo_str << "\n"
                   << "Cuotas: " << cuotas << "\n"
-                  << "Monto de préstamo: " << montoInicial << "\n"
-                  << "Cuota mensual: " << cuotaMensual << "\n"
+                  << "Monto de préstamo: " << montoInicial.obtenerMoneda() << montoInicial.obtenerMonto() << "\n"
+                  << "Cuota mensual: " << cuotaMensual.obtenerMoneda() << cuotaMensual.obtenerMonto() << "\n"
                   << "Mes: " << numCuota << "\n"
                   << "Tasa de interés anual: " << tasaInteresAnual << std::endl;
     }
@@ -111,7 +139,8 @@ void Prestamo::obtenerInfoPersonal(bool reducida)
                   << std::setw(Constantes::COL_WIDTH) << std::left << tipo_str
                   << std::setw(Constantes::COL_WIDTH) << std::left << cuotas
                   << std::setw(Constantes::COL_WIDTH) << std::left << tasaInteresAnual
-                  << std::setw(Constantes::COL_WIDTH) << std::left << montoInicial << std::endl;
+                  << std::setw(Constantes::COL_WIDTH) << std::left << montoInicial.obtenerMoneda()
+                  << std::setw(Constantes::COL_WIDTH) << std::left << montoInicial.obtenerMonto() << std::endl;
     }
 }
 void Prestamo::acreditar(Dinero &monto)
@@ -261,12 +290,12 @@ unsigned int Prestamo::obtenerDueno()
     return idDueno;
 }
 
-void Prestamo::verificarDebito(const Dinero &monto)
+void Prestamo::verificarDebito(Dinero &monto)
 {
     return;
 }
 
-void Prestamo::verificarCredito(const Dinero &monto)
+void Prestamo::verificarCredito(Dinero &monto)
 {
     if (numCuota >= cuotas)
     {
