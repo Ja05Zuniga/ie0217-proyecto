@@ -1,6 +1,6 @@
 /**
  * @file Cliente.hpp
- * @author J. Zuñiga, A. Franchi, G. Escobar
+ * @authors J. Zuñiga, A. Franchi, G. Escobar
  * @brief
  * @version 0.1
  * @date 2024-02-15
@@ -20,6 +20,14 @@
 #include "MetodoPago.hpp"
 #include "Efectivo.hpp"
 
+/**
+ * @class Cliente
+ * @brief Gestiona la informacion y las operaciones financieras de un cliente.
+ *
+ * La clase Cliente se encarga de almacenar los detalles del cliente, como prestamos y
+ * cuentas bancarias en diferentes monedas. Proporciona metodos para agregar y consultar
+ * prestamos
+ */
 class Cliente
 {
 
@@ -53,8 +61,22 @@ public:
      */
     void obtenerInfo();
 
+    /**
+     * @brief Obtiene la cuenta del cliente segun la moneda
+     * 
+     * @param moneda Tipo  de moneda del prestamo.
+     * @return Cuenta* 
+     */
     Cuenta *obtenerCuenta(Moneda moneda);
+
+    /**
+    * @brief Agrega un nuevo prestamo al cliente.
+    * 
+    * @param *prestamo Puntero de Prestamo a agregar.
+    * @param metodo Tipo  de metodo de pago del prestamo.
+    */ 
     void pagarPrestamo(Prestamo *prestamo, MetodoPago metodo);
+
     /**
      * @brief Busca un préstamo del usuario a partir de su ID
      *
@@ -80,7 +102,7 @@ public:
     /**
      * @brief Imprime información detallada de la cuenta en la moneda ingresada
      *
-     * @param moneda
+     * @param moneda Tipo de moneda de la cuenta a consultar
      */
     void obtenerEstadoCuenta(Moneda moneda);
 

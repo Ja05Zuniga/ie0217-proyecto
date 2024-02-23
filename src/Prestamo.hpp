@@ -1,6 +1,6 @@
 /**
  * @file Prestamo.hpp
- * @author your name (you@domain.com)
+ * @authors J. Zuñiga, A. Franchi, G. Escobar
  * @brief
  * @version 0.1
  * @date 2024-02-15
@@ -115,24 +115,85 @@ public:
      *
      */
     void calcularAmortizacion();
-    
+
     /**
      * @brief Imprime en pantalla la tabla de pago del préstamo
      *
      */
     void obtenerAmortizacion();
+
+    /**
+     * @brief 
+     * 
+     * @return Dinero 
+     */
     Dinero obtenerCuotaMensual();
+
+    /**
+     * @brief 
+     * 
+     */
     void imprimirDesglosePago();
+
+    /**
+     * @brief 
+     * 
+     * @param id 
+     */
     void imprimirDesglosePago(unsigned int id);
+
     friend std::istream &operator>>(std::istream &in, Prestamo &prestamo);
+
+    /**
+     * @brief 
+     * 
+     * @return int 
+     */
     static int solicitarIDprestamo();
+
+    /**
+     * @brief Construct a new Prestamo object
+     * 
+     * @param otro 
+     */
     Prestamo(const Prestamo &otro);
+
+    /**
+     * @brief 
+     * 
+     * @param id 
+     */
     void asignarDueno(const unsigned int id);
+
+    /**
+     * @brief 
+     * 
+     * @return unsigned int 
+     */
     unsigned int obtenerDueno();
+
+    /**
+     * @brief 
+     * 
+     */
     void calcularCuotaMensual();
+
+    /**
+     * @brief 
+     * 
+     * @param monto 
+     */
     void verificarDebito(const Dinero &monto) override;
+    
+    /**
+     * @brief 
+     * 
+     * @param monto 
+     */
     void verificarCredito(const Dinero &monto) override;
 };
+
+
 /**
  * @brief Excepción para lanzar en el de que el prestamo esté pago
  *

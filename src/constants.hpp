@@ -21,4 +21,4 @@ namespace Constantes
     // Tasa de venta del dolar
     const int TASA_VENTA = 517;
 
-} // namespace Constantes
+} 
