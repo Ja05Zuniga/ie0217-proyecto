@@ -94,6 +94,8 @@ void Cuenta::debitar(Dinero &monto)
     }
 }
 
+void Cuenta::cambiarEstado(bool nuevoEstado) { estado = nuevoEstado; }
+
 const char *CuentaInactiva::what() const noexcept
 {
     return "Cuenta inactiva!";

@@ -119,6 +119,26 @@ void Cliente::obtenerEstadoCuenta(Moneda moneda)
     cuenta.obtenerInfo();
 }
 
+void Cliente::activacionCuenta(Moneda moneda, bool activacion)
+{
+    Cuenta *cuenta;
+    switch (moneda)
+    {
+    case COLONES:
+        cuenta = &cuentaColones;
+        break;
+    case DOLARES:
+        cuenta = &cuentaDolares;
+        break;
+    default:
+        std::cerr << "Moneda no válida" << std::endl;
+        return;
+    }
+
+    cuenta->cambiarEstado(activacion);
+}
+
+
 std::istream &operator>>(std::istream &in, Cliente &cliente)
 {
     char delimitador;
