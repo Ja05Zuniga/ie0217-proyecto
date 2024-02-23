@@ -69,15 +69,11 @@ std::ostream &operator<<(std::ostream &os, Prestamo &prestamo)
     return os;
 }
 
-Prestamo::~Prestamo()
-{
-}
-
 Prestamo::~Prestamo() {}
 
 /**
  * @brief Constructor por defecto de la clase Prestamo.
- * 
+ *
  * Se inicializa un prestamo con el arg. "Prestamo" por defecto.
  */
 Prestamo::Prestamo() : Producto("Prestamo") {}
@@ -85,12 +81,12 @@ Prestamo::Prestamo() : Producto("Prestamo") {}
 /**
  * @brief Constructor de la clase Prestamo con parametros especificos.
  * Inicializa un prestamo con valores especificos y calcula la tasa de interes mensual.
- * 
+ *
  * @param tipo Tipo de prestamo.
  * @param cuotas Numero de cuotas del prestamo.
  * @param tasaInteresAnual Tasa de interes anual del prestamo.
  * @param id Identificador unico del prestamo.
- * 
+ *
  */
 Prestamo::Prestamo(const TipoPrestamo &tipo, const unsigned int &cuotas, const float &tasaInteresAnual, const unsigned int &id) : Producto("Prestamo", id), tipo(tipo), cuotas(cuotas), tasaInteresAnual(tasaInteresAnual)
 {
@@ -104,7 +100,7 @@ Prestamo::Prestamo(const TipoPrestamo &tipo, const unsigned int &cuotas, const f
 void Prestamo::obtenerInfo()
 {
     std::string tipo_str;
-    
+
     // Casos para los prestamos
     switch (tipo)
     {
@@ -121,7 +117,6 @@ void Prestamo::obtenerInfo()
         break;
     }
 
-
     // Imprime la tabla con los valores con un formato establecido
     std::cout << std::setw(Constantes::COL_WIDTH) << std::left << id
               << std::setw(Constantes::COL_WIDTH) << std::left << tipo_str
@@ -132,7 +127,7 @@ void Prestamo::obtenerInfo()
 /**
  * @brief Imprime información detallada del préstamo.
  * @param reducida
- */ 
+ */
 void Prestamo::obtenerInfoPersonal(bool reducida)
 {
     std::string tipo_str;
@@ -180,7 +175,6 @@ void Prestamo::obtenerInfoPersonal(bool reducida)
 void Prestamo::acreditar(Dinero &monto)
 {
     numCuota += 1;
-    
 }
 
 /**
@@ -225,8 +219,8 @@ void Prestamo::calcularAmortizacion()
 }
 
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 void Prestamo::obtenerAmortizacion()
 {
@@ -243,8 +237,8 @@ void Prestamo::obtenerAmortizacion()
 Dinero Prestamo::obtenerCuotaMensual() { return cuotaMensual; }
 
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 void Prestamo::imprimirDesglosePago()
 {
@@ -266,9 +260,9 @@ void Prestamo::imprimirDesglosePago()
 }
 
 /**
- * @brief 
- * 
- * @param id 
+ * @brief
+ *
+ * @param id
  */
 void Prestamo::imprimirDesglosePago(unsigned int id)
 {
@@ -280,9 +274,9 @@ void Prestamo::imprimirDesglosePago(unsigned int id)
 }
 
 /**
- * @brief 
- * 
- * @return int 
+ * @brief
+ *
+ * @return int
  */
 int Prestamo::solicitarIDprestamo()
 {
@@ -325,8 +319,8 @@ int Prestamo::solicitarIDprestamo()
 
 /**
  * @brief Construct a new Prestamo:: Prestamo object
- * 
- * @param otro 
+ *
+ * @param otro
  */
 Prestamo::Prestamo(const Prestamo &otro) : Producto("Prestamo", otro.id), idDueno(otro.idDueno), tipo(otro.tipo), cuotas(otro.cuotas), tasaInteresAnual(otro.tasaInteresAnual)
 {
@@ -341,9 +335,9 @@ Prestamo::Prestamo(const Prestamo &otro) : Producto("Prestamo", otro.id), idDuen
 }
 
 /**
- * @brief 
- * 
- * @param id 
+ * @brief
+ *
+ * @param id
  */
 void Prestamo::asignarDueno(const unsigned int id)
 {

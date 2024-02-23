@@ -144,8 +144,8 @@ public:
 
     friend std::istream &operator>>(std::istream &in, Prestamo &prestamo);
 
-    /**
     friend std::ostream &operator<<(std::ostream &os, Prestamo &prestamo);
+    /**
      * @brief 
      * 
      * @return int 
@@ -184,14 +184,14 @@ public:
      * 
      * @param monto 
      */
-    void verificarDebito(const Dinero &monto) override;
+    void verificarDebito(Dinero &monto) override;
     
     /**
      * @brief 
      * 
      * @param monto 
      */
-    void verificarCredito(const Dinero &monto) override;
+    void verificarCredito(Dinero &monto) override;
 };
 
 
