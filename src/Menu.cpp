@@ -690,7 +690,7 @@ void Menu::acreditarCuenta()
     }
 
     // Obtener la cuenta del cliente
-    cuentaCliente = cliente->obtenerCuenta(monedaDeposito);
+    cuentaCliente = banco.buscarCuenta(cliente->obtenerId(), monedaDeposito);
     try
     {
         // Verificar si la cuenta se encontró correctamente
@@ -755,7 +755,7 @@ void Menu::debitarCuenta()
     }
 
     // Obtener la cuenta del cliente
-    cuentaCliente = cliente->obtenerCuenta(monedaRetiro);
+    cuentaCliente = banco.buscarCuenta(cliente->obtenerId(), monedaRetiro);
 
     // Verificar si la cuenta se encontró correctamente
     if (cuentaCliente)
@@ -774,7 +774,7 @@ void Menu::debitarCuenta()
             Dinero montoARetirar(monto, monedaRetiro);
 
             // Retirar el dinero de la cuenta
-            cuentaCliente->debitar(montoARetirar);
+            Transaccion 
 
             // Mostrar información actualizada de la cuenta
             std::cout << "\nInformación de la cuenta actualizada:\n";
