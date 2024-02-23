@@ -2,7 +2,7 @@
 Cuenta::Cuenta(/* args */) : Producto("Cuenta")
 {
 }
-Cuenta::Cuenta(const Cuenta &otro) : Producto(std::string("Cuenta") + std::string(otro.moneda == COLONES ? " Colones" : " Dolares"), id), ahorros(otro.ahorros), moneda(otro.moneda) {}
+Cuenta::Cuenta(const Cuenta &otro) : Producto(std::string("Cuenta") + std::string(otro.ahorros.obtenerMoneda() == COLONES ? " Colones" : " Dolares"), otro.id), estado(otro.estado), ahorros(otro.ahorros), moneda(otro.ahorros.obtenerMoneda()) {}
 
 Cuenta::Cuenta(const float &monto, Moneda moneda, unsigned int id) : Producto(std::string("Cuenta") + std::string(moneda == COLONES ? " Colones" : " Dolares"), id), ahorros(Dinero(monto, moneda)), moneda(moneda)
 {
@@ -50,6 +50,21 @@ void Cuenta::acreditar(Dinero &monto)
     }
 }
 
+std::istream &operator>>(std::istream &in, Cuenta &cuenta)
+{
+    char delimitador;
+    in >> cuenta.id >> delimitador >> cuenta.estado >> delimitador >> cuenta.ahorros;
+
+    return in;
+}
+
+std::ostream &operator<<(std::ostream &os, Cuenta &cuenta)
+{
+    // char delimitador = ',';
+    // os << prestamo.idDueno << delimitador << prestamo.id << delimitador << prestamo.tipo << delimitador << prestamo.cuotas << delimitador << prestamo.tasaInteresAnual << delimitador << prestamo.montoInicial << delimitador << prestamo.numCuota;
+    // return os;
+}
+
 /**
  * @details actualiza los ahorros del usuario
  *
@@ -91,27 +106,32 @@ const char *FondosInsuficientes::what() const noexcept
 
 void Cuenta::verificarDebito(Dinero &monto)
 {
+
     if (!estado)
     {
         throw CuentaInactiva();
     }
-    else if (moneda == monto.obtenerMoneda() && ahorros.obtenerMonto() < monto.obtenerMonto())
+    if (moneda == monto.obtenerMoneda())
     {
-        throw FondosInsuficientes();
-    }
-    else if (moneda == COLONES && ahorros.obtenerMonto() < monto.venderColones().obtenerMonto())
-    {
-        throw FondosInsuficientes();
-    }
-    else if (moneda == DOLARES && ahorros.obtenerMonto() < monto.comprarColones().obtenerMonto())
-    {
-        throw FondosInsuficientes();
+        if (ahorros.obtenerMonto() < monto.obtenerMonto())
+        {
+            throw FondosInsuficientes();
+        }
     }
     else
     {
-        return;
+
+        if (moneda == COLONES && ahorros.obtenerMonto() < monto.venderColones().obtenerMonto())
+        {
+            return;
+        }
+        else if (moneda == DOLARES && ahorros.obtenerMonto() < monto.comprarColones().obtenerMonto())
+        {
+            return;
+        }
     }
 }
+
 void Cuenta::verificarCredito(Dinero &monto)
 {
     if (!estado)

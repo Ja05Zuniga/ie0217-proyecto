@@ -60,8 +60,11 @@ public:
     void verificarDebito(Dinero &monto) override;
     void verificarCredito(Dinero &monto) override;
 
+    friend std::istream &operator>>(std::istream &in, Cuenta &cuenta);
+    friend std::ostream &operator<<(std::ostream &os, Cuenta &cuenta);
+
     /**
-     * @brief Devuelve un enumerador indicando el estado de la cuenta
+     * @brief Devuelve un booleano indicando el estado de la cuenta
      *
      * @return Estado
      */
